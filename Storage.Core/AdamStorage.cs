@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amica.vNext;
+using Eve;
+using Eve.Authenticators;
 
 namespace Amica.vNext.Data
 {
-    class AdamStorage : IDataStorage
+    class AdamStorage : IStorage
     {
         private readonly Dictionary<string, string> _resourcesMapping;
 
@@ -28,8 +31,26 @@ namespace Amica.vNext.Data
 
         public Task<T> Get<T>(string uniqueId)
         {
-            throw new NotImplementedException();
+            var discovery = new Discovery {BaseAddress = DiscoveryServiceUri};
+
+	    // TODO handle exceptions
+	    var authUri = discovery.GetServiceUri(ApiKind.Authentication);
+            var adamUri = discovery.GetServiceUri(ApiKind.UserData);
+            return null;
+
         }
+
+        private async Task<BearerAuthenticator> GetAuthenticator()
+        {
+            var sc = new Sentinel
+            {
+                Username = Username,
+                Password = Password,
+                ClientId = ClientId,
+            };
+            return await sc.GetBearerAuthenticator();
+        }
+
 
         public Task<T> Get<T>(T obj)
         {

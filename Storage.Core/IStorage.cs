@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Amica.vNext.Data
 {
-    public interface IDataStorage : IDisposable
+    public interface IStorage : IDisposable
     {
         /// <summary>
         /// Asynctronoulsy retrieve an object from the datastore.
@@ -44,7 +44,7 @@ namespace Amica.vNext.Data
         Task Replace<T>(T obj);
     }
 
-    public interface IBulkDataStorage : IDataStorage
+    public interface IBulkStorage : IStorage
     {
         /// <summary>
         /// Asyncronously retrieve all objects of type T. Please note that depending on
