@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\DataStorage.Core\AdamStorage.cs">
+      <Link>AdamStorage.cs</Link>
+    </Compile>
     <Compile Include="..\DataStorage.Core\Exceptions.cs">
       <Link>Exceptions.cs</Link>
     </Compile>
@@ -46,6 +49,16 @@
       <Link>IDataStorage.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Discovery\Discovery.Net4\Discovery.Net4.csproj">
+      <Project>{4b684125-389e-4edf-87e9-905785f700a5}</Project>
+      <Name>Discovery.Net4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Models\Models.Net4\Models.Net4.csproj">
+      <Project>{aa1e9fe1-d984-417a-9f3d-16c260da9463}</Project>
+      <Name>Models.Net4</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
