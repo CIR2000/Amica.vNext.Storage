@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Net4", "..\Sentine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Net4", "Storage.Net4\Storage.Net4.csproj", "{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Playground\Playground.csproj", "{AD2742B2-BC7B-41FE-95E8-04998467A13B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCache.Net4", "..\SimpleCache\SimpleCache.Net4\SimpleCache.Net4.csproj", "{5A320348-7AE0-421A-B3EC-25FF8FED4243}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A320348-7AE0-421A-B3EC-25FF8FED4243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A320348-7AE0-421A-B3EC-25FF8FED4243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A320348-7AE0-421A-B3EC-25FF8FED4243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A320348-7AE0-421A-B3EC-25FF8FED4243}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

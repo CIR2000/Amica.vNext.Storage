@@ -1,54 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Amica.vNext;
+using Amica.vNext.Models;
 using Eve;
 using Eve.Authenticators;
 
 namespace Amica.vNext.Data
 {
-    class AdamStorage : IStorage
+    public class AdamStorage : IStorage
     {
-        private readonly Dictionary<string, string> _resourcesMapping;
+        private readonly Dictionary<Type, string> _resources;
+        private readonly Discovery _discovery; 
 
         public AdamStorage()
         {
 
-	    // Default to local instance for testing purposes, unless an envvar has been set.
-            var id = Environment.GetEnvironmentVariable("SentinelClientId");
-	    DiscoveryServiceUri = id == null ? new Uri("10.0.2.2:5000") : new Uri(id);
+            ClientId = Environment.GetEnvironmentVariable("SentinelClientId");
 
-            _resourcesMapping = new Dictionary<string, string> {
-                {"Aziende", "companies"},
-                {"Nazioni", "countries"}
+	    // Default to local instance for testing purposes, unless an envvar has been set.
+            _discovery = new Discovery();
+
+            _resources = new Dictionary<Type, string> {
+                {typeof(Company), "companies"},
+                {typeof(Country), "countries"}
             };
 
         }
-        public void Dispose()
+        private async Task<Uri> GetServiceAddress()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> Get<T>(string uniqueId)
-        {
-            var discovery = new Discovery {BaseAddress = DiscoveryServiceUri};
-
 	    // TODO handle exceptions
-	    var authUri = discovery.GetServiceUri(ApiKind.Authentication);
-            var adamUri = discovery.GetServiceUri(ApiKind.UserData);
-            return null;
-
+	    // TODO rename UserData to AmicaData or something equally appropriate.
+            _discovery.BaseAddress = DiscoveryServiceAddress;
+            var addr = await _discovery.GetServiceAddress(ApiKind.UserData);
+            return addr;
         }
-
         private async Task<BearerAuthenticator> GetAuthenticator()
         {
+	    // TODO is ArgumentNullException appropriate since we're
+	    // dealing with Properties here (and elsewhere)?
+            if (Username == null)
+                throw new ArgumentNullException(nameof(Username));
+            if (Password == null)
+                throw new ArgumentNullException(nameof(Password));
+            if (ClientId == null)
+                throw new ArgumentNullException(nameof(ClientId));
+
+            _discovery.BaseAddress = DiscoveryServiceAddress;
+	    var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
+
             var sc = new Sentinel
             {
                 Username = Username,
                 Password = Password,
                 ClientId = ClientId,
+		BaseAddress = authAddress
             };
             return await sc.GetBearerAuthenticator();
+        }
+
+        public async Task<T> Get<T>(string uniqueId)
+        {
+
+            var endpoint = _resources[typeof (T)];
+
+            var rc = new EveClient(await GetServiceAddress(), await GetAuthenticator());
+            var item = await rc.GetAsync<T>(endpoint, uniqueId);
+            if (item == null)
+                throw new ObjectNotFoundException();
+
+            return item;
         }
 
 
@@ -71,6 +91,11 @@ namespace Amica.vNext.Data
         {
             throw new NotImplementedException();
         }
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
 
 	/// <summary>
 	/// Used to identify the client against the authentications service. 
@@ -90,6 +115,6 @@ namespace Amica.vNext.Data
 	/// <summary>
 	/// Discovery Service Uri.
 	/// </summary>
-	public Uri DiscoveryServiceUri { get; set; }
+	public Uri DiscoveryServiceAddress { get; set; }
     }
 }
