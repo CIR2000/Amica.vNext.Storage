@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
@@ -10,15 +12,20 @@ namespace Amica.vNext.Data
     public class AdamStorage : IStorage
     {
         private readonly Dictionary<Type, string> _resources;
-        private readonly Discovery _discovery; 
+        private readonly Discovery _discovery;
+        private readonly EveClient _eve;
 
         public AdamStorage()
         {
 
             ClientId = Environment.GetEnvironmentVariable("SentinelClientId");
 
+	    // TODO replace with actual default Uri for the real Adam-DiscoveryService
+	    DiscoveryServiceAddress = new Uri("http://10.0.2.2:9000");
+
 	    // Default to local instance for testing purposes, unless an envvar has been set.
             _discovery = new Discovery();
+            _eve = new EveClient();
 
             _resources = new Dictionary<Type, string> {
                 {typeof(Company), "companies"},
@@ -26,7 +33,15 @@ namespace Amica.vNext.Data
             };
 
         }
-        private async Task<Uri> GetServiceAddress()
+
+        private async Task RefreshClientSettings<T>()
+        {
+            _eve.BaseAddress = await GetAdamAddress();
+            _eve.Authenticator = await GetAuthenticator();
+            _eve.ResourceName = _resources[typeof (T)];
+        }
+
+        private async Task<Uri> GetAdamAddress()
         {
 	    // TODO handle exceptions
 	    // TODO rename UserData to AmicaData or something equally appropriate.
@@ -58,46 +73,64 @@ namespace Amica.vNext.Data
             return await sc.GetBearerAuthenticator();
         }
 
-        public async Task<T> Get<T>(string uniqueId)
+        private async Task SetAndValidateResponse(BaseModel obj)
         {
+            HttpResponseMessage = _eve.HttpResponse;
 
-            var endpoint = _resources[typeof (T)];
+            switch (HttpResponseMessage.StatusCode)
+            {
+                case HttpStatusCode.NotFound:
+                    throw new ObjectNotFoundException(obj);
+                case (HttpStatusCode) 422:
+                    throw new ValidationException(await HttpResponseMessage.Content.ReadAsStringAsync());
+                case HttpStatusCode.PreconditionFailed:
+                    throw new PreconditionFailedException(obj);
+            }
+        }
 
-            var rc = new EveClient(await GetServiceAddress(), await GetAuthenticator());
-            var item = await rc.GetAsync<T>(endpoint, uniqueId);
-            if (item == null)
-                throw new ObjectNotFoundException();
+        public async Task<T> Get<T>(string uniqueId) where T : BaseModel, new()
+        {
+            return await Get(new T {UniqueId = uniqueId});
+        }
 
+
+        public async Task<T> Get<T>(T obj) where T : BaseModel
+        {
+            await RefreshClientSettings<T>();
+            var item = await _eve.GetAsync<T>(obj);
+            await SetAndValidateResponse(obj);
             return item;
         }
 
-
-        public Task<T> Get<T>(T obj)
+        public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
-            throw new NotImplementedException();
+            await RefreshClientSettings<T>();
+            var item = await _eve.PostAsync<T>(obj);
+            await SetAndValidateResponse(item);
+            return item;
         }
 
-        public Task<T> Insert<T>(T obj)
+        public async Task Delete<T>(T obj) where T : BaseModel
         {
-            throw new NotImplementedException();
+            await RefreshClientSettings<T>();
+            HttpResponseMessage = await _eve.DeleteAsync(obj);
+            await SetAndValidateResponse(obj);
         }
 
-        public Task<int> Delete<T>(T obj)
+        public async Task<T> Replace<T>(T obj) where T : BaseModel
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Replace<T>(T obj)
-        {
-            throw new NotImplementedException();
+            await RefreshClientSettings<T>();
+            var item = await _eve.PutAsync<T>(obj);
+            await SetAndValidateResponse(obj);
+            return item;
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _eve?.Dispose();
         }
 
 
-	/// <summary>
+        /// <summary>
 	/// Used to identify the client against the authentications service. 
 	/// </summary>
 	public string ClientId { get; set; }
@@ -116,5 +149,6 @@ namespace Amica.vNext.Data
 	/// Discovery Service Uri.
 	/// </summary>
 	public Uri DiscoveryServiceAddress { get; set; }
+	public HttpResponseMessage HttpResponseMessage { get; private set; }
     }
 }

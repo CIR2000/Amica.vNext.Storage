@@ -25,15 +25,23 @@ namespace ConsoleApplication1
 
         static async Task Test()
         {
-
-            var adam = new AdamStorage()
+            using (var adam = new AdamStorage
             {
-                DiscoveryServiceAddress = new Uri("http://10.0.2.2:9000"),
                 Username = Environment.GetEnvironmentVariable("SentinelUsername"),
                 Password = Environment.GetEnvironmentVariable("SentinelPassword")
-            };
-            var c = await adam.Get<Company>("55fa6ad138345bbcc0bdf45b");
-            Console.WriteLine(c.Name);
+            }
+         )
+            {
+                var c = new Company { Name = "A new company" };
+                //var c = new Country() {Name = "A new country"};
+                var updated = await adam.Insert(c);
+                updated.Name = "A changed company";
+                var replaced = await adam.Replace(updated);
+                var cnew = await adam.Get<Company>(replaced.UniqueId);
+                await adam.Delete(replaced);
+                Console.WriteLine(c.Name);
+            } 
+
             //await hdp.UpateAsync(dp);
             //await hdp.UpateAsync(cdp);
             //await hdp.UpdateNazioniAsync(nr);

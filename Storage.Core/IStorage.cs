@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amica.vNext.Models;
 
 namespace Amica.vNext.Data
 {
@@ -12,7 +13,7 @@ namespace Amica.vNext.Data
         /// <param name="uniqueId">The id of the object to retrieve.</param>
         /// <returns>An object from the datastore. </returns>
 	/// <exception cref="ObjectNotFoundException"> if the <paramref name="uniqueId"/> was not found.</exception>
-        Task<T> Get<T>(string uniqueId);
+        Task<T> Get<T>(string uniqueId) where T : BaseModel, new();
 
         /// <summary>
         /// Asynctronoulsy return a refreshed object from the datastore.
@@ -20,28 +21,33 @@ namespace Amica.vNext.Data
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
 	/// <exception cref="ObjectNotFoundException"> if <paramref name="obj"/> was not found.</exception>
-        Task<T> Get<T>(T obj);
+        Task<T> Get<T>(T obj) where T : BaseModel;
 
         /// <summary>
         /// Insert an object into the datastore.
         /// </summary>
         /// <param name="obj">The object to be stored.</param>	
-	/// <returns>The insterted object</returns>
-        Task<T> Insert<T>(T obj);
+        /// <returns>The insterted object</returns>
+	/// <exception cref="ValidationException">If a validation error was returned by the service.</exception>
+        Task<T> Insert<T>(T obj) where T : BaseModel;
 
         /// <summary>
         /// Replaces an object into the the datastore.
         /// </summary>
         /// <param name="obj">The object to be updated.</param>	
-	/// <returns>The number of deleted objects.</returns>
-        Task<int> Delete<T>(T obj);
+	/// <exception cref="ObjectNotFoundException"> if <paramref name="obj"/> was not found.</exception>
+	/// <exception cref="PreconditionFailedException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
+        Task Delete<T>(T obj) where T : BaseModel;
 
         /// <summary>
         /// Replaces an object into the datastore.
         /// </summary>
         /// <param name="obj">The object instance to be stored in the datastore.</param>	
-	/// <returns>The replaced object</returns>
-        Task Replace<T>(T obj);
+        /// <returns>The replaced object</returns>
+	/// <exception cref="ObjectNotFoundException"> if <paramref name="obj"/> was not found.</exception>
+	/// <exception cref="PreconditionFailedException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
+	/// <exception cref="ValidationException">If a validation error was returned by the service.</exception>
+        Task<T> Replace<T>(T obj) where T : BaseModel;
     }
 
     public interface IBulkStorage : IStorage
