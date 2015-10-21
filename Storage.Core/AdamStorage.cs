@@ -9,7 +9,7 @@ using Eve.Authenticators;
 
 namespace Amica.vNext.Data
 {
-    public class AdamStorage : IStorage
+    public class AdamStorage : IBulkStorage
     {
         private readonly Dictionary<Type, string> _resources;
         private readonly Discovery _discovery;
@@ -97,17 +97,17 @@ namespace Amica.vNext.Data
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             await RefreshClientSettings<T>();
-            var item = await _eve.GetAsync<T>(obj);
+            var retObj = await _eve.GetAsync<T>(obj);
             await SetAndValidateResponse(obj);
-            return item;
+            return retObj;
         }
 
         public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
             await RefreshClientSettings<T>();
-            var item = await _eve.PostAsync<T>(obj);
-            await SetAndValidateResponse(item);
-            return item;
+            var retObj = await _eve.PostAsync<T>(obj);
+            await SetAndValidateResponse(retObj);
+            return retObj;
         }
 
         public async Task Delete<T>(T obj) where T : BaseModel
@@ -120,9 +120,71 @@ namespace Amica.vNext.Data
         public async Task<T> Replace<T>(T obj) where T : BaseModel
         {
             await RefreshClientSettings<T>();
-            var item = await _eve.PutAsync<T>(obj);
+            var retObj = await _eve.PutAsync<T>(obj);
             await SetAndValidateResponse(obj);
-            return item;
+            return retObj;
+        }
+
+        public async Task<IList<T>> Get<T>()
+        {
+            return await Get<T>(ifModifiedSince: null);
+        }
+
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince)
+        {
+            await RefreshClientSettings<T>();
+            var retObj = await _eve.GetAsync<T>(ifModifiedSince);
+
+            HttpResponseMessage = _eve.HttpResponse;
+            if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                throw new AdamException($"Resource {_eve.ResourceName} not found on the remote service.");
+
+            return retObj;
+        }
+
+        public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
+        {
+	    var retValue = new Dictionary<string, T>();
+            foreach (var id in uniqueIds)
+            {
+                try
+                {
+                    retValue.Add(id, await Get<T>(id));
+                }
+		catch (ObjectNotFoundException) { }
+            }
+            return retValue;
+        }
+
+	// TODO this is now the correct implementation as it won't abort the complete batch operation on ValidationException
+	// TODO we first need a batch PostAsync method implemented in EveClient, then we use that method here.
+        public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
+        {
+	    var retValue = new List<T>();
+            foreach (var obj in objs)
+            {
+                try
+                {
+                    retValue.Add(await Insert(obj));
+                }
+		catch (ValidationException) { }
+            }
+            return retValue;
+        }
+
+        public async Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
+        {
+	    var retValue = new List<string>();
+            foreach (var id in objs)
+            {
+                try
+                {
+                    await Delete(id);
+                    retValue.Add(id.UniqueId);
+                }
+		catch (AdamException) { }
+            }
+            return retValue;
         }
         public void Dispose()
         {
