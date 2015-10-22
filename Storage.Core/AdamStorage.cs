@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using Eve;
@@ -22,56 +23,57 @@ namespace Amica.vNext.Data
 
 	    // TODO replace with actual default Uri for the real Adam-DiscoveryService
 	    DiscoveryServiceAddress = new Uri("http://10.0.2.2:9000");
+			 
+		// Default to local instance for testing purposes, unless an envvar has been set.
+		_discovery = new Discovery();
+		_eve = new EveClient();
 
-	    // Default to local instance for testing purposes, unless an envvar has been set.
-            _discovery = new Discovery();
-            _eve = new EveClient();
+		_resources = new Dictionary<Type, string> {
+			{typeof(Company), "companies"},
+			{typeof(Country), "countries"}
+		};
 
-            _resources = new Dictionary<Type, string> {
-                {typeof(Company), "companies"},
-                {typeof(Country), "countries"}
-            };
+	}
 
-        }
+	private async Task RefreshClientSettings<T>()
+	{
+		_eve.BaseAddress = await GetAdamAddress();
+		_eve.Authenticator = await GetAuthenticator();
+		_eve.ResourceName = _resources[typeof (T)];
+	}
 
-        private async Task RefreshClientSettings<T>()
-        {
-            _eve.BaseAddress = await GetAdamAddress();
-            _eve.Authenticator = await GetAuthenticator();
-            _eve.ResourceName = _resources[typeof (T)];
-        }
+	private async Task<Uri> GetAdamAddress(bool ignoreCache=false)
+	{
+		// TODO handle exceptions
+		// TODO rename UserData to AmicaData or something equally appropriate.
+		_discovery.BaseAddress = DiscoveryServiceAddress;
+		var addr = await _discovery.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
+		return addr;
+	}
+	private async Task<BearerAuthenticator> GetAuthenticator()
+	{
+		// TODO is ArgumentNullException appropriate since we're
+		// dealing with Properties here (and elsewhere)?
+		if (Username == null)
+			throw new ArgumentNullException(nameof(Username));
+		if (Password == null)
+			throw new ArgumentNullException(nameof(Password));
+		if (ClientId == null)
+			throw new ArgumentNullException(nameof(ClientId));
 
-        private async Task<Uri> GetAdamAddress()
-        {
-	    // TODO handle exceptions
-	    // TODO rename UserData to AmicaData or something equally appropriate.
-            _discovery.BaseAddress = DiscoveryServiceAddress;
-            var addr = await _discovery.GetServiceAddress(ApiKind.UserData);
-            return addr;
-        }
-        private async Task<BearerAuthenticator> GetAuthenticator()
-        {
-	    // TODO is ArgumentNullException appropriate since we're
-	    // dealing with Properties here (and elsewhere)?
-            if (Username == null)
-                throw new ArgumentNullException(nameof(Username));
-            if (Password == null)
-                throw new ArgumentNullException(nameof(Password));
-            if (ClientId == null)
-                throw new ArgumentNullException(nameof(ClientId));
+		_discovery.BaseAddress = DiscoveryServiceAddress;
+		var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
 
-            _discovery.BaseAddress = DiscoveryServiceAddress;
-	    var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
+		var sc = new Sentinel
+		{
+		    Username = Username,
+            Password = Password,
+            ClientId = ClientId,
+            BaseAddress = authAddress
+		};
 
-            var sc = new Sentinel
-            {
-                Username = Username,
-                Password = Password,
-                ClientId = ClientId,
-		BaseAddress = authAddress
-            };
-            return await sc.GetBearerAuthenticator();
-        }
+		return await sc.GetBearerAuthenticator();
+	}
 
         private async Task SetAndValidateResponse(BaseModel obj)
         {
@@ -88,41 +90,60 @@ namespace Amica.vNext.Data
             }
         }
 
+        private delegate Task<T> SingleObjectRequestDelegate<T>(T obj);
+
+        private async Task<bool> ShouldRepeatRequest()
+        {
+            if (_eve.HttpResponse.StatusCode != HttpStatusCode.NotFound) return false;
+
+            // Cached remote address might be obsolete. Fetch (and cache)
+            // a fresh one, and report back that we should try again.
+            var address = await GetAdamAddress(true);
+            if (address == _eve.BaseAddress) return false;
+            _eve.BaseAddress = address;
+            return true;
+        }
+        private async Task<T> PerformRequest<T>(SingleObjectRequestDelegate<T> operation, T obj) where T : BaseModel
+        {
+            await RefreshClientSettings<T>();
+
+            var retObj = await operation(obj);
+			if (await ShouldRepeatRequest())
+				retObj = await operation(obj);
+
+            HttpResponseMessage = _eve.HttpResponse;
+            await SetAndValidateResponse(obj);
+            return retObj;
+        }
         public async Task<T> Get<T>(string uniqueId) where T : BaseModel, new()
         {
             return await Get(new T {UniqueId = uniqueId});
         }
 
-
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
-            await RefreshClientSettings<T>();
-            var retObj = await _eve.GetAsync<T>(obj);
-            await SetAndValidateResponse(obj);
-            return retObj;
+            return await PerformRequest(_eve.GetAsync<T>, obj);
         }
 
         public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
-            await RefreshClientSettings<T>();
-            var retObj = await _eve.PostAsync<T>(obj);
-            await SetAndValidateResponse(retObj);
-            return retObj;
+            return await PerformRequest(_eve.PostAsync<T>, obj);
+        }
+
+        public async Task<T> Replace<T>(T obj) where T : BaseModel
+        {
+            return await PerformRequest(_eve.PutAsync<T>, obj);
         }
 
         public async Task Delete<T>(T obj) where T : BaseModel
         {
             await RefreshClientSettings<T>();
             HttpResponseMessage = await _eve.DeleteAsync(obj);
-            await SetAndValidateResponse(obj);
-        }
+			if (await ShouldRepeatRequest())
+					await _eve.DeleteAsync(obj);
 
-        public async Task<T> Replace<T>(T obj) where T : BaseModel
-        {
-            await RefreshClientSettings<T>();
-            var retObj = await _eve.PutAsync<T>(obj);
+            HttpResponseMessage = _eve.HttpResponse;
             await SetAndValidateResponse(obj);
-            return retObj;
         }
 
         public async Task<IList<T>> Get<T>()
@@ -134,6 +155,8 @@ namespace Amica.vNext.Data
         {
             await RefreshClientSettings<T>();
             var retObj = await _eve.GetAsync<T>(ifModifiedSince);
+			if (await ShouldRepeatRequest())
+				retObj = await _eve.GetAsync<T>(ifModifiedSince);
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -142,6 +165,7 @@ namespace Amica.vNext.Data
             return retObj;
         }
 
+		// TODO replace with bulk request with a $where clause.
         public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
         {
 	    var retValue = new Dictionary<string, T>();
@@ -159,7 +183,13 @@ namespace Amica.vNext.Data
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
             await RefreshClientSettings<T>();
-			var retValue = await _eve.PostAsync(objs);
+
+            var enumerable = objs as T[] ?? objs.ToArray();
+
+            var retValue = await _eve.PostAsync(enumerable);
+			if (await ShouldRepeatRequest())
+				retValue = await _eve.PostAsync(enumerable);
+
             await SetAndValidateResponse(((List<T>)objs)[0]);
             return retValue;
         }

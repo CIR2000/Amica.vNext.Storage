@@ -29,7 +29,8 @@ namespace ConsoleApplication1
                 Username = Environment.GetEnvironmentVariable("SentinelUsername"),
                 Password = Environment.GetEnvironmentVariable("SentinelPassword")
             }
-         )
+            )
+
             {
                 //var c = new Company { Name = "A new company" };
                 var countries = new List<Country>
