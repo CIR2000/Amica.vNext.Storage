@@ -35,7 +35,7 @@ namespace ConsoleApplication1
                 var countries = new List<Country>
                 {
                     new Country {Name = "country1", CompanyId="5603b9ea38345bc2cd1c7ec3"},
-                    new Country {Name = "country2", CompanyId="1234"},
+                    //new Country {Name = "country2", CompanyId="1234"},
                     new Country {Name = "country3", CompanyId="5603b9ea38345bc2cd1c7ec3"},
                 };
                 //var c = new Country() {Name = "A new country"};

@@ -151,24 +151,16 @@ namespace Amica.vNext.Data
                 {
                     retValue.Add(id, await Get<T>(id));
                 }
-		catch (ObjectNotFoundException) { }
+		catch (ObjectNotFoundStorageException) { }
             }
             return retValue;
         }
 
-	// TODO this is now the correct implementation as it won't abort the complete batch operation on ValidationException
-	// TODO we first need a batch PostAsync method implemented in EveClient, then we use that method here.
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
-	    var retValue = new List<T>();
-            foreach (var obj in objs)
-            {
-                try
-                {
-                    retValue.Add(await Insert(obj));
-                }
-		catch (ValidationException) { }
-            }
+            await RefreshClientSettings<T>();
+			var retValue = await _eve.PostAsync(objs);
+            await SetAndValidateResponse(((List<T>)objs)[0]);
             return retValue;
         }
 

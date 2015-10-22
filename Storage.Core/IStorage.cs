@@ -75,7 +75,9 @@ namespace Amica.vNext.Data
         Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new();
 
         /// <summary>
-        /// Asyncronously insert several objects into the datastore. 
+        /// Asyncronously insert several objects into the datastore. If one or more
+        /// objects are rejected by the service, the whole batch is reject and no
+        /// document is stored on the service.
         /// </summary>
         /// <returns>The objects inserted.</returns>
 	/// <exception cref="ValidationStorageException">If one or more objects has failed validation.</exception>
