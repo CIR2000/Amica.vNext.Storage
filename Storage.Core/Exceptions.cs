@@ -3,33 +3,36 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Data
 {
-    public class AdamException : Exception
+    public class StorageException : Exception
     {
-        public AdamException() { }
-	public AdamException(string message) : base(message) { }
+        public StorageException() { }
+		public StorageException(string message) : base(message) { }
         
     }
 
-    public class ObjectNotFoundException : AdamException 
+    public class AdamStorageException : StorageException
     {
-	public ObjectNotFoundException(string id) : base($"Object with id \"{id}\" was not found.") { }
-	public ObjectNotFoundException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
+        public AdamStorageException() { }
+		public AdamStorageException(string message) : base(message) { }
     }
 
-
-    public class PreconditionFailedException : AdamException
+    public class ObjectNotFoundStorageException : AdamStorageException 
     {
-	public PreconditionFailedException(BaseModel obj) : 
-	    base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
-        
-        
+		public ObjectNotFoundStorageException(string id) : base($"Object with id \"{id}\" was not found.") { }
+		public ObjectNotFoundStorageException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
     }
 
-    // TODO ValidationException should probably support a list of objects and their validation errors. 
-    public class ValidationException : AdamException
+    public class PreconditionFailedStorageException : AdamStorageException
     {
-	public ValidationException(string message) : 
-	    base(message) { }
+		public PreconditionFailedStorageException(BaseModel obj) : 
+			base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
+    }
+
+    // TODO ValidationStorageException should probably support a list of objects and their validation errors. 
+    public class ValidationStorageException : AdamStorageException
+    {
+		public ValidationStorageException(string message) : 
+			base(message) { }
     }
 
 

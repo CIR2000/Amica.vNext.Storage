@@ -80,11 +80,11 @@ namespace Amica.vNext.Data
             switch (HttpResponseMessage.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    throw new ObjectNotFoundException(obj);
+                    throw new ObjectNotFoundStorageException(obj);
                 case (HttpStatusCode) 422:
-                    throw new ValidationException(await HttpResponseMessage.Content.ReadAsStringAsync());
+                    throw new ValidationStorageException(await HttpResponseMessage.Content.ReadAsStringAsync());
                 case HttpStatusCode.PreconditionFailed:
-                    throw new PreconditionFailedException(obj);
+                    throw new PreconditionFailedStorageException(obj);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Amica.vNext.Data
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                throw new AdamException($"Resource {_eve.ResourceName} not found on the remote service.");
+                throw new AdamStorageException($"Resource {_eve.ResourceName} not found on the remote service.");
 
             return retObj;
         }
@@ -182,7 +182,7 @@ namespace Amica.vNext.Data
                     await Delete(id);
                     retValue.Add(id.UniqueId);
                 }
-		catch (AdamException) { }
+		catch (AdamStorageException) { }
             }
             return retValue;
         }
