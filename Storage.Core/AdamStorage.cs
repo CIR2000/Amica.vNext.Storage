@@ -185,6 +185,7 @@ namespace Amica.vNext.Data
 			if (await ShouldRepeatRequest())
 				objs = await _eve.GetAsync<T>(_eve.ResourceName, null, rawQuery: query);
 
+            HttpResponseMessage = _eve.HttpResponse;
             return objs.ToDictionary(obj => obj.UniqueId);
         }
 
