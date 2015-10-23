@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 using Amica.vNext.Models;
 using Eve;
 using Eve.Authenticators;
@@ -165,19 +166,26 @@ namespace Amica.vNext.Data
             return retObj;
         }
 
-		// TODO replace with bulk request with a $where clause.
         public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
         {
-	    var retValue = new Dictionary<string, T>();
-            foreach (var id in uniqueIds)
+            if (uniqueIds == null)
+                throw new ArgumentNullException(nameof(uniqueIds));
+
+            var enumerable = uniqueIds as string[] ?? uniqueIds.ToArray();
+
+            var in_ = new StringBuilder();
+            foreach (var uniqueId in enumerable)
             {
-                try
-                {
-                    retValue.Add(id, await Get<T>(id));
-                }
-		catch (ObjectNotFoundStorageException) { }
+                in_.Append($"\"{uniqueId}\", ");
             }
-            return retValue;
+            var query = $"{{\"_id\": {{\"$in\": [{in_.ToString().TrimEnd(',', ' ')}]}}}}";
+
+            await RefreshClientSettings<T>();
+            var objs = await _eve.GetAsync<T>(_eve.ResourceName, null, rawQuery: query);
+			if (await ShouldRepeatRequest())
+				objs = await _eve.GetAsync<T>(_eve.ResourceName, null, rawQuery: query);
+
+            return objs.ToDictionary(obj => obj.UniqueId);
         }
 
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel

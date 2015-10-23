@@ -33,12 +33,14 @@ namespace ConsoleApplication1
 
             {
                 //var c = new Company { Name = "A new company" };
-                var countries = new List<Country>
-                {
-                    new Country {Name = "country1", CompanyId="5603b9ea38345bc2cd1c7ec3"},
-                    //new Country {Name = "country2", CompanyId="1234"},
-                    new Country {Name = "country3", CompanyId="5603b9ea38345bc2cd1c7ec3"},
-                };
+                var ids = new List<string> {"56288e6038345b6aff0366cd", "dontthinkso", "56288e6038345b6aff0366cc"};
+                var ret = await adam.Get<Country>(ids);
+                //var countries = new List<Country>
+                //{
+                //    new Country {Name = "country1", CompanyId="5603b9ea38345bc2cd1c7ec3"},
+                //    //new Country {Name = "country2", CompanyId="1234"},
+                //    new Country {Name = "country3", CompanyId="5603b9ea38345bc2cd1c7ec3"},
+                //};
                 //var c = new Country() {Name = "A new country"};
                 //var updated = await adam.Insert(c);
                 //updated.Name = "A changed company";
@@ -48,9 +50,9 @@ namespace ConsoleApplication1
 
                 //var wannabes = new List<string> {"notreally", "5603b9ea38345bc2cd1c7ec3"};
 
-                var inserted = await adam.Insert<Country>(countries);
-                var deleted = await adam.Delete<Country>(inserted);
-                Console.WriteLine(deleted);
+                //var inserted = await adam.Insert<Country>(countries);
+                //var deleted = await adam.Delete<Country>(inserted);
+                Console.WriteLine(ret.Count);
             } 
 
             //await hdp.UpateAsync(dp);
