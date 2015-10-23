@@ -22,59 +22,62 @@ namespace Amica.vNext.Data
 
             ClientId = Environment.GetEnvironmentVariable("SentinelClientId");
 
-	    // TODO replace with actual default Uri for the real Adam-DiscoveryService
-	    DiscoveryServiceAddress = new Uri("http://10.0.2.2:9000");
+			// Either set the DS  uri from an envvar, or go to local instance on OSX
+			// (we're running from a VirtualBox Windows client).
+			DiscoveryServiceAddress = new Uri(
+				Environment.GetEnvironmentVariable("DiscoverySeriviceAddress") ?? "http://10.0.2.2:9000"
+				);
 			 
-		// Default to local instance for testing purposes, unless an envvar has been set.
-		_discovery = new Discovery();
-		_eve = new EveClient();
+			// Default to local instance for testing purposes, unless an envvar has been set.
+			_discovery = new Discovery();
+			_eve = new EveClient();
 
-		_resources = new Dictionary<Type, string> {
-			{typeof(Company), "companies"},
-			{typeof(Country), "countries"}
-		};
+			_resources = new Dictionary<Type, string> {
+				{typeof(Company), "companies"},
+				{typeof(Country), "countries"}
+			};
 
-	}
-
-	private async Task RefreshClientSettings<T>()
-	{
-		_eve.BaseAddress = await GetAdamAddress();
-		_eve.Authenticator = await GetAuthenticator();
-		_eve.ResourceName = _resources[typeof (T)];
-	}
-
-	private async Task<Uri> GetAdamAddress(bool ignoreCache=false)
-	{
-		// TODO handle exceptions
-		// TODO rename UserData to AmicaData or something equally appropriate.
-		_discovery.BaseAddress = DiscoveryServiceAddress;
-		var addr = await _discovery.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
-		return addr;
-	}
-	private async Task<BearerAuthenticator> GetAuthenticator()
-	{
-		// TODO is ArgumentNullException appropriate since we're
-		// dealing with Properties here (and elsewhere)?
-		if (Username == null)
-			throw new ArgumentNullException(nameof(Username));
-		if (Password == null)
-			throw new ArgumentNullException(nameof(Password));
-		if (ClientId == null)
-			throw new ArgumentNullException(nameof(ClientId));
-
-		_discovery.BaseAddress = DiscoveryServiceAddress;
-		var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
-
-		var sc = new Sentinel
+		}
+        private async Task RefreshClientSettings<T>()
 		{
-		    Username = Username,
-            Password = Password,
-            ClientId = ClientId,
-            BaseAddress = authAddress
-		};
+			_eve.BaseAddress = await GetAdamAddress();
+			_eve.Authenticator = await GetAuthenticator();
+			_eve.ResourceName = _resources[typeof (T)];
+		}
 
-		return await sc.GetBearerAuthenticator();
-	}
+		private async Task<Uri> GetAdamAddress(bool ignoreCache=false)
+		{
+			// TODO handle exceptions
+			// TODO rename UserData to AmicaData or something equally appropriate.
+			_discovery.BaseAddress = DiscoveryServiceAddress;
+			var addr = await _discovery.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
+			return addr;
+		}
+
+		private async Task<BearerAuthenticator> GetAuthenticator()
+		{
+			// TODO is ArgumentNullException appropriate since we're
+			// dealing with Properties here (and elsewhere)?
+			if (Username == null)
+				throw new ArgumentNullException(nameof(Username));
+			if (Password == null)
+				throw new ArgumentNullException(nameof(Password));
+			if (ClientId == null)
+				throw new ArgumentNullException(nameof(ClientId));
+
+			_discovery.BaseAddress = DiscoveryServiceAddress;
+			var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
+
+			var sc = new Sentinel
+			{
+				Username = Username,
+				Password = Password,
+				ClientId = ClientId,
+				BaseAddress = authAddress
+			};
+
+			return await sc.GetBearerAuthenticator();
+		}
 
         private async Task SetAndValidateResponse(BaseModel obj)
         {
@@ -224,24 +227,28 @@ namespace Amica.vNext.Data
 
 
         /// <summary>
-	/// Used to identify the client against the authentications service. 
-	/// </summary>
-	public string ClientId { get; set; }
+		/// Used to identify the client against the authentications service. 
+		/// </summary>
+		public string ClientId { get; set; }
 
-	/// <summary>
-	/// Username. Used to authenticate the user.
-	/// </summary>
-	public string Username { get; set; }
+		/// <summary>
+		/// Username. Used to authenticate the user.
+		/// </summary>
+		public string Username { get; set; }
 
-	/// <summary>
-	/// User password. Needed to authenticate the user.
-	/// </summary>
-	public string Password { get; set; }
+		/// <summary>
+		/// User password. Needed to authenticate the user.
+		/// </summary>
+		public string Password { get; set; }
 
-	/// <summary>
-	/// Discovery Service Uri.
-	/// </summary>
-	public Uri DiscoveryServiceAddress { get; set; }
-	public HttpResponseMessage HttpResponseMessage { get; private set; }
+		/// <summary>
+		/// Discovery Service Uri.
+		/// </summary>
+		public Uri DiscoveryServiceAddress { get; set; }
+
+		/// <summary>
+        /// Response message returned by the remote service. 
+        /// </summary>
+		public HttpResponseMessage HttpResponseMessage { get; private set; }
     }
 }
