@@ -119,11 +119,6 @@ namespace Amica.vNext.Data
             await SetAndValidateResponse(obj);
             return retObj;
         }
-        public async Task<T> Get<T>(string uniqueId) where T : BaseModel, new()
-        {
-            return await Get(new T {UniqueId = uniqueId});
-        }
-
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             return await PerformRequest(_eve.GetAsync<T>, obj);
@@ -152,15 +147,28 @@ namespace Amica.vNext.Data
 
         public async Task<IList<T>> Get<T>()
         {
-            return await Get<T>(ifModifiedSince: null);
+            return await Get<T>(null, null);
+        }
+
+        public async Task<IList<T>> Get<T>(string companyId)
+        {
+            return await Get<T>(null, companyId);
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince)
         {
+            return await Get<T>(ifModifiedSince, null);
+        }
+
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId)
+        {
             await RefreshClientSettings<T>();
-            var retObj = await _eve.GetAsync<T>(ifModifiedSince);
-			if (await ShouldRepeatRequest())
-				retObj = await _eve.GetAsync<T>(ifModifiedSince);
+
+            var rawQuery = companyId != null ? $"{{\"c\": \"{companyId}\"}}" : null;
+
+            var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
+            if (await ShouldRepeatRequest())
+                retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)

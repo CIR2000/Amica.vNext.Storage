@@ -24,35 +24,13 @@ namespace ConsoleApplication1
 
         static async Task Test()
         {
-            using (var adam = new AdamStorage
+            using (var adam = new AdamStorage { Username = "nicola", Password = "nicola" } )
             {
-                Username = Environment.GetEnvironmentVariable("SentinelUsername"),
-                Password = Environment.GetEnvironmentVariable("SentinelPassword")
-            }
-            )
+				// targeted bulk get 
+                var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");
 
-            {
-                //var c = new Company { Name = "A new company" };
-                var ids = new List<string> {"56288e6038345b6aff0366cd", "dontthinkso", "56288e6038345b6aff0366cc"};
-                var ret = await adam.Get<Country>(ids);
-                //var countries = new List<Country>
-                //{
-                //    new Country {Name = "country1", CompanyId="5603b9ea38345bc2cd1c7ec3"},
-                //    //new Country {Name = "country2", CompanyId="1234"},
-                //    new Country {Name = "country3", CompanyId="5603b9ea38345bc2cd1c7ec3"},
-                //};
-                //var c = new Country() {Name = "A new country"};
-                //var updated = await adam.Insert(c);
-                //updated.Name = "A changed company";
-                //var replaced = await adam.Replace(updated);
-                //var cnew = await adam.Get<Company>(replaced.UniqueId);
-                //await adam.Delete(replaced);
+                Console.WriteLine(ret[0].CompanyId);
 
-                //var wannabes = new List<string> {"notreally", "5603b9ea38345bc2cd1c7ec3"};
-
-                //var inserted = await adam.Insert<Country>(countries);
-                //var deleted = await adam.Delete<Country>(inserted);
-                Console.WriteLine(ret.Count);
             } 
 
             //await hdp.UpateAsync(dp);
