@@ -145,9 +145,11 @@ namespace Amica.vNext.Data
             await SetAndValidateResponse(obj);
         }
 
+        public string CompanyId { get; set; }
+
         public async Task<IList<T>> Get<T>()
         {
-            return await Get<T>(null, null);
+            return await Get<T>(null, CompanyId);
         }
 
         public async Task<IList<T>> Get<T>(string companyId)
@@ -157,7 +159,7 @@ namespace Amica.vNext.Data
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince)
         {
-            return await Get<T>(ifModifiedSince, null);
+            return await Get<T>(ifModifiedSince, CompanyId);
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId)
