@@ -13,7 +13,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eve.iOS", "..\..\Eve.NET\Ev
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.iOS", "..\Sentinel\Sentinel.iOS\Sentinel.iOS.csproj", "{3FF512A5-5EA5-4168-969B-6348DE6DF743}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Core", "Storage.Core\Storage.Core.shproj", "{F35B9348-A255-46BA-8085-AA0A140F8D02}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Discovery\Discovery.Core\Discovery.Core.projitems*{e1c6f26a-d2f2-43bc-9f1e-a5c7b5865342}*SharedItemsImports = 4
+		..\Models\Models.Core\Models.Core.projitems*{fcfe5e54-97bc-4c4e-9886-872d85ce51a7}*SharedItemsImports = 4
+		Storage.Core\Storage.Core.projitems*{f35b9348-a255-46ba-8085-aa0a140f8d02}*SharedItemsImports = 13
+		..\Sentinel\Sentinel.Core\Sentinel.Core.projitems*{3ff512a5-5ea5-4168-969b-6348de6df743}*SharedItemsImports = 4
+		..\..\Eve.NET\Eve.Core\Eve.Core.projitems*{c932bf3e-ecdd-4a3c-9ba2-10d92a6c3143}*SharedItemsImports = 4
+		Storage.Core\Storage.Core.projitems*{fa65728f-bd15-4cd8-bb90-2ce96ac29012}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
