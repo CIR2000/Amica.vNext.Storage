@@ -49,11 +49,9 @@
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Models.iOS\Models.iOS.csproj">
-      <Project>{fcfe5e54-97bc-4c4e-9886-872d85ce51a7}</Project>
-      <Name>Models.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+    <ProjectReference Include="..\..\Models\Models\Models.csproj">
+      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
+      <Name>Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Sentinel\Sentinel.iOS\Sentinel.iOS.csproj">
       <Project>{3ff512a5-5ea5-4168-969b-6348de6df743}</Project>
