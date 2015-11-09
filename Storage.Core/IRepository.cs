@@ -5,7 +5,7 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Data
 {
-    public interface IStorage : IDisposable
+    public interface IRepository : IDisposable
     {
         /// <summary>
         /// Asyncronoulsy  return a refreshed object from the datastore.
@@ -42,7 +42,7 @@ namespace Amica.vNext.Data
         Task<T> Replace<T>(T obj) where T : BaseModel;
     }
 
-    public interface IBulkStorage : IStorage
+    public interface IBulkRepository : IRepository
     {
 		/// <summary>
         /// The company id to be used when retrieving objects. If null, no filter on company will be issued.

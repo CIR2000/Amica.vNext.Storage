@@ -24,7 +24,7 @@ namespace ConsoleApplication1
 
         static async Task Test()
         {
-            using (var adam = new AdamStorage { Username = "nicola", Password = "nicola" } )
+            using (var adam = new RemoteRepository { Username = "nicola", Password = "nicola" } )
             {
 				// targeted bulk get 
                 var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");

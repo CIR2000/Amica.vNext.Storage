@@ -11,13 +11,13 @@ using Eve.Authenticators;
 
 namespace Amica.vNext.Data
 {
-    public class AdamStorage : IBulkStorage
+    public class RemoteRepository : IBulkRepository
     {
         private readonly Dictionary<Type, string> _resources;
         private readonly Discovery _discovery;
         private readonly EveClient _eve;
 
-        public AdamStorage()
+        public RemoteRepository()
         {
 
             ClientId = Environment.GetEnvironmentVariable("SentinelClientId");

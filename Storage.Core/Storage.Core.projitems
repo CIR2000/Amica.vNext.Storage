@@ -9,8 +9,8 @@
     <Import_RootNamespace>Storage.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AdamStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IRepository.cs" />
   </ItemGroup>
 </Project>
