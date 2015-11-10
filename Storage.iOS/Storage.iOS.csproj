@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FA65728F-BD15-4CD8-BB90-2CE96AC29012}</ProjectGuid>
+    <ProjectGuid>{14CF2713-95BB-4374-ABA2-EE9ADD4B0AFE}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Storage.iOS</RootNamespace>
@@ -37,11 +37,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Eve.NET\Eve.iOS\Eve.iOS.csproj">
-      <Project>{c932bf3e-ecdd-4a3c-9ba2-10d92a6c3143}</Project>
-      <Name>Eve.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
+      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
+      <Name>Eve</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Discovery\Discovery.iOS\Discovery.iOS.csproj">
       <Project>{e1c6f26a-d2f2-43bc-9f1e-a5c7b5865342}</Project>
@@ -59,6 +57,16 @@
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
+    <ProjectReference Include="..\..\SimpleCache\SimpleCache.iOS\SimpleCache.iOS.csproj">
+      <Project>{aecc0b9c-1e6f-47ed-9a52-c572039a804e}</Project>
+      <Name>SimpleCache.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
+    </ProjectReference>
+    <ProjectReference Include="..\Storage.Core\Storage.Core.csproj">
+      <Project>{174bd198-5ce8-4eb4-855f-006b179c4a67}</Project>
+      <Name>Storage.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,6 +75,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <Import Project="..\Storage.Core\Storage.Core.projitems" Label="Shared" />
+  <Import Project="..\Storage.Remote\Storage.Remote.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

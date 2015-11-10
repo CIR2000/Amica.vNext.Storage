@@ -1,37 +1,37 @@
 ﻿using System;
 using Amica.vNext.Models;
 
-namespace Amica.vNext.Data
+namespace Amica.vNext
 {
-    public class StorageException : Exception
+    public class RepositoryException : Exception
     {
-        public StorageException() { }
-		public StorageException(string message) : base(message) { }
+        public RepositoryException() { }
+		public RepositoryException(string message) : base(message) { }
         
     }
 
-    public class AdamStorageException : StorageException
+    public class RemoteRepositoryException : RepositoryException
     {
-        public AdamStorageException() { }
-		public AdamStorageException(string message) : base(message) { }
+        public RemoteRepositoryException() { }
+		public RemoteRepositoryException(string message) : base(message) { }
     }
 
-    public class ObjectNotFoundStorageException : AdamStorageException 
+    public class ObjectNotFoundRepositoryException : RemoteRepositoryException 
     {
-		public ObjectNotFoundStorageException(string id) : base($"Object with id \"{id}\" was not found.") { }
-		public ObjectNotFoundStorageException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
+		public ObjectNotFoundRepositoryException(string id) : base($"Object with id \"{id}\" was not found.") { }
+		public ObjectNotFoundRepositoryException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
     }
 
-    public class PreconditionFailedStorageException : AdamStorageException
+    public class PreconditionFailedRepositoryException : RemoteRepositoryException
     {
-		public PreconditionFailedStorageException(BaseModel obj) : 
+		public PreconditionFailedRepositoryException(BaseModel obj) : 
 			base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
     }
 
-    // TODO ValidationStorageException should probably support a list of objects and their validation errors. 
-    public class ValidationStorageException : AdamStorageException
+    // TODO ValidationRepositoryException should probably support a list of objects and their validation errors. 
+    public class ValidationRepositoryException : RemoteRepositoryException
     {
-		public ValidationStorageException(string message) : 
+		public ValidationRepositoryException(string message) : 
 			base(message) { }
     }
 

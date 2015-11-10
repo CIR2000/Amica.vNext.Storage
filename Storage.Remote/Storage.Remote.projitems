@@ -3,14 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>f35b9348-a255-46ba-8085-aa0a140f8d02</SharedGUID>
+    <SharedGUID>16e01d8f-6869-4a7d-8164-0f0b19281930</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Storage.Core</Import_RootNamespace>
+    <Import_RootNamespace>Storage.Remote</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)RemoteRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IRepository.cs" />
   </ItemGroup>
 </Project>

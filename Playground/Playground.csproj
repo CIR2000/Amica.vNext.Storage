@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
+      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
+      <Name>Eve</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Discovery\Discovery.Net4\Discovery.Net4.csproj">
       <Project>{4B684125-389E-4EDF-87E9-905785F700A5}</Project>
       <Name>Discovery.Net4</Name>
@@ -109,6 +113,10 @@
     <ProjectReference Include="..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Storage.Core\Storage.Core.csproj">
+      <Project>{174bd198-5ce8-4eb4-855f-006b179c4a67}</Project>
+      <Name>Storage.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Storage.Net4\Storage.Net4.csproj">
       <Project>{429f9a43-72ec-4a1a-9d85-b66dcc8d4830}</Project>

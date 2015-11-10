@@ -9,9 +9,9 @@ using Amica.vNext.Models;
 using Eve;
 using Eve.Authenticators;
 
-namespace Amica.vNext.Data
+namespace Amica.vNext
 {
-    public class RemoteRepository : IBulkRepository
+    public class RemoteRepository : IRemoteRepository
     {
         private readonly Dictionary<Type, string> _resources;
         private readonly Discovery _discovery;
@@ -86,11 +86,11 @@ namespace Amica.vNext.Data
             switch (HttpResponseMessage.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    throw new ObjectNotFoundStorageException(obj);
+                    throw new ObjectNotFoundRepositoryException(obj);
                 case (HttpStatusCode) 422:
-                    throw new ValidationStorageException(await HttpResponseMessage.Content.ReadAsStringAsync());
+                    throw new ValidationRepositoryException(await HttpResponseMessage.Content.ReadAsStringAsync());
                 case HttpStatusCode.PreconditionFailed:
-                    throw new PreconditionFailedStorageException(obj);
+                    throw new PreconditionFailedRepositoryException(obj);
             }
         }
 
@@ -174,7 +174,7 @@ namespace Amica.vNext.Data
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                throw new AdamStorageException($"Resource {_eve.ResourceName} not found on the remote service.");
+                throw new RemoteRepositoryException($"Resource {_eve.ResourceName} not found on the remote service.");
 
             return retObj;
         }
@@ -226,7 +226,7 @@ namespace Amica.vNext.Data
                     await Delete(id);
                     retValue.Add(id.UniqueId);
                 }
-		catch (AdamStorageException) { }
+		catch (RemoteRepositoryException) { }
             }
             return retValue;
         }
