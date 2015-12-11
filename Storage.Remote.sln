@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Net4", "..\Models\Mo
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Core", "Storage.Core\Storage.Core.shproj", "{005B8B07-FFFD-4857-9E4A-BC3DFF9796AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCache", "..\SimpleCache\SimpleCache\SimpleCache.csproj", "{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Remote.Core", "Storage.Remote\Storage.Remote.Core\Storage.Remote.Core.shproj", "{16E01D8F-6869-4A7D-8164-0F0B19281930}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Remote.Net4", "Storage.Remote\Storage.Remote.Net4\Storage.Remote.Net4.csproj", "{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}"
@@ -43,12 +41,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Remote.iOS", "Stora
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Storage.Core\Storage.Core.projitems*{429f9a43-72ec-4a1a-9d85-b66dcc8d4830}*SharedItemsImports = 4
 		Storage.Remote\Storage.Remote.Core\Storage.Remote.projitems*{429f9a43-72ec-4a1a-9d85-b66dcc8d4830}*SharedItemsImports = 4
+		Storage.Core\Storage.Core.projitems*{429f9a43-72ec-4a1a-9d85-b66dcc8d4830}*SharedItemsImports = 4
 		..\..\Eve.NET\Eve.Core\Eve.Core.projitems*{c5dead7a-1511-4516-9334-420ce21d3dc8}*SharedItemsImports = 4
 		..\Discovery\Discovery.Core\Discovery.Core.projitems*{e1c6f26a-d2f2-43bc-9f1e-a5c7b5865342}*SharedItemsImports = 4
-		Storage.Core\Storage.Core.projitems*{014774a9-005d-4422-ba0b-a736d31c03ad}*SharedItemsImports = 4
 		Storage.Remote\Storage.Remote.Core\Storage.Remote.projitems*{014774a9-005d-4422-ba0b-a736d31c03ad}*SharedItemsImports = 4
+		Storage.Core\Storage.Core.projitems*{014774a9-005d-4422-ba0b-a736d31c03ad}*SharedItemsImports = 4
 		..\..\Eve.NET\Eve.Core\Eve.Core.projitems*{dd88d007-ad10-470d-9c89-aa8ee39857d0}*SharedItemsImports = 4
 		..\Discovery\Discovery.Core\Discovery.Core.projitems*{4b684125-389e-4edf-87e9-905785f700a5}*SharedItemsImports = 4
 		..\Discovery\Discovery.Core\Discovery.Core.projitems*{9052b5fb-bbea-4a6c-9ec0-c5e90bf3aa6c}*SharedItemsImports = 13
@@ -98,10 +96,6 @@ Global
 		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -134,7 +128,6 @@ Global
 		{DD88D007-AD10-470D-9C89-AA8EE39857D0} = {F3B1B2E3-5264-454E-8185-C9D6A5AC8669}
 		{C5DEAD7A-1511-4516-9334-420CE21D3DC8} = {0AA1C515-35F3-413A-B732-06B40A93ECED}
 		{678D3308-5DE9-4335-B0C8-1E0820B7515C} = {0AA1C515-35F3-413A-B732-06B40A93ECED}
-		{C4CBE63F-2EB6-404F-9CF2-44FBF42E35E2} = {F3B1B2E3-5264-454E-8185-C9D6A5AC8669}
 		{429F9A43-72EC-4A1A-9D85-B66DCC8D4830} = {0AA1C515-35F3-413A-B732-06B40A93ECED}
 		{E1C6F26A-D2F2-43BC-9F1E-A5C7B5865342} = {F3B1B2E3-5264-454E-8185-C9D6A5AC8669}
 		{AECC0B9C-1E6F-47ED-9A52-C572039A804E} = {F3B1B2E3-5264-454E-8185-C9D6A5AC8669}
