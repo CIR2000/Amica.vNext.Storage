@@ -11,6 +11,8 @@
     <AssemblyName>Storage</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,25 +91,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
-      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
-      <Name>Eve</Name>
+    <ProjectReference Include="..\..\..\..\Eve.NET\Eve.Net4\Eve.Net4.csproj">
+      <Project>{c5dead7a-1511-4516-9334-420ce21d3dc8}</Project>
+      <Name>Eve.Net4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Discovery\Discovery.Net4\Discovery.Net4.csproj">
+    <ProjectReference Include="..\..\..\Discovery\Discovery.Net4\Discovery.Net4.csproj">
       <Project>{4b684125-389e-4edf-87e9-905785f700a5}</Project>
       <Name>Discovery.Net4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Models\Models.csproj">
-      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
-      <Name>Models</Name>
+    <ProjectReference Include="..\..\..\Models\Models.Net4\Models.Net4.csproj">
+      <Project>{678d3308-5de9-4335-b0c8-1e0820b7515c}</Project>
+      <Name>Models.Net4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sentinel\Sentinel.Net4\Sentinel.Net4.csproj">
+    <ProjectReference Include="..\..\..\Sentinel\Sentinel.Net4\Sentinel.Net4.csproj">
       <Project>{69b58df3-d1f5-40fe-8c1e-f133b7b3b6b6}</Project>
       <Name>Sentinel.Net4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Storage.Core\Storage.Core.csproj">
-      <Project>{174bd198-5ce8-4eb4-855f-006b179c4a67}</Project>
-      <Name>Storage.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -115,12 +113,15 @@
     <None Include="packages.config" />
     <None Include="storage.snk" />
   </ItemGroup>
-  <Import Project="..\Storage.Remote\Storage.Remote.projitems" Label="Shared" />
+  <Import Project="..\Storage.Remote.Core\Storage.Remote.projitems" Label="Shared" />
+  <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

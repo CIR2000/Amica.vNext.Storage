@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FA65728F-BD15-4CD8-BB90-2CE96AC29012}</ProjectGuid>
+    <ProjectGuid>{014774A9-005D-4422-BA0B-A736D31C03AD}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Storage.iOS</RootNamespace>
+    <RootNamespace>Storage.Remote.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Storage.iOS</AssemblyName>
+    <AssemblyName>Storage.Remote.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,35 +37,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
+    <ProjectReference Include="..\..\..\..\Eve.NET\Eve\Eve.csproj">
       <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
       <Name>Eve</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Discovery\Discovery.iOS\Discovery.iOS.csproj">
+    <ProjectReference Include="..\..\..\Discovery\Discovery.iOS\Discovery.iOS.csproj">
       <Project>{e1c6f26a-d2f2-43bc-9f1e-a5c7b5865342}</Project>
       <Name>Discovery.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Models\Models.csproj">
+    <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sentinel\Sentinel.iOS\Sentinel.iOS.csproj">
+    <ProjectReference Include="..\..\..\Sentinel\Sentinel.iOS\Sentinel.iOS.csproj">
       <Project>{3ff512a5-5ea5-4168-969b-6348de6df743}</Project>
       <Name>Sentinel.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SimpleCache\SimpleCache.iOS\SimpleCache.iOS.csproj">
-      <Project>{aecc0b9c-1e6f-47ed-9a52-c572039a804e}</Project>
-      <Name>SimpleCache.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
-    <ProjectReference Include="..\Storage.Core\Storage.Core.csproj">
-      <Project>{174bd198-5ce8-4eb4-855f-006b179c4a67}</Project>
-      <Name>Storage.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +65,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <Import Project="..\Storage.Remote\Storage.Remote.projitems" Label="Shared" />
+  <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
+  <Import Project="..\Storage.Remote.Core\Storage.Remote.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
