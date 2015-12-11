@@ -1,7 +1,7 @@
 ﻿using System;
 using Amica.vNext.Models;
 
-namespace Amica.vNext
+namespace Amica.vNext.Storage
 {
     public class RepositoryException : Exception
     {

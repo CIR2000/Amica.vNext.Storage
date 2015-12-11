@@ -3,14 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>005b8b07-fffd-4857-9e4a-bc3dff9796ae</SharedGUID>
+    <SharedGUID>dcf7f65a-61a1-4b5d-8ff7-380e4cc36e23</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Storage.Core</Import_RootNamespace>
+    <Import_RootNamespace>Storage.Local.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IBulkRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocalRepository.cs" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ using Amica.vNext.Models;
 using Eve;
 using Eve.Authenticators;
 
-namespace Amica.vNext
+namespace Amica.vNext.Storage
 {
     public class RemoteRepository : IRemoteRepository
     {

@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{014774A9-005D-4422-BA0B-A736D31C03AD}</ProjectGuid>
+    <ProjectGuid>{30993548-08D6-4BEB-B823-B0A84CDA4104}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>Amica.vNext.Storage</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Storage.Remote.iOS</AssemblyName>
+    <AssemblyName>Storage.Local.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,35 +37,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Eve.NET\Eve\Eve.csproj">
-      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
-      <Name>Eve</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Discovery\Discovery.iOS\Discovery.iOS.csproj">
-      <Project>{e1c6f26a-d2f2-43bc-9f1e-a5c7b5865342}</Project>
-      <Name>Discovery.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sentinel\Sentinel.iOS\Sentinel.iOS.csproj">
-      <Project>{3ff512a5-5ea5-4168-969b-6348de6df743}</Project>
-      <Name>Sentinel.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
-  <Import Project="..\Storage.Remote.Core\Storage.Remote.projitems" Label="Shared" />
+  <Import Project="..\Storage.Local.Core\Storage.Local.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
