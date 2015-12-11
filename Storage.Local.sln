@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Net4", "..\Models\Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Net4", "Storage.Local\Storage.Local.Net4\Storage.Local.Net4.csproj", "{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Storage.Local\Playground\Playground.csproj", "{202034FB-C26A-473C-A2CA-B261C0CC7811}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{dcf7f65a-61a1-4b5d-8ff7-380e4cc36e23}*SharedItemsImports = 13
@@ -51,6 +53,10 @@ Global
 		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
