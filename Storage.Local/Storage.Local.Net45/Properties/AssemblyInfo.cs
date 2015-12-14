@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Storage.Local.Net4")]
+[assembly: AssemblyTitle("Storage.Local.Net45")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CIR 2000")]
-[assembly: AssemblyProduct("Storage.Local.Net4")]
+[assembly: AssemblyProduct("Storage.Local.Net45")]
 [assembly: AssemblyCopyright("Copyright © CIR 2000 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("26bc01c3-0c84-4c06-93d5-c6012cf3da97")]
+[assembly: Guid("37c2744d-834b-42d9-ba48-75d2ce93f64c")]
 
 // Version information for an assembly consists of the following four values:
 //

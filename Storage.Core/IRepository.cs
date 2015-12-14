@@ -11,7 +11,7 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
-		/// <exception cref="ObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
+        /// <exception cref="ObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
         Task<T> Get<T>(T obj) where T : BaseModel;
 
         /// <summary>

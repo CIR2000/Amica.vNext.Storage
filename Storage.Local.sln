@@ -5,30 +5,26 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Core", "Storage.Core\Storage.Core.shproj", "{005B8B07-FFFD-4857-9E4A-BC3DFF9796AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.iOS", "Storage.Local\Storage.Local.iOS\Storage.Local.iOS.csproj", "{30993548-08D6-4BEB-B823-B0A84CDA4104}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{2D6414E3-133F-45B9-9B46-6D8E543E7181}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Local.Core", "Storage.Local\Storage.Local.Core\Storage.Local.Core.shproj", "{DCF7F65A-61A1-4B5D-8FF7-380E4CC36E23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "..\Models\Models\Models.csproj", "{38931933-1E9D-4DF3-BDDE-75E81E3234F4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net4", "Net4", "{FC5BD6C9-0B61-42B7-BF33-5A411B1ADEC4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models.Net4", "..\Models\Models.Net4\Models.Net4.csproj", "{678D3308-5DE9-4335-B0C8-1E0820B7515C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Net4", "Storage.Local\Storage.Local.Net4\Storage.Local.Net4.csproj", "{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Storage.Local\Playground\Playground.csproj", "{202034FB-C26A-473C-A2CA-B261C0CC7811}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Models.Core", "..\Models\Models.Core\Models.Core.shproj", "{71612766-1264-488D-8064-B3BDADC6D61F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.iOS", "Storage.Local\Storage.Local.iOS\Storage.Local.iOS.csproj", "{30993548-08D6-4BEB-B823-B0A84CDA4104}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Net45", "Storage.Local\Storage.Local.Net45\Storage.Local.Net45.csproj", "{37C2744D-834B-42D9-BA48-75D2CE93F64C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{dcf7f65a-61a1-4b5d-8ff7-380e4cc36e23}*SharedItemsImports = 13
 		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{30993548-08d6-4beb-b823-b0a84cda4104}*SharedItemsImports = 4
 		Storage.Core\Storage.Core.projitems*{30993548-08d6-4beb-b823-b0a84cda4104}*SharedItemsImports = 4
-		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{26bc01c3-0c84-4c06-93d5-c6012cf3da97}*SharedItemsImports = 4
-		Storage.Core\Storage.Core.projitems*{26bc01c3-0c84-4c06-93d5-c6012cf3da97}*SharedItemsImports = 4
-		..\Models\Models.Core\Models.Core.projitems*{678d3308-5de9-4335-b0c8-1e0820b7515c}*SharedItemsImports = 4
+		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{37c2744d-834b-42d9-ba48-75d2ce93f64c}*SharedItemsImports = 4
+		Storage.Core\Storage.Core.projitems*{37c2744d-834b-42d9-ba48-75d2ce93f64c}*SharedItemsImports = 4
+		..\Models\Models.Core\Models.Core.projitems*{71612766-1264-488d-8064-b3bdadc6d61f}*SharedItemsImports = 13
 		Storage.Core\Storage.Core.projitems*{005b8b07-fffd-4857-9e4a-bc3dff9796ae}*SharedItemsImports = 13
 		..\Models\Models.Core\Models.Core.projitems*{38931933-1e9d-4df3-bdde-75e81e3234f4}*SharedItemsImports = 4
 	EndGlobalSection
@@ -37,34 +33,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38931933-1E9D-4DF3-BDDE-75E81E3234F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38931933-1E9D-4DF3-BDDE-75E81E3234F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38931933-1E9D-4DF3-BDDE-75E81E3234F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38931933-1E9D-4DF3-BDDE-75E81E3234F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{678D3308-5DE9-4335-B0C8-1E0820B7515C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{202034FB-C26A-473C-A2CA-B261C0CC7811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30993548-08D6-4BEB-B823-B0A84CDA4104}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{30993548-08D6-4BEB-B823-B0A84CDA4104} = {2D6414E3-133F-45B9-9B46-6D8E543E7181}
-		{38931933-1E9D-4DF3-BDDE-75E81E3234F4} = {2D6414E3-133F-45B9-9B46-6D8E543E7181}
-		{678D3308-5DE9-4335-B0C8-1E0820B7515C} = {FC5BD6C9-0B61-42B7-BF33-5A411B1ADEC4}
-		{26BC01C3-0C84-4C06-93D5-C6012CF3DA97} = {FC5BD6C9-0B61-42B7-BF33-5A411B1ADEC4}
 	EndGlobalSection
 EndGlobal

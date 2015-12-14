@@ -10,8 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ILocalRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LocalRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SQLite.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SQLiteAsync.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocalRepositoryBase.cs" />
   </ItemGroup>
 </Project>

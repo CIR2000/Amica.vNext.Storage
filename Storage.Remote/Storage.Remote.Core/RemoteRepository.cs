@@ -119,7 +119,7 @@ namespace Amica.vNext.Storage
             await SetAndValidateResponse(obj);
             return retObj;
         }
-        public async Task<T> Get<T>(T obj) where T : BaseModel
+        public async Task<T> Get<T>(T obj) where T : BaseModel, new()
         {
             return await PerformRequest(_eve.GetAsync<T>, obj);
         }
