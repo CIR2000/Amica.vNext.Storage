@@ -17,7 +17,7 @@ namespace Amica.vNext.Storage
         /// the implementation this method might have severe impact on datastore performance,
         /// so use it with caution.
         /// </summary>
-        Task<IList<T>> Get<T>();
+        Task<IList<T>> Get<T>() where T : BaseModel;
 
         /// <summary>
         /// Asyncronously retrieve all objects of type T. Please note that depending on
@@ -26,14 +26,14 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="companyId">Company Id.</param>
         /// <returns>All objects belonging to company <paramref name="companyId"/>.</returns>
-        Task<IList<T>> Get<T>(string companyId);
+        Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId;
 
         /// <summary>
         /// Asyncronously retrieve all objects which have changed since a certain datetime.
         /// </summary>
         /// <param name="ifModifiedSince">If modified since.</param>
         /// <returns>All objects changed since <paramref name="ifModifiedSince"/></returns>
-        Task<IList<T>> Get<T>(DateTime? ifModifiedSince);
+        Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel;
 
         /// <summary>
         /// Asyncronously retrieve all objects which have changed since a certain datetime.
@@ -41,7 +41,7 @@ namespace Amica.vNext.Storage
         /// <param name="ifModifiedSince">If modified since.</param>
         /// <param name="companyId">Company Id.</param>
         /// <returns>All objects belonging to company <paramref name="companyId"/> which have changed since <paramref name="ifModifiedSince"/></returns>
-        Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId);
+        Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId;
 
         /// <summary>
         /// Asyncronously get several objects from the datastore.

@@ -119,7 +119,7 @@ namespace Amica.vNext.Storage
             await SetAndValidateResponse(obj);
             return retObj;
         }
-        public async Task<T> Get<T>(T obj) where T : BaseModel, new()
+        public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             return await PerformRequest(_eve.GetAsync<T>, obj);
         }
@@ -147,22 +147,27 @@ namespace Amica.vNext.Storage
 
         public string CompanyId { get; set; }
 
-        public async Task<IList<T>> Get<T>()
+        public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-            return await Get<T>(null, CompanyId);
+            return await GetInternal<T>(null, CompanyId);
         }
 
-        public async Task<IList<T>> Get<T>(string companyId)
+        public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
         {
-            return await Get<T>(null, companyId);
+            return await GetInternal<T>(null, companyId);
         }
 
-        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince)
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
-            return await Get<T>(ifModifiedSince, CompanyId);
+            return await GetInternal<T>(ifModifiedSince, CompanyId);
         }
 
-        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId)
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
+        {
+            return await GetInternal<T>(ifModifiedSince, companyId);
+        }
+
+        private async Task<IList<T>> GetInternal<T>(DateTime? ifModifiedSince, string companyId)
         {
             await RefreshClientSettings<T>();
 
@@ -177,6 +182,7 @@ namespace Amica.vNext.Storage
                 throw new RemoteRepositoryException($"Resource {_eve.ResourceName} not found on the remote service.");
 
             return retObj;
+            
         }
 
         public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()

@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Amica.vNext.Models;
 using SQLite.Net.Async;
 
 namespace Amica.vNext.Storage
 {
-    public abstract class LocalRepositoryBase : ILocalRepository
+    public abstract class LocalRepositoryBase : ILocalBulkRepository
     {
 
         private SQLiteAsyncConnection _connection;
@@ -53,7 +55,48 @@ namespace Amica.vNext.Storage
             return obj;
         }
 
-        public string ApplicationName { get; set; }
+        public async Task<IList<T>> Get<T>() where T : BaseModel
+        {
+            var conn = await Connection();
+
+            return await conn.Table<T>().ToListAsync();
+        }
+
+        public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
+        {
+            var conn = await Connection();
+
+            return await conn.Table<T>().Where(v => v.CompanyId.Equals(companyId)).ToListAsync();
+        }
+
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
+        {
+            var conn = await Connection();
+
+            return await conn.Table<T>().Where(v => v.Updated > ifModifiedSince).ToListAsync();
+        }
+
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
+        {
+            var conn = await Connection();
+
+            return await conn.Table<T>().Where(v => v.Updated > ifModifiedSince && v.CompanyId.Equals(companyId)).ToListAsync();
+        }
+
+        public Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Returns the appropriate platform connection.
@@ -69,15 +112,14 @@ namespace Amica.vNext.Storage
 
             _connection = PlatformConnection();
 
-            //if (DatabasePath == null)
-            //    throw new ArgumentNullException(nameof(DatabasePath));
-
-            //_connection = new SQLiteAsyncConnection(DatabasePath, false);
-
             await _connection.CreateTableAsync<Company>();
             await _connection.CreateTableAsync<Country>();
 
             return _connection;
         }
+
+        public string CompanyId { get; set; }
+        public string ApplicationName { get; set; }
+
     }
 }

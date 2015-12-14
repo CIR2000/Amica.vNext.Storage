@@ -29,15 +29,21 @@ namespace Playground
                 ApplicationName = "TestApp"
             };
 
-            var c = new Company() { UniqueId = "k1", Name = "C1", ETag = "etag", Created = DateTime.MinValue, Updated = DateTime.MinValue };
+            var stamp = DateTime.Now;
+            var c = new Company() { UniqueId = "k1", Name = "C1", ETag = "etag", Created = DateTime.MinValue, Updated = stamp};
             await r.Insert(c);
+            var companies = await r.Get<Company>(stamp.AddDays(1));
+            Console.WriteLine(companies.Count);
+            companies = await r.Get<Company>(stamp);
+            Console.WriteLine(companies.Count);
+            companies = await r.Get<Company>(stamp.AddMilliseconds(-1));
+            Console.WriteLine(companies.Count);
 
             //var c = new Company() { UniqueId = "k1" };
             //var copy = await r.Get(c);
             //c.Updated = DateTime.Now;
 
-            await r.Replace(c);
-            Console.WriteLine(c.Updated);
+            //await r.Replace(c);
         }
     }
 }

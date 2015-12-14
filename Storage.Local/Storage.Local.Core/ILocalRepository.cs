@@ -1,7 +1,6 @@
 ﻿namespace Amica.vNext.Storage
 {
-    public interface ILocalRepository : IRepository
+    public interface ILocalRepository : IRepository, IApplicationName
     {
-		string ApplicationName { get; set; }
     }
 }
