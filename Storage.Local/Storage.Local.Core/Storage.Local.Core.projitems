@@ -9,6 +9,7 @@
     <Import_RootNamespace>Storage.Local.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ILocalRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LocalRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SQLite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SQLiteAsync.cs" />

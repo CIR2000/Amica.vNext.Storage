@@ -4,7 +4,7 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    class LocalRepository : IRepository
+    class LocalRepository : ILocalRepository
     {
         public void Dispose()
         {
@@ -30,5 +30,7 @@ namespace Amica.vNext.Storage
         {
             throw new NotImplementedException();
         }
+
+        public string DatabasePath { get; set; }
     }
 }
