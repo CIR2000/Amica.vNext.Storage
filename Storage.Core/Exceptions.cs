@@ -1,8 +1,6 @@
 ﻿using System;
 using Amica.vNext.Models;
 
-// TODO move Remote exceptions to Storate.Remote
-
 namespace Amica.vNext.Storage
 {
     public class RepositoryException : Exception
@@ -12,43 +10,22 @@ namespace Amica.vNext.Storage
         
     }
 
-    public class ObjectNotFoundRepositoryException : RemoteRepositoryException 
+    public class ObjectNotFoundRepositoryException : RepositoryException 
     {
 		public ObjectNotFoundRepositoryException(string id) : base($"Object with id \"{id}\" was not found.") { }
 		public ObjectNotFoundRepositoryException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
     }
 
-    public class ObjectNotReplacedRepositoryException : RemoteRepositoryException
+    public class ObjectNotReplacedRepositoryException : RepositoryException
     {
         public ObjectNotReplacedRepositoryException (BaseModel obj) :
 			base($"Object with id \"{obj.UniqueId}\" could not be replaced.") { }
     }
 
-    public class ObjectNotDeletedRepositoryException : RemoteRepositoryException
+    public class ObjectNotDeletedRepositoryException : RepositoryException
     {
         public ObjectNotDeletedRepositoryException (BaseModel obj) :
 			base($"Object with id \"{obj.UniqueId}\" could not be deleted.") { }
         
     }
-
-    public class RemoteRepositoryException : RepositoryException
-    {
-        public RemoteRepositoryException() { }
-		public RemoteRepositoryException(string message) : base(message) { }
-    }
-
-    public class PreconditionFailedRepositoryException : RemoteRepositoryException
-    {
-		public PreconditionFailedRepositoryException(BaseModel obj) : 
-			base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
-    }
-
-    // TODO ValidationRepositoryException should probably support a list of objects and their validation errors. 
-    public class ValidationRepositoryException : RemoteRepositoryException
-    {
-		public ValidationRepositoryException(string message) : 
-			base(message) { }
-    }
-
-
 }
