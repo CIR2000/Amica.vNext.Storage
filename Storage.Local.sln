@@ -17,13 +17,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.iOS", "Storag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Net45", "Storage.Local\Storage.Local.Net45\Storage.Local.Net45.csproj", "{37C2744D-834B-42D9-BA48-75D2CE93F64C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Tests", "Storage.Local\Storage.Local.Tests\Storage.Local.Tests.csproj", "{80F1F92A-A523-4EC2-8E6B-2B47E8417274}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{dcf7f65a-61a1-4b5d-8ff7-380e4cc36e23}*SharedItemsImports = 13
-		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{30993548-08d6-4beb-b823-b0a84cda4104}*SharedItemsImports = 4
 		Storage.Core\Storage.Core.projitems*{30993548-08d6-4beb-b823-b0a84cda4104}*SharedItemsImports = 4
-		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{37c2744d-834b-42d9-ba48-75d2ce93f64c}*SharedItemsImports = 4
+		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{30993548-08d6-4beb-b823-b0a84cda4104}*SharedItemsImports = 4
 		Storage.Core\Storage.Core.projitems*{37c2744d-834b-42d9-ba48-75d2ce93f64c}*SharedItemsImports = 4
+		Storage.Local\Storage.Local.Core\Storage.Local.Core.projitems*{37c2744d-834b-42d9-ba48-75d2ce93f64c}*SharedItemsImports = 4
 		..\Models\Models.Core\Models.Core.projitems*{71612766-1264-488d-8064-b3bdadc6d61f}*SharedItemsImports = 13
 		Storage.Core\Storage.Core.projitems*{005b8b07-fffd-4857-9e4a-bc3dff9796ae}*SharedItemsImports = 13
 		..\Models\Models.Core\Models.Core.projitems*{38931933-1e9d-4df3-bdde-75e81e3234f4}*SharedItemsImports = 4
@@ -49,6 +51,10 @@ Global
 		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37C2744D-834B-42D9-BA48-75D2CE93F64C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F1F92A-A523-4EC2-8E6B-2B47E8417274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F1F92A-A523-4EC2-8E6B-2B47E8417274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F1F92A-A523-4EC2-8E6B-2B47E8417274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F1F92A-A523-4EC2-8E6B-2B47E8417274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
