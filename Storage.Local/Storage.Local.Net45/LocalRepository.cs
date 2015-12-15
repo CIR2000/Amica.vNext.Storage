@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using SQLite.Net;
+﻿using SQLite.Net;
 using SQLite.Net.Async;
 
 namespace Amica.vNext.Storage
@@ -9,15 +7,9 @@ namespace Amica.vNext.Storage
     {
         protected override SQLiteAsyncConnection PlatformConnection()
         {
-            var dbPath = DatabaseFolder();
-
-            Directory.CreateDirectory(dbPath);
-
             var lockedConnection = new SQLiteConnectionWithLock(
                 new SQLite.Net.Platform.Generic.SQLitePlatformGeneric(),
-                new SQLiteConnectionString(
-                    Path.Combine(dbPath, "repository.db3"),
-                    true));
+                new SQLiteConnectionString(RepositoryFullPath, true));
 
             return new SQLiteAsyncConnection(() => lockedConnection);
         }

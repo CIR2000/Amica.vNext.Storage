@@ -11,7 +11,13 @@ namespace Amica.vNext.Storage
     {
 
         private SQLiteAsyncConnection _connection;
+		private string _repositoryDirectory;
 
+        protected LocalRepositoryBase()
+        {
+            RepositoryFileName = "repository.db3";
+            ApplicationName = "LocalRepositoryDefaultApplication";
+        }
         public void Dispose()
         {
             _connection = null;
@@ -105,25 +111,38 @@ namespace Amica.vNext.Storage
         /// <returns>The platform connection.</returns>
         protected abstract SQLiteAsyncConnection PlatformConnection();
 
-		/// <summary>
-        /// Returns the folder where the database should reside. 
-        /// Defaults to CommonApplicationData/ApplicationName/LocalRepository.
-        /// </summary>
-        /// <returns>The database folder.</returns>
-        protected virtual string DatabaseFolder()
+		public string RepositoryDirectory {
+		    get
+		    {
+		        if (_repositoryDirectory != null) return _repositoryDirectory;
+
+		        RepositoryDirectory = DefaultRepositoryDirectory();
+		        return _repositoryDirectory;
+		    }
+		    set
+		    {
+		        _repositoryDirectory = value;
+		    }
+        }
+
+		public string RepositoryFileName { get; set; }
+        public string RepositoryFullPath => Path.Combine(RepositoryDirectory, RepositoryFileName);
+
+        private string DefaultRepositoryDirectory()
         {
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                Path.Combine(ApplicationName, "LocalRepository"));
+			if (ApplicationName == null)
+				throw new ArgumentNullException(nameof(ApplicationName));
+
+			return Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+				Path.Combine(ApplicationName, "LocalRepository"));
         }
 
         private async Task<SQLiteAsyncConnection> Connection()
         {
-
             if (_connection != null) return _connection;
 
-            if (ApplicationName == null)
-                throw new ArgumentNullException(nameof(ApplicationName));
+            Directory.CreateDirectory(RepositoryDirectory);
 
             _connection = PlatformConnection();
 
@@ -134,7 +153,8 @@ namespace Amica.vNext.Storage
         }
 
         public string CompanyId { get; set; }
-        public string ApplicationName { get; set; }
+
+        public string ApplicationName { get; set;}
 
     }
 }
