@@ -13,19 +13,22 @@ namespace Storage.Local.Tests
     [TestFixture]
     public class TestBase
 	{
-	    private LocalRepository _repo;
+	    protected LocalRepository Repo;
 
 	    [SetUp]
 	    public void Init()
 	    {
-	        _repo = new LocalRepository {ApplicationName = "UnitTest"};
-	        File.Delete(_repo.RepositoryFullPath);
-	    }
+            Repo = new LocalRepository { ApplicationName = "UnitTest" };
+        }
 
-	    [TearDown]
+        [TearDown]
 	    public void TearDown()
 	    {
-            _repo.Dispose();
+            Repo.Dispose();
+
+			// cleanup
+			if (File.Exists(Repo.RepositoryFullPath))
+					File.Delete(Repo.RepositoryFullPath);
         }
     }
 }

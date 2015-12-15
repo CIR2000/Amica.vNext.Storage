@@ -7,11 +7,11 @@ namespace Amica.vNext.Storage
     {
         protected override SQLiteAsyncConnection PlatformConnection()
         {
-            var lockedConnection = new SQLiteConnectionWithLock(
+            LockedConnection = new SQLiteConnectionWithLock(
                 new SQLite.Net.Platform.XamarinIOS.SQLitePlatformIOS(),
                 new SQLiteConnectionString(RepositoryFullPath, true));
 
-            return new SQLiteAsyncConnection(() => lockedConnection);
+            return new SQLiteAsyncConnection(() => LockedConnection);
         }
     }
 }

@@ -4,12 +4,14 @@ using System.IO;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using SQLite.Net.Async;
+using SQLite.Net;
 
 namespace Amica.vNext.Storage
 {
     public abstract class LocalRepositoryBase : ILocalBulkRepository
     {
 
+        protected SQLiteConnectionWithLock LockedConnection;
         private SQLiteAsyncConnection _connection;
 		private string _repositoryDirectory;
 
@@ -20,6 +22,7 @@ namespace Amica.vNext.Storage
         }
         public void Dispose()
         {
+            LockedConnection?.Dispose();
             _connection = null;
         }
 
