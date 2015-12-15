@@ -9,15 +9,10 @@ namespace Amica.vNext.Storage
     {
         protected override SQLiteAsyncConnection PlatformConnection()
         {
-
-            if (ApplicationName == null)
-                throw new ArgumentNullException(nameof(ApplicationName));
-
-            var dbPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                Path.Combine(ApplicationName, "LocalRepository"));
+            var dbPath = DatabaseFolder();
 
             Directory.CreateDirectory(dbPath);
+
             var lockedConnection = new SQLiteConnectionWithLock(
                 new SQLite.Net.Platform.XamarinIOS.SQLitePlatformIOS(),
                 new SQLiteConnectionString(

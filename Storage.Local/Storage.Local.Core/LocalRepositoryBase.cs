@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using SQLite.Net.Async;
@@ -104,11 +105,25 @@ namespace Amica.vNext.Storage
         /// <returns>The platform connection.</returns>
         protected abstract SQLiteAsyncConnection PlatformConnection();
 
+		/// <summary>
+        /// Returns the folder where the database should reside. 
+        /// Defaults to CommonApplicationData/ApplicationName/LocalRepository.
+        /// </summary>
+        /// <returns>The database folder.</returns>
+        protected virtual string DatabaseFolder()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                Path.Combine(ApplicationName, "LocalRepository"));
+        }
 
         private async Task<SQLiteAsyncConnection> Connection()
         {
 
             if (_connection != null) return _connection;
+
+            if (ApplicationName == null)
+                throw new ArgumentNullException(nameof(ApplicationName));
 
             _connection = PlatformConnection();
 
