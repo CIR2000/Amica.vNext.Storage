@@ -1,17 +1,15 @@
 ﻿using SQLite.Net;
-using SQLite.Net.Async;
 
 namespace Amica.vNext.Storage
 {
     public class LocalRepository : LocalRepositoryBase
     {
-        protected override SQLiteAsyncConnection PlatformConnection()
+
+        protected override SQLiteConnectionWithLock PlatformLockedConnection()
         {
-			LockedConnection = new SQLiteConnectionWithLock(
+			return new SQLiteConnectionWithLock(
                 new SQLite.Net.Platform.Generic.SQLitePlatformGeneric(),
                 new SQLiteConnectionString(RepositoryFullPath, true));
-
-            return new SQLiteAsyncConnection(() => LockedConnection);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Amica.vNext.Storage
     public abstract class LocalRepositoryBase : ILocalBulkRepository
     {
 
-        protected SQLiteConnectionWithLock LockedConnection;
+        private SQLiteConnectionWithLock _lockedConnection;
         private SQLiteAsyncConnection _connection;
 		private string _repositoryDirectory;
 
@@ -22,7 +22,7 @@ namespace Amica.vNext.Storage
         }
         public void Dispose()
         {
-            LockedConnection?.Dispose();
+            _lockedConnection?.Dispose();
             _connection = null;
         }
 
@@ -112,7 +112,7 @@ namespace Amica.vNext.Storage
         /// Returns the appropriate platform connection.
         /// </summary>
         /// <returns>The platform connection.</returns>
-        protected abstract SQLiteAsyncConnection PlatformConnection();
+        //protected abstract SQLiteAsyncConnection PlatformConnection();
 
 		public string RepositoryDirectory {
 		    get
@@ -141,13 +141,16 @@ namespace Amica.vNext.Storage
 				Path.Combine(ApplicationName, "LocalRepository"));
         }
 
+        protected abstract SQLiteConnectionWithLock PlatformLockedConnection();
+
         private async Task<SQLiteAsyncConnection> Connection()
         {
             if (_connection != null) return _connection;
 
             Directory.CreateDirectory(RepositoryDirectory);
 
-            _connection = PlatformConnection();
+            _lockedConnection = PlatformLockedConnection();
+            _connection = new SQLiteAsyncConnection(() => _lockedConnection);
 
             await _connection.CreateTableAsync<Company>();
             await _connection.CreateTableAsync<Country>();
