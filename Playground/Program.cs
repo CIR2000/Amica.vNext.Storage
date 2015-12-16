@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amica.vNext.Storage;
 using Amica.vNext.Models;
-using Nito.AsyncEx;
 
 namespace ConsoleApplication1
 {
@@ -13,7 +12,7 @@ namespace ConsoleApplication1
         {
             try
             {
-                AsyncContext.Run(() => Test());
+                Test().Wait();
             }
             catch (Exception ex)
             {

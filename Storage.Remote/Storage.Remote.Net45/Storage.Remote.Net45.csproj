@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD2742B2-BC7B-41FE-95E8-04998467A13B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{E1F667A5-E30C-46AE-B739-7E2D12E49CEE}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Playground</RootNamespace>
-    <AssemblyName>Playground</AssemblyName>
+    <RootNamespace>Amica.vNext.Storage</RootNamespace>
+    <AssemblyName>Storage.Remote.Net45</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,57 +20,49 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
+    <ProjectReference Include="..\..\..\..\Eve.NET\Eve\Eve.csproj">
       <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
       <Name>Eve</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Discovery\Discovery.Net45\Discovery.Net45.csproj">
+    <ProjectReference Include="..\..\..\Discovery\Discovery.Net45\Discovery.Net45.csproj">
       <Project>{9d11806a-06d4-4264-80eb-4c426373dbd9}</Project>
       <Name>Discovery.Net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Models\Models.csproj">
+    <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Storage.Remote\Storage.Remote.Net45\Storage.Remote.Net45.csproj">
-      <Project>{e1f667a5-e30c-46ae-b739-7e2d12e49cee}</Project>
-      <Name>Storage.Remote.Net45</Name>
+    <ProjectReference Include="..\..\..\Sentinel\Sentinel.Net45\Sentinel.Net45.csproj">
+      <Project>{dca6a1db-0902-4d7a-9847-517164f93b61}</Project>
+      <Name>Sentinel.Net45</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
+  <Import Project="..\Storage.Remote.Core\Storage.Remote.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy "$(SolutionDir)ext\x86\sqlite3.dll" "$(ProjectDir)$(OutDir)sqlite3.dll"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
