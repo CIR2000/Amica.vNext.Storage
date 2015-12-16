@@ -87,5 +87,37 @@ namespace Storage.Local.Tests
                 async () => await Repo.Get(challenge),
                 Throws.TypeOf<ObjectNotFoundRepositoryException>());
 	    }
+
+        [Test]
+        public async Task Replace()
+        {
+            var now = DateTime.UtcNow;
+
+            var challenge = new Company
+            {
+                UniqueId = "id",
+                ETag = "etag",
+                Updated = now,
+                Created = now
+            };
+
+            Assert.That(
+                async () => await Repo.Replace(challenge),
+                Throws.TypeOf<ObjectNotReplacedRepositoryException>());
+
+            await Repo.Insert(challenge);
+
+            challenge.Name = "A Company";
+            challenge.Updated = now.AddDays(1);
+
+            Assert.That(
+                async () => await Repo.Replace(challenge),
+                Is.TypeOf<Company>()
+                    .And.Property(nameof(Company.UniqueId)).EqualTo(challenge.UniqueId)
+                    .And.Property(nameof(Company.ETag)).EqualTo(challenge.ETag)
+                    .And.Property(nameof(Company.Updated)).EqualTo(challenge.Updated)
+					.And.Property(nameof(Company.Created)).EqualTo(challenge.Created)
+                    .And.Property(nameof(Company.Name)).EqualTo(challenge.Name));
+        }
     }
 }
