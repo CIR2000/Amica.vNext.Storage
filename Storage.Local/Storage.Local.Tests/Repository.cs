@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using NUnit.Framework;
@@ -7,7 +6,7 @@ using Amica.vNext.Storage;
 
 namespace Storage.Local.Tests
 {
-	[TestFixture]
+    [TestFixture]
     public class Repository : TestBase
 	{
         [Test]

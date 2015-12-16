@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -78,18 +79,18 @@ namespace Amica.vNext.Storage
             return await conn.Table<T>().ToListAsync();
         }
 
-        public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
-        {
-            var conn = await Connection();
-
-            return await conn.Table<T>().Where(v => v.CompanyId.Equals(companyId)).ToListAsync();
-        }
-
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
             var conn = await Connection();
 
             return await conn.Table<T>().Where(v => v.Updated > ifModifiedSince).ToListAsync();
+        }
+
+        public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
+        {
+            var conn = await Connection();
+
+            return await conn.Table<T>().Where(v => v.CompanyId.Equals(companyId)).ToListAsync();
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
