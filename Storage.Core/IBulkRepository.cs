@@ -8,11 +8,6 @@ namespace Amica.vNext.Storage
     public interface IBulkRepository : IRepository
     {
         /// <summary>
-        /// The company id to be used when retrieving objects. If null, no filter on company will be issued.
-        /// </summary>
-        string CompanyId { get; set; }
-
-        /// <summary>
         /// Asyncronously retrieve all objects of type T. Please note that depending on
         /// the implementation this method might have severe impact on datastore performance,
         /// so use it with caution.

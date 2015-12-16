@@ -145,11 +145,9 @@ namespace Amica.vNext.Storage
             await SetAndValidateResponse(obj);
         }
 
-        public string CompanyId { get; set; }
-
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-            return await GetInternal<T>(null, CompanyId);
+            return await GetInternal<T>(null, null);
         }
 
         public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
@@ -159,7 +157,7 @@ namespace Amica.vNext.Storage
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
-            return await GetInternal<T>(ifModifiedSince, CompanyId);
+            return await GetInternal<T>(ifModifiedSince, null);
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
