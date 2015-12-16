@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using NUnit.Framework;
@@ -11,7 +7,7 @@ using Amica.vNext.Storage;
 namespace Storage.Local.Tests
 {
 	[TestFixture]
-    public class ObjectMethods : TestBase
+    public class BulkRepository : TestBase
 	{
         [Test]
         public async Task Get()

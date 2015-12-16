@@ -26,6 +26,8 @@ namespace Amica.vNext.Storage
             _connection = null;
         }
 
+#region "IRepository"
+
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             var conn = await Connection();
@@ -64,6 +66,10 @@ namespace Amica.vNext.Storage
 
             return obj;
         }
+
+        #endregion
+
+#region "IBulkRepository"
 
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
@@ -108,13 +114,15 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
+#endregion
+
         /// <summary>
         /// Returns the appropriate platform connection.
         /// </summary>
         /// <returns>The platform connection.</returns>
         //protected abstract SQLiteAsyncConnection PlatformConnection();
 
-		public string RepositoryDirectory {
+        public string RepositoryDirectory {
 		    get
 		    {
 		        if (_repositoryDirectory != null) return _repositoryDirectory;
