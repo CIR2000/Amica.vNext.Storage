@@ -21,29 +21,19 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
-        /// <exception cref="ServiceObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
+        /// <exception cref="RemoteObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
-            var found = false;
-
             try
             {
 				obj = await Local.Get(obj);
-                found = true;
             }
 			catch (LocalObjectNotFoundStorageException) { }
 
             var lastUpdated = obj.Updated;
 
-            try
-            {
-				obj = await Remote.Get(obj);
-                found = true;
-            }
-			catch (RemoteObjectNotFoundStorageException) { }
-
-            if (!found)
-                throw new ServiceObjectNotFoundStorageException(obj);
+			// Will eventually throw RemoteObjectNotFoundException.
+			obj = await Remote.Get(obj);
 
             if (obj.Updated > lastUpdated)
                 await Local.Replace(obj);
@@ -51,8 +41,18 @@ namespace Amica.vNext.Storage
             return obj;
         }
 
-        public Task<T> Insert<T>(T obj) where T : BaseModel
+        /// <summary>
+        /// Asyncronoulsy insert an object into the datastore.
+        /// </summary>
+        /// <param name="obj">The object to be stored.</param>	
+        /// <returns>The insterted object</returns>
+		/// <exception cref="ValidationStorageException">If a validation error was returned by the service.</exception>
+        public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
+            // 1. attempt to insert obj remotely
+			// 2. if not successfull, report and exit
+			// 3. insert locally
+			// 4. return object (now with fresh metadata)
             throw new NotImplementedException();
         }
 

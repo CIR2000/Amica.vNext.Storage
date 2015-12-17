@@ -11,7 +11,6 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
-        /// <exception cref="ObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
         Task<T> Get<T>(T obj) where T : BaseModel;
 
         /// <summary>
@@ -19,7 +18,6 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to be stored.</param>	
         /// <returns>The insterted object</returns>
-		/// <exception cref="ValidationRepositoryException">If a validation error was returned by the service.</exception>
         Task<T> Insert<T>(T obj) where T : BaseModel;
 
         /// <summary>
