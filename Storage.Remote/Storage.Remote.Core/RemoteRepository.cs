@@ -11,6 +11,8 @@ using Eve.Authenticators;
 
 namespace Amica.vNext.Storage
 {
+	// TODO make sure remote access is only attempted if connection is available?
+
     public class RemoteRepository : IRemoteRepository
     {
         private readonly Dictionary<Type, string> _resources;
@@ -73,7 +75,8 @@ namespace Amica.vNext.Storage
 				Username = Username,
 				Password = Password,
 				ClientId = ClientId,
-				BaseAddress = authAddress
+				BaseAddress = authAddress,
+				Cache = new SqliteObjectCache { ApplicationName = ApplicationName }
 			};
 
 			return await sc.GetBearerAuthenticator();
@@ -86,7 +89,7 @@ namespace Amica.vNext.Storage
             switch (HttpResponseMessage.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    throw new ObjectNotFoundRepositoryException(obj);
+                    throw new RemoteObjectNotFoundRepositoryException(obj);
                 case (HttpStatusCode) 422:
                     throw new ValidationRepositoryException(await HttpResponseMessage.Content.ReadAsStringAsync());
                 case HttpStatusCode.PreconditionFailed:
@@ -119,6 +122,12 @@ namespace Amica.vNext.Storage
             await SetAndValidateResponse(obj);
             return retObj;
         }
+        /// <summary>
+        /// Asyncronoulsy  return a refreshed object from the datastore.
+        /// </summary>
+        /// <param name="obj">The object to refresh.</param>
+        /// <returns>An object from the datastore.</returns>
+        /// <exception cref="RemoteObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             return await PerformRequest(_eve.GetAsync<T>, obj);
@@ -264,5 +273,7 @@ namespace Amica.vNext.Storage
         /// Response message returned by the remote service. 
         /// </summary>
 		public HttpResponseMessage HttpResponseMessage { get; private set; }
+
+        public string ApplicationName { get; set; }
     }
 }

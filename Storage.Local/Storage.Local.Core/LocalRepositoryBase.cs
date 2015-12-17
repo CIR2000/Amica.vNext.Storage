@@ -29,13 +29,19 @@ namespace Amica.vNext.Storage
 
 #region "IRepository"
 
+        /// <summary>
+        /// Asyncronoulsy  return a refreshed object from the datastore.
+        /// </summary>
+        /// <param name="obj">The object to refresh.</param>
+        /// <returns>An object from the datastore.</returns>
+        /// <exception cref="LocalObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             var conn = await Connection();
 
             var result = await conn.FindAsync<T>(obj.UniqueId);
             if (result == null)
-                throw new ObjectNotFoundRepositoryException(obj);
+                throw new LocalObjectNotFoundRepositoryException(obj);
 
             return result;
         }

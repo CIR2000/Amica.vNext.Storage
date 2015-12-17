@@ -9,7 +9,7 @@
     <Import_RootNamespace>Storage.Local.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)IApplicationName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILocalBulkRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ILocalRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LocalRepositoryBase.cs" />

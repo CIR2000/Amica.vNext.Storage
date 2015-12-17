@@ -59,6 +59,10 @@
       <Project>{dca6a1db-0902-4d7a-9847-517164f93b61}</Project>
       <Name>Sentinel.Net45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\SimpleCache\SimpleCache.Net45\SimpleCache.Net45.csproj">
+      <Project>{0b199775-aa32-4673-8c1f-9ec88754d751}</Project>
+      <Name>SimpleCache.Net45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
   <Import Project="..\Storage.Remote.Core\Storage.Remote.projitems" Label="Shared" />
