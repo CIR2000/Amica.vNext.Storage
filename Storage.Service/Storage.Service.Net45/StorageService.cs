@@ -39,7 +39,7 @@ namespace Amica.vNext.Storage
 			catch (RemoteObjectNotFoundRepositoryException) { }
 
             if (!found)
-                throw new RemoteObjectNotFoundRepositoryException(obj);
+                throw new StorageServiceObjectNotFoundRepositoryException(obj);
 
 			// 3. if downloaded, store update locally
             if (obj.Updated > lastUpdated)
