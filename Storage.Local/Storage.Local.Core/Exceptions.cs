@@ -5,9 +5,9 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    public class LocalObjectNotFoundRepositoryException : ObjectNotFoundRepositoryException
+    public class LocalObjectNotFoundStorageException : ObjectNotFoundStorageException
     {
-        public LocalObjectNotFoundRepositoryException(string id) : base(id) { }
-        public LocalObjectNotFoundRepositoryException(BaseModel obj) : base(obj) { }
+        public LocalObjectNotFoundStorageException(string id) : base(id) { }
+        public LocalObjectNotFoundStorageException(BaseModel obj) : base(obj) { }
     }
 }

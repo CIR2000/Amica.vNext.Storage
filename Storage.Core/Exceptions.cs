@@ -3,28 +3,28 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    public class RepositoryException : Exception
+    public class StorageException : Exception
     {
-        public RepositoryException() { }
-		public RepositoryException(string message) : base(message) { }
+        public StorageException() { }
+		public StorageException(string message) : base(message) { }
         
     }
 
-    public class ObjectNotFoundRepositoryException : RepositoryException 
+    public class ObjectNotFoundStorageException : StorageException 
     {
-		public ObjectNotFoundRepositoryException(string id) : base($"Object with id \"{id}\" was not found.") { }
-		public ObjectNotFoundRepositoryException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
+		public ObjectNotFoundStorageException(string id) : base($"Object with id \"{id}\" was not found.") { }
+		public ObjectNotFoundStorageException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
     }
 
-    public class ObjectNotReplacedRepositoryException : RepositoryException
+    public class ObjectNotReplacedStorageException : StorageException
     {
-        public ObjectNotReplacedRepositoryException (BaseModel obj) :
+        public ObjectNotReplacedStorageException (BaseModel obj) :
 			base($"Object with id \"{obj.UniqueId}\" could not be replaced.") { }
     }
 
-    public class ObjectNotDeletedRepositoryException : RepositoryException
+    public class ObjectNotDeletedStorageException : StorageException
     {
-        public ObjectNotDeletedRepositoryException (BaseModel obj) :
+        public ObjectNotDeletedStorageException (BaseModel obj) :
 			base($"Object with id \"{obj.UniqueId}\" could not be deleted.") { }
         
     }

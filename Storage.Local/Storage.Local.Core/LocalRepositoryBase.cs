@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -34,14 +33,14 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
-        /// <exception cref="LocalObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
+        /// <exception cref="LocalObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             var conn = await Connection();
 
             var result = await conn.FindAsync<T>(obj.UniqueId);
             if (result == null)
-                throw new LocalObjectNotFoundRepositoryException(obj);
+                throw new LocalObjectNotFoundStorageException(obj);
 
             return result;
         }
@@ -60,7 +59,7 @@ namespace Amica.vNext.Storage
             if (i == 0)
 				// TODO should fail silently? Or raise DeleteException since
 				// we are not sure about the real failure?
-                throw new ObjectNotDeletedRepositoryException(obj);
+                throw new ObjectNotDeletedStorageException(obj);
         }
 
         public async Task<T> Replace<T>(T obj) where T : BaseModel
@@ -69,7 +68,7 @@ namespace Amica.vNext.Storage
 
             var i = await conn.UpdateAsync(obj);
             if (i == 0)
-                throw new ObjectNotReplacedRepositoryException(obj);
+                throw new ObjectNotReplacedStorageException(obj);
 
             return obj;
         }

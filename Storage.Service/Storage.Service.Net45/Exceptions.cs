@@ -2,9 +2,9 @@
 
 namespace Amica.vNext.Storage
 {
-    public class StorageServiceObjectNotFoundRepositoryException : RemoteObjectNotFoundRepositoryException
+    public class ServiceObjectNotFoundStorageException : RemoteObjectNotFoundStorageException
     {
-        public StorageServiceObjectNotFoundRepositoryException(string id) : base(id) { }
-        public StorageServiceObjectNotFoundRepositoryException(BaseModel obj) : base(obj) { }
+        public ServiceObjectNotFoundStorageException(string id) : base(id) { }
+        public ServiceObjectNotFoundStorageException(BaseModel obj) : base(obj) { }
     }
 }

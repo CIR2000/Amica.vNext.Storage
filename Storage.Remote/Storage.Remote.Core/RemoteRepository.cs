@@ -89,11 +89,11 @@ namespace Amica.vNext.Storage
             switch (HttpResponseMessage.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    throw new RemoteObjectNotFoundRepositoryException(obj);
+                    throw new RemoteObjectNotFoundStorageException(obj);
                 case (HttpStatusCode) 422:
-                    throw new ValidationRepositoryException(await HttpResponseMessage.Content.ReadAsStringAsync());
+                    throw new ValidationStorageException(await HttpResponseMessage.Content.ReadAsStringAsync());
                 case HttpStatusCode.PreconditionFailed:
-                    throw new PreconditionFailedRepositoryException(obj);
+                    throw new PreconditionFailedStorageException(obj);
             }
         }
 
@@ -127,7 +127,7 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object to refresh.</param>
         /// <returns>An object from the datastore.</returns>
-        /// <exception cref="RemoteObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
+        /// <exception cref="RemoteObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             return await PerformRequest(_eve.GetAsync<T>, obj);
@@ -186,7 +186,7 @@ namespace Amica.vNext.Storage
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                throw new RemoteRepositoryException($"Resource {_eve.ResourceName} not found on the remote service.");
+                throw new RemoteStorageException($"Resource {_eve.ResourceName} not found on the remote service.");
 
             return retObj;
             
@@ -239,7 +239,7 @@ namespace Amica.vNext.Storage
                     await Delete(id);
                     retValue.Add(id.UniqueId);
                 }
-		catch (RemoteRepositoryException) { }
+		catch (RemoteStorageException) { }
             }
             return retValue;
         }

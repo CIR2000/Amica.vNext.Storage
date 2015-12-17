@@ -2,27 +2,27 @@
 
 namespace Amica.vNext.Storage
 {
-    public class RemoteObjectNotFoundRepositoryException : ObjectNotFoundRepositoryException
+    public class RemoteObjectNotFoundStorageException : ObjectNotFoundStorageException
     {
-        public RemoteObjectNotFoundRepositoryException(string id) : base(id) { }
-        public RemoteObjectNotFoundRepositoryException(BaseModel obj) : base(obj) { }
+        public RemoteObjectNotFoundStorageException(string id) : base(id) { }
+        public RemoteObjectNotFoundStorageException(BaseModel obj) : base(obj) { }
     }
 
-    public class RemoteRepositoryException : RepositoryException
+    public class RemoteStorageException : StorageException
     {
-		public RemoteRepositoryException(string message) : base(message) { }
+		public RemoteStorageException(string message) : base(message) { }
         
     }
-    public class PreconditionFailedRepositoryException : RemoteRepositoryException
+    public class PreconditionFailedStorageException : RemoteStorageException
     {
-		public PreconditionFailedRepositoryException(BaseModel obj) : 
+		public PreconditionFailedStorageException(BaseModel obj) : 
 			base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
     }
 
     // TODO ValidationRepositoryException should probably support a list of objects and their validation errors. 
-    public class ValidationRepositoryException : RemoteRepositoryException
+    public class ValidationStorageException : RemoteStorageException
     {
-		public ValidationRepositoryException(string message) : 
+		public ValidationStorageException(string message) : 
 			base(message) { }
     }
 }

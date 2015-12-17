@@ -61,7 +61,7 @@ namespace Storage.Service.Tests
 
 	        Assert.That(
 	            async () => await Service.Get(company),
-	            Throws.TypeOf<StorageServiceObjectNotFoundRepositoryException>());
+	            Throws.TypeOf<ServiceObjectNotFoundStorageException>());
 	    }
 
     }

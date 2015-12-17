@@ -16,36 +16,38 @@ namespace Amica.vNext.Storage
             Remote.Dispose();
         }
 
+        /// <summary>
+        /// Asyncronoulsy  return a refreshed object from the datastore.
+        /// </summary>
+        /// <param name="obj">The object to refresh.</param>
+        /// <returns>An object from the datastore.</returns>
+        /// <exception cref="ServiceObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
             var found = false;
 
-			// 1. retrieve from local 
             try
             {
 				obj = await Local.Get(obj);
                 found = true;
             }
-			catch (LocalObjectNotFoundRepositoryException) { }
+			catch (LocalObjectNotFoundStorageException) { }
 
             var lastUpdated = obj.Updated;
 
-			// 2. check if remote has updated version and download it
             try
             {
 				obj = await Remote.Get(obj);
                 found = true;
             }
-			catch (RemoteObjectNotFoundRepositoryException) { }
+			catch (RemoteObjectNotFoundStorageException) { }
 
             if (!found)
-                throw new StorageServiceObjectNotFoundRepositoryException(obj);
+                throw new ServiceObjectNotFoundStorageException(obj);
 
-			// 3. if downloaded, store update locally
             if (obj.Updated > lastUpdated)
                 await Local.Replace(obj);
 
-            // 3. return object
             return obj;
         }
 
