@@ -16,4 +16,9 @@ namespace Amica.vNext.Storage
 			base($"Object with id \"{obj.UniqueId}\" could not be deleted.") { }
         
     }
+    public class LocalObjectNotReplacedStorageException : StorageException
+    {
+        public LocalObjectNotReplacedStorageException (BaseModel obj) :
+			base($"Object with id \"{obj.UniqueId}\" could not be replaced.") { }
+    }
 }

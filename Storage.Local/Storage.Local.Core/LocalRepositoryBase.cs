@@ -73,7 +73,9 @@ namespace Amica.vNext.Storage
 
             var i = await conn.UpdateAsync(obj);
             if (i == 0)
-                throw new ObjectNotReplacedStorageException(obj);
+				// TODO should fail silently? Or raise DeleteException since
+				// we are not sure about the real failure?
+                throw new LocalObjectNotReplacedStorageException(obj);
 
             return obj;
         }

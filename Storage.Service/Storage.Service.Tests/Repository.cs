@@ -50,6 +50,32 @@ namespace Storage.Service.Tests
 	    }
 
 	    [Test]
+	    public async Task Replace()
+	    {
+			Assert.That(
+				async () => await Service.Replace(new Company {UniqueId ="c1", ETag="notreally"}), 
+				Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+
+	        var insertedCompany = await Service.Insert(new Company {Name ="c1"});
+
+	        var company = new Company { UniqueId = insertedCompany.UniqueId, ETag ="notreally" };
+
+			Assert.That(
+				async () => await Service.Replace(company), 
+				Throws.TypeOf<PreconditionFailedStorageException>());
+
+	        company.ETag = insertedCompany.ETag;
+
+			Assert.That(
+				async () => await Service.Replace(company), 
+				Throws.TypeOf<ValidationStorageException>());
+
+	        company.Name = "new c1";
+
+	        await Service.Replace(company);
+	    }
+
+	    [Test]
 	    public async Task Delete()
 	    {
 	        var company = new Company

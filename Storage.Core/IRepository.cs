@@ -31,9 +31,6 @@ namespace Amica.vNext.Storage
         /// </summary>
         /// <param name="obj">The object instance to be stored in the datastore.</param>	
         /// <returns>The replaced object</returns>
-		/// <exception cref="ObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
-		/// <exception cref="PreconditionFailedRepositoryException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
-		/// <exception cref="ValidationRepositoryException">If a validation error was returned by the service.</exception>
         Task<T> Replace<T>(T obj) where T : BaseModel;
     }
 }

@@ -73,9 +73,26 @@ namespace Amica.vNext.Storage
             }
         }
 
-        public Task<T> Replace<T>(T obj) where T : BaseModel
+        /// <summary>
+        /// Asyncronoulsy replaces an object into the datastore.
+        /// </summary>
+        /// <param name="obj">The object instance to be stored in the datastore.</param>	
+        /// <returns>The replaced object</returns>
+		/// <exception cref="RemoteObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
+		/// <exception cref="PreconditionFailedStorageException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
+		/// <exception cref="ValidationStorageException">If a validation error was returned by the service.</exception>
+        public async Task<T> Replace<T>(T obj) where T : BaseModel
         {
-            throw new NotImplementedException();
+            obj = await Remote.Replace(obj);
+            try
+            {
+                obj = await Local.Replace(obj);
+            }
+            catch (LocalObjectNotReplacedStorageException)
+            {
+				// TODO log this exception? Maybe throw it? Should never happen.
+            }
+            return obj;
         }
 
         public Task<IList<T>> Get<T>() where T : BaseModel

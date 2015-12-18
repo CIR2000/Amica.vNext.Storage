@@ -15,11 +15,4 @@ namespace Amica.vNext.Storage
 		public ObjectNotFoundStorageException(string id) : base($"Object with id \"{id}\" was not found.") { }
 		public ObjectNotFoundStorageException(BaseModel obj) : base($"Object with id \"{obj.UniqueId}\" was not found.") { }
     }
-
-    public class ObjectNotReplacedStorageException : StorageException
-    {
-        public ObjectNotReplacedStorageException (BaseModel obj) :
-			base($"Object with id \"{obj.UniqueId}\" could not be replaced.") { }
-    }
-
 }
