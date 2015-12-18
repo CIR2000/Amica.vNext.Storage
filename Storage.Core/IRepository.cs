@@ -24,8 +24,6 @@ namespace Amica.vNext.Storage
         /// Asyncronoulsy replaces an object into the the datastore.
         /// </summary>
         /// <param name="obj">The object to be updated.</param>	
-		/// <exception cref="ObjectNotFoundRepositoryException"> if <paramref name="obj"/> was not found.</exception>
-		/// <exception cref="PreconditionFailedRepositoryException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
         Task Delete<T>(T obj) where T : BaseModel;
 
         /// <summary>

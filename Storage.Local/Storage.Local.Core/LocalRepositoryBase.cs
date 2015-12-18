@@ -52,6 +52,11 @@ namespace Amica.vNext.Storage
             return obj;
         }
 
+        /// <summary>
+        /// Asyncronoulsy replaces an object into the the datastore.
+        /// </summary>
+        /// <param name="obj">The object to be updated.</param>	
+		/// <exception cref="LocalObjectNotDeletedStorageException"> if <paramref name="obj"/> was not found.</exception>
         public async Task Delete<T>(T obj) where T : BaseModel
         {
             var conn = await Connection();
@@ -59,7 +64,7 @@ namespace Amica.vNext.Storage
             if (i == 0)
 				// TODO should fail silently? Or raise DeleteException since
 				// we are not sure about the real failure?
-                throw new ObjectNotDeletedStorageException(obj);
+                throw new LocalObjectNotDeletedStorageException(obj);
         }
 
         public async Task<T> Replace<T>(T obj) where T : BaseModel

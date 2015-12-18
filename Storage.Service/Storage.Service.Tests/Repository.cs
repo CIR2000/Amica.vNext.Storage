@@ -31,6 +31,7 @@ namespace Storage.Service.Tests
 	        Assert.That(challenge.Created, Is.Not.EqualTo(DateTime.MinValue));
 	        Assert.That(challenge.Updated, Is.Not.EqualTo(DateTime.MinValue));
 	    }
+
 	    [Test]
 	    public async Task Insert()
 	    {
@@ -46,6 +47,33 @@ namespace Storage.Service.Tests
 	        Assert.That(updatedCompany.ETag, Is.Not.Null);
 	        Assert.That(updatedCompany.Created, Is.Not.EqualTo(DateTime.MinValue));
 	        Assert.That(updatedCompany.Updated, Is.Not.EqualTo(DateTime.MinValue));
+	    }
+
+	    [Test]
+	    public async Task Delete()
+	    {
+	        var company = new Company
+	        {
+	            UniqueId = "c1",
+	            Name = "c1",
+				ETag = "notreally"
+	        };
+
+	        Assert.That(
+	            async () => await Service.Delete(company),
+	            Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+
+            var updatedCompany = await Service.Insert(company);
+
+	        company.UniqueId = updatedCompany.UniqueId;
+
+	        Assert.That(
+	            async () => await Service.Delete(company),
+	            Throws.TypeOf<PreconditionFailedStorageException>());
+
+	        company.ETag = updatedCompany.ETag;
+
+	        await Service.Delete(company);
 	    }
 
     }

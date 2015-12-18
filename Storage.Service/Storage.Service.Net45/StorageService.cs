@@ -54,9 +54,23 @@ namespace Amica.vNext.Storage
             return obj;
         }
 
-        public Task Delete<T>(T obj) where T : BaseModel
+        /// <summary>
+        /// Asyncronoulsy replaces an object into the the datastore.
+        /// </summary>
+        /// <param name="obj">The object to be updated.</param>	
+		/// <exception cref="RemoteObjectNotFoundStorageException"> if <paramref name="obj"/> was not found.</exception>
+		/// <exception cref="PreconditionFailedStorageException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
+        public async Task Delete<T>(T obj) where T : BaseModel
         {
-            throw new NotImplementedException();
+            await Remote.Delete(obj);
+            try
+            {
+                await Local.Delete(obj);
+            }
+            catch (LocalObjectNotDeletedStorageException)
+            {
+				// TODO log this exception? Maybe throw it? Should never happen.
+            }
         }
 
         public Task<T> Replace<T>(T obj) where T : BaseModel

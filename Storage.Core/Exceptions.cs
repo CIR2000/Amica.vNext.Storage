@@ -22,10 +22,4 @@ namespace Amica.vNext.Storage
 			base($"Object with id \"{obj.UniqueId}\" could not be replaced.") { }
     }
 
-    public class ObjectNotDeletedStorageException : StorageException
-    {
-        public ObjectNotDeletedStorageException (BaseModel obj) :
-			base($"Object with id \"{obj.UniqueId}\" could not be deleted.") { }
-        
-    }
 }

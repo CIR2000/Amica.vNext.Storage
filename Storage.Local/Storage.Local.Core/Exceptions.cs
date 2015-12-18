@@ -10,4 +10,10 @@ namespace Amica.vNext.Storage
         public LocalObjectNotFoundStorageException(string id) : base(id) { }
         public LocalObjectNotFoundStorageException(BaseModel obj) : base(obj) { }
     }
+    public class LocalObjectNotDeletedStorageException : StorageException
+    {
+        public LocalObjectNotDeletedStorageException (BaseModel obj) :
+			base($"Object with id \"{obj.UniqueId}\" could not be deleted.") { }
+        
+    }
 }
