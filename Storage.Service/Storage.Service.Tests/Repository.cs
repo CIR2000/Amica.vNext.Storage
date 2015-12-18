@@ -10,6 +10,28 @@ namespace Storage.Service.Tests
     public class Repository : TestBase
 	{
 	    [Test]
+	    public async Task Get()
+	    {
+	        var company = new Company
+	        {
+	            UniqueId = "c1",
+	            Name = "c1",
+	        };
+
+	        Assert.That(
+	            async () => await Service.Get(company),
+	            Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+
+	        company = await Service.Insert(company);
+
+	        var challenge = new Company {UniqueId = company.UniqueId};
+
+			challenge = await Service.Get(challenge);
+	        Assert.That(challenge.ETag, Is.Not.Null);
+	        Assert.That(challenge.Created, Is.Not.EqualTo(DateTime.MinValue));
+	        Assert.That(challenge.Updated, Is.Not.EqualTo(DateTime.MinValue));
+	    }
+	    [Test]
 	    public async Task Insert()
 	    {
 	        Assert.That(
