@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Amica.vNext.Models;
 using Amica.vNext.Storage;
-using System.Net.Http;
 
 namespace Storage.Service.Tests
 {
@@ -13,15 +12,18 @@ namespace Storage.Service.Tests
 	    [Test]
 	    public async Task Insert()
 	    {
+	        Assert.That(
+	            async () => await Service.Insert(new Company()),
+	            Throws.TypeOf<ValidationStorageException>());
 
-	        var company = new Company
-	        {
-	            Name = "c1"
-	        };
+	        var company = new Company { Name = "c1" };
 
 	        var updatedCompany = await Service.Insert(company);
 
-	        Assert.That(updatedCompany.UniqueId, Is.Not.Empty);
+	        Assert.That(updatedCompany.UniqueId, Is.Not.Null);
+	        Assert.That(updatedCompany.ETag, Is.Not.Null);
+	        Assert.That(updatedCompany.Created, Is.Not.EqualTo(DateTime.MinValue));
+	        Assert.That(updatedCompany.Updated, Is.Not.EqualTo(DateTime.MinValue));
 	    }
 
     }
