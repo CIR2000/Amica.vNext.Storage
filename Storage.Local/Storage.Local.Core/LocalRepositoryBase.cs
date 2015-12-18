@@ -120,7 +120,17 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
-#endregion
+        /// <summary>
+        /// Asyncronously delete all objects. Use with caution.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        public async Task Delete<T>() where T : BaseModel
+        {
+            var conn = await Connection();
+            await conn.DeleteAllAsync<T>();
+        }
+
+        #endregion
 
         /// <summary>
         /// Returns the appropriate platform connection.

@@ -49,11 +49,9 @@ namespace Amica.vNext.Storage
 		/// <exception cref="ValidationStorageException">If a validation error was returned by the service.</exception>
         public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
-            // 1. attempt to insert obj remotely
-			// 2. if not successfull, report and exit
-			// 3. insert locally
-			// 4. return object (now with fresh metadata)
-            throw new NotImplementedException();
+            obj = await Remote.Insert(obj);
+            await Local.Insert(obj);
+            return obj;
         }
 
         public Task Delete<T>(T obj) where T : BaseModel
@@ -99,6 +97,16 @@ namespace Amica.vNext.Storage
         public Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Asyncronously delete all objects. Use with caution.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        public async Task Delete<T>() where T : BaseModel
+        {
+            await Remote.Delete<T>();
+            await Local.Delete<T>();
         }
 
         #region "Properties"

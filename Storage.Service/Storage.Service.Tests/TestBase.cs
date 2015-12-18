@@ -1,4 +1,5 @@
 ﻿using System;
+using Amica.vNext.Models;
 using NUnit.Framework;
 using Amica.vNext.Storage;
 
@@ -15,6 +16,8 @@ namespace Storage.Service.Tests
             Service.ClientId = Environment.GetEnvironmentVariable("SentinelClientId");
             Service.Username = Environment.GetEnvironmentVariable("SentinelUsername");
             Service.Password = Environment.GetEnvironmentVariable("SentinelPassword");
+
+			Service.Delete<Company>().Wait();
         }
 
 	    [TearDown]

@@ -63,5 +63,11 @@ namespace Amica.vNext.Storage
         /// <param name="objs">Unique ids of the objects to be deted.</param>
         /// <returns>The unique ids of deleted objects.</returns>
         Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel;
+
+        /// <summary>
+        /// Asyncronously delete all objects. Use with caution.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        Task Delete<T>() where T : BaseModel;
     }
 }

@@ -243,6 +243,21 @@ namespace Amica.vNext.Storage
             }
             return retValue;
         }
+
+        /// <summary>
+        /// Asyncronously delete all objects. Use with caution.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        public async Task Delete<T>() where T : BaseModel
+        {
+            await RefreshClientSettings<T>();
+            HttpResponseMessage = await _eve.DeleteAsync();
+			if (await ShouldRepeatRequest())
+					await _eve.DeleteAsync();
+
+            HttpResponseMessage = _eve.HttpResponse;
+        }
+
         public void Dispose()
         {
             _eve?.Dispose();
