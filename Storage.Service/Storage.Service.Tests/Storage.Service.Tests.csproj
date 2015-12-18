@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Storage.Local\Storage.Local.Tests\BaseModelComparer.cs">
+      <Link>BaseModelComparer.cs</Link>
+    </Compile>
     <Compile Include="BulkRepository.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Repository.cs" />

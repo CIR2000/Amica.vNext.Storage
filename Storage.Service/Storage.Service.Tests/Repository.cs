@@ -47,6 +47,18 @@ namespace Storage.Service.Tests
 	        Assert.That(updatedCompany.ETag, Is.Not.Null);
 	        Assert.That(updatedCompany.Created, Is.Not.EqualTo(DateTime.MinValue));
 	        Assert.That(updatedCompany.Updated, Is.Not.EqualTo(DateTime.MinValue));
+
+	        var remoteCompany = await StorageService.Remote.Get(updatedCompany);
+
+	        Assert.That(
+				remoteCompany, 
+					Is.EqualTo(updatedCompany).Using(new Local.Tests.BaseModelComparer()));
+
+	        var localCompany = await StorageService.Local.Get(updatedCompany);
+
+	        Assert.That(
+				localCompany, 
+					Is.EqualTo(remoteCompany).Using(new Local.Tests.BaseModelComparer()));
 	    }
 
 	    [Test]
@@ -72,7 +84,17 @@ namespace Storage.Service.Tests
 
 	        company.Name = "new c1";
 
-	        await Service.Replace(company);
+	        var replacedCompany = await Service.Replace(company);
+
+	        var remoteCompany = await StorageService.Remote.Get(replacedCompany);
+
+	        Assert.That(remoteCompany, Is.Not.Null);
+	        Assert.That(remoteCompany, Is.EqualTo(replacedCompany).Using(new Local.Tests.BaseModelComparer()));
+
+	        var localCompany = await StorageService.Local.Get(replacedCompany);
+
+	        Assert.That(localCompany, Is.Not.Null);
+	        Assert.That(localCompany, Is.EqualTo(remoteCompany).Using(new Local.Tests.BaseModelComparer()));
 	    }
 
 	    [Test]
@@ -87,7 +109,7 @@ namespace Storage.Service.Tests
 
 	        Assert.That(
 	            async () => await Service.Delete(company),
-	            Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+				    Throws.TypeOf<RemoteObjectNotFoundStorageException>());
 
             var updatedCompany = await Service.Insert(company);
 
@@ -95,11 +117,19 @@ namespace Storage.Service.Tests
 
 	        Assert.That(
 	            async () => await Service.Delete(company),
-	            Throws.TypeOf<PreconditionFailedStorageException>());
+				    Throws.TypeOf<PreconditionFailedStorageException>());
 
 	        company.ETag = updatedCompany.ETag;
 
 	        await Service.Delete(company);
+
+	        Assert.That(
+	            async () => await StorageService.Remote.Get(company),
+	            Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+
+	        Assert.That(
+	            async () => await StorageService.Local.Get(company),
+	            Throws.TypeOf<LocalObjectNotFoundStorageException>());
 	    }
 
     }

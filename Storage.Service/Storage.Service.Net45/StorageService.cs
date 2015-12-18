@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
+
+[assembly:InternalsVisibleTo("Storage.Service.Tests")]
 
 namespace Amica.vNext.Storage
 {
     public class StorageService : ILocalBulkRepository, IRemoteRepository
     {
-        private static readonly LocalRepository Local = new LocalRepository();
-        private static readonly RemoteRepository Remote = new RemoteRepository();
+        internal static readonly LocalRepository Local = new LocalRepository();
+        internal static readonly RemoteRepository Remote = new RemoteRepository();
 
         public void Dispose()
         {
@@ -31,6 +34,13 @@ namespace Amica.vNext.Storage
 			catch (LocalObjectNotFoundStorageException) { }
 
             var lastUpdated = obj.Updated;
+
+			// TODO pick a behavior when remote does not have the object
+			// while local does. Delete from local and raise not found,
+			// or return th elocal we we are doing now?
+
+			// TODO we should be using the show_deleted option, download
+			// the object and, if it is deleted, act accordingly.
 
 			// Will eventually throw RemoteObjectNotFoundException.
 			obj = await Remote.Get(obj);
