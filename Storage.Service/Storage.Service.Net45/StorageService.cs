@@ -8,16 +8,18 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    public class StorageService : ILocalBulkRepository, IRemoteRepository
+    public class StorageService :  IRemoteRepository
     {
-        internal static readonly LocalRepository Local = new LocalRepository();
-        internal static readonly RemoteRepository Remote = new RemoteRepository();
+        internal readonly LocalRepository Local = new LocalRepository();
+        internal readonly RemoteRepository Remote = new RemoteRepository();
 
         public void Dispose()
         {
             Local.Dispose();
             Remote.Dispose();
         }
+
+        #region "IRepository"
 
         /// <summary>
         /// Asyncronoulsy  return a refreshed object from the datastore.
@@ -35,12 +37,8 @@ namespace Amica.vNext.Storage
 
             var lastUpdated = obj.Updated;
 
-			// TODO pick a behavior when remote does not have the object
-			// while local does. Delete from local and raise not found,
-			// or return th elocal we we are doing now?
-
-			// TODO we should be using the show_deleted option, download
-			// the object and, if it is deleted, act accordingly.
+			// TODO if remote has been deleted, delete from local and raise an exception
+			// this will require updating Eve.NET to properly handlse soft deltes
 
 			// Will eventually throw RemoteObjectNotFoundException.
 			obj = await Remote.Get(obj);
@@ -104,10 +102,41 @@ namespace Amica.vNext.Storage
             }
             return obj;
         }
+        #endregion
 
-        public Task<IList<T>> Get<T>() where T : BaseModel
+        #region "IBulkRepository"
+
+        /// <summary>
+        /// Asyncronously retrieve all objects of type T. This implementation uses an
+        /// internal cache to provide optimum performance, but can still heavy on large
+        /// datasets.
+        /// </summary>
+        public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-            throw new NotImplementedException();
+            var toInsertOrReplace = new List<T>();
+
+			var lastModified = await Local.LastModified<T>();
+            var remotes = await Remote.Get<T>(lastModified);
+
+
+            foreach (var obj in remotes)
+            {
+                if (obj.Deleted)
+                {
+                    try
+                    {
+                        await Local.Delete(obj);
+                    }
+                    catch (LocalObjectNotDeletedStorageException) { }
+                }
+                else
+                {
+                    toInsertOrReplace.Add(obj);
+                }
+            }
+            await Local.InsertOrReplace(toInsertOrReplace);
+
+            return await Local.Get<T>();
         }
 
         public Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
@@ -149,6 +178,8 @@ namespace Amica.vNext.Storage
             await Remote.Delete<T>();
             await Local.Delete<T>();
         }
+
+        #endregion
 
         #region "Properties"
         public string Username

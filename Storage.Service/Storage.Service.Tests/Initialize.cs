@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace Storage.Service.Tests
 {
-	[TestFixture]
     public class Initialize
 	{
 	    private static readonly StorageService Service = new StorageService();
@@ -28,10 +27,12 @@ namespace Storage.Service.Tests
 				Is.EqualTo(Environment.GetEnvironmentVariable("SentinelClientId")));
 
 	        Assert.That(
-	            Service.Username, Is.Null);
+	            Service.Username, 
+				Is.Null);
 
 	        Assert.That(
-	            Service.Password, Is.Null);
+	            Service.Password,
+                Is.Null);
 	    }
 
 	    [Test]

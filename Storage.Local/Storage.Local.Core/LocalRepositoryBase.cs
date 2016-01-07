@@ -139,6 +139,29 @@ namespace Amica.vNext.Storage
 
         #endregion
 
+#region "ILocalBulkRepository"
+
+		/// <summary>
+        /// Asyncronoulsy returns  the last datetime at which the collection has been modified.
+        /// </summary>
+        /// <typeparam name="T">Type of object collection to investigate.</typeparam>
+        /// <returns>A DateTime expressing the last time the collection has been modified.</returns>
+        public async Task<DateTime> LastModified<T>() where T : BaseModel
+        {
+            var conn = await Connection();
+
+		    var query = await conn.Table<T>().OrderByDescending(obj => obj.Updated).FirstOrDefaultAsync();
+		    return (query == default(T) ? DateTime.MinValue : query.Updated);
+        }
+
+        public async Task InsertOrReplace<T>(IEnumerable<T> objs) where T : BaseModel
+        {
+            var conn = await Connection();
+            await conn.InsertOrReplaceAllAsync(objs);
+        }
+
+#endregion
+
         /// <summary>
         /// Returns the appropriate platform connection.
         /// </summary>

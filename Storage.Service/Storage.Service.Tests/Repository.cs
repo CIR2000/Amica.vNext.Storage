@@ -4,6 +4,9 @@ using NUnit.Framework;
 using Amica.vNext.Models;
 using Amica.vNext.Storage;
 
+// TODO We are linking BaseModelComparer from Storage.Local.Tests. Maybe we should
+// move that class to Storage.Core, or some new Storage.Tests.Core?
+
 namespace Storage.Service.Tests
 {
 	[TestFixture]
@@ -48,13 +51,13 @@ namespace Storage.Service.Tests
 	        Assert.That(updatedCompany.Created, Is.Not.EqualTo(DateTime.MinValue));
 	        Assert.That(updatedCompany.Updated, Is.Not.EqualTo(DateTime.MinValue));
 
-	        var remoteCompany = await StorageService.Remote.Get(updatedCompany);
+	        var remoteCompany = await Service.Remote.Get(updatedCompany);
 
 	        Assert.That(
 				remoteCompany, 
 					Is.EqualTo(updatedCompany).Using(new Local.Tests.BaseModelComparer()));
 
-	        var localCompany = await StorageService.Local.Get(updatedCompany);
+	        var localCompany = await Service.Local.Get(updatedCompany);
 
 	        Assert.That(
 				localCompany, 
@@ -86,12 +89,12 @@ namespace Storage.Service.Tests
 
 	        var replacedCompany = await Service.Replace(company);
 
-	        var remoteCompany = await StorageService.Remote.Get(replacedCompany);
+	        var remoteCompany = await Service.Remote.Get(replacedCompany);
 
 	        Assert.That(remoteCompany, Is.Not.Null);
 	        Assert.That(remoteCompany, Is.EqualTo(replacedCompany).Using(new Local.Tests.BaseModelComparer()));
 
-	        var localCompany = await StorageService.Local.Get(replacedCompany);
+	        var localCompany = await Service.Local.Get(replacedCompany);
 
 	        Assert.That(localCompany, Is.Not.Null);
 	        Assert.That(localCompany, Is.EqualTo(remoteCompany).Using(new Local.Tests.BaseModelComparer()));
@@ -124,11 +127,11 @@ namespace Storage.Service.Tests
 	        await Service.Delete(company);
 
 	        Assert.That(
-	            async () => await StorageService.Remote.Get(company),
+	            async () => await Service.Remote.Get(company),
 	            Throws.TypeOf<RemoteObjectNotFoundStorageException>());
 
 	        Assert.That(
-	            async () => await StorageService.Local.Get(company),
+	            async () => await Service.Local.Get(company),
 	            Throws.TypeOf<LocalObjectNotFoundStorageException>());
 	    }
 

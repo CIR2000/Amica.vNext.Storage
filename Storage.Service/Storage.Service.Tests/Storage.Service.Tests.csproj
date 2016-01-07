@@ -48,10 +48,10 @@
       <Link>BaseModelComparer.cs</Link>
     </Compile>
     <Compile Include="BulkRepository.cs" />
-    <Compile Include="TestBase.cs" />
-    <Compile Include="Repository.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

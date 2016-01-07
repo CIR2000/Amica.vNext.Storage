@@ -5,8 +5,7 @@ using Amica.vNext.Storage;
 
 namespace Storage.Service.Tests
 {
-    [TestFixture]
-    public class TestBase
+    public abstract class TestBase
 	{
 	    protected static readonly StorageService Service = new StorageService();
 
@@ -17,7 +16,7 @@ namespace Storage.Service.Tests
             Service.Username = Environment.GetEnvironmentVariable("SentinelUsername");
             Service.Password = Environment.GetEnvironmentVariable("SentinelPassword");
 
-			Service.Delete<Company>().Wait();
+            Service.Delete<Company>().Wait();
         }
 
 	    [TearDown]
