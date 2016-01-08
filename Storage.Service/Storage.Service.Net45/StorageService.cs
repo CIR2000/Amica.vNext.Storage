@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
@@ -114,38 +113,26 @@ namespace Amica.vNext.Storage
         /// </summary>
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-			var lastModified = await Local.LastModified<T>();
-            var remotes = await Remote.Get<T>(lastModified);
-
-            var toInsertOrReplace = new List<T>();
-            var toDelete = new List<T>();
-
-            foreach (var obj in remotes)
-            {
-                if (obj.Deleted)
-                    toDelete.Add(obj);
-                else
-                    toInsertOrReplace.Add(obj);
-            }
-            await Local.Delete<T>(toDelete);
-            await Local.InsertOrReplace(toInsertOrReplace);
-
+            await SyncRemoteWithLocal<T>();
             return await Local.Get<T>();
         }
 
-        public Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
+        public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
         {
-            throw new NotImplementedException();
+            await SyncRemoteWithLocal<T>(companyId);
+            return await Local.Get<T>(companyId);
         }
 
-        public Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
-            throw new NotImplementedException();
+            await SyncRemoteWithLocal<T>();
+            return await Local.Get<T>(ifModifiedSince);
         }
 
-        public Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
-            throw new NotImplementedException();
+            await SyncRemoteWithLocal<T>(companyId);
+            return await Local.Get<T>(ifModifiedSince, companyId);
         }
 
         public Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
@@ -173,6 +160,34 @@ namespace Amica.vNext.Storage
             await Local.Delete<T>();
         }
 
+        private async Task SyncRemoteWithLocal<T>() where T : BaseModel
+        {
+			var lastModified = await Local.LastModified<T>();
+			var remotes = await Remote.Get<T>(lastModified);
+            await SyncRemoteWithLocal(remotes);
+        }
+        private async Task SyncRemoteWithLocal<T>(string companyId) where T : BaseModelWithCompanyId
+        {
+			var lastModified = await Local.LastModified<T>();
+			var remotes = await Remote.Get<T>(lastModified, companyId);
+            await SyncRemoteWithLocal(remotes);
+        }
+
+        private async Task SyncRemoteWithLocal<T>(IEnumerable<T> remotes) where T : BaseModel
+        {
+            var toInsertOrReplace = new List<T>();
+            var toDelete = new List<T>();
+
+            foreach (var obj in remotes)
+            {
+                if (obj.Deleted)
+                    toDelete.Add(obj);
+                else
+                    toInsertOrReplace.Add(obj);
+            }
+            await Local.Delete<T>(toDelete);
+            await Local.InsertOrReplace(toInsertOrReplace);
+        }
         #endregion
 
         #region "Properties"
