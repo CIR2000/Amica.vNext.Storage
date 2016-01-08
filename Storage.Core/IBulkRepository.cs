@@ -51,8 +51,7 @@ namespace Amica.vNext.Storage
         /// objects are rejected by the service, the whole batch is reject and no
         /// document is stored on the service.
         /// </summary>
-        /// <returns>The objects inserted.</returns>
-        /// <exception cref="ValidationRepositoryException">If one or more objects has failed validation.</exception>
+        /// <returns>The objects to be inserted.</returns>
         Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel;
 
         /// <summary>

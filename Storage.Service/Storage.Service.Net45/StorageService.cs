@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
@@ -113,12 +114,11 @@ namespace Amica.vNext.Storage
         /// </summary>
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-            var toInsertOrReplace = new List<T>();
-            var toDelete = new List<T>();
-
 			var lastModified = await Local.LastModified<T>();
             var remotes = await Remote.Get<T>(lastModified);
 
+            var toInsertOrReplace = new List<T>();
+            var toDelete = new List<T>();
 
             foreach (var obj in remotes)
             {
@@ -153,9 +153,9 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
-        public Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
+        public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            throw new NotImplementedException();
+            return await Local.Insert<T>(await Remote.Insert(objs));
         }
 
         public Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel

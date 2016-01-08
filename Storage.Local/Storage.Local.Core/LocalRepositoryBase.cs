@@ -117,9 +117,15 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
-        public Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
+        /// <summary>
+        /// Asyncronously insert several objects into the datastore. 
+        /// </summary>
+        /// <returns>The inserted object.</returns>
+        public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            throw new NotImplementedException();
+            var conn = await Connection();
+            await conn.InsertAllAsync(objs);
+            return (IList<T>)objs;
         }
 
         /// <summary>
