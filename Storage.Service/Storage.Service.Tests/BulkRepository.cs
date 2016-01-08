@@ -11,7 +11,7 @@ namespace Storage.Service.Tests
     public class BulkRepository : TestBase
 	{
         [Test]
-        public async Task Sync()
+        public async Task Get()
         {
             Assert.That(async () => await Service.Get<Company>(), Is.Empty);
             Assert.That(async () => await Service.Local.Get<Company>(), Is.Empty);

@@ -114,6 +114,7 @@ namespace Amica.vNext.Storage
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
             var toInsertOrReplace = new List<T>();
+            var toDelete = new List<T>();
 
 			var lastModified = await Local.LastModified<T>();
             var remotes = await Remote.Get<T>(lastModified);
@@ -122,18 +123,11 @@ namespace Amica.vNext.Storage
             foreach (var obj in remotes)
             {
                 if (obj.Deleted)
-                {
-                    try
-                    {
-                        await Local.Delete(obj);
-                    }
-                    catch (LocalObjectNotDeletedStorageException) { }
-                }
+                    toDelete.Add(obj);
                 else
-                {
                     toInsertOrReplace.Add(obj);
-                }
             }
+            await Local.Delete<T>(toDelete);
             await Local.InsertOrReplace(toInsertOrReplace);
 
             return await Local.Get<T>();

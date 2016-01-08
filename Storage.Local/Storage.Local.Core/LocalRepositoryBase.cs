@@ -122,9 +122,23 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
-        public Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
+        /// <summary>
+        /// Asyncronously delete a number of objects. If any object could not be found or deleted,
+        /// it will be skipped and no exception will be raised.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        /// <param name="objs">Objects to be deleted.</param>
+        /// <returns>The unique ids of deleted objects.</returns>
+        public async Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            throw new NotImplementedException();
+            var conn = await Connection();
+            var deleted = new List<string>();
+
+            foreach (var obj in objs)
+                if (await conn.DeleteAsync(obj) > 0)
+                    deleted.Add(obj.UniqueId);
+
+            return deleted;
         }
 
         /// <summary>
