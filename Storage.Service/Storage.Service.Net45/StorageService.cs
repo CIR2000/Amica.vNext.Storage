@@ -117,21 +117,39 @@ namespace Amica.vNext.Storage
             return await Local.Get<T>();
         }
 
+        /// <summary>
+        /// Asyncronously retrieve all objects of type T. This implementation uses an
+        /// internal cache to provide optimum performance, but can still heavy on large
+        /// datasets.
+		/// </summary>
+        /// <param name="companyId">Company Id.</param>
+        /// <returns>All objects belonging to company <paramref name="companyId"/>.</returns>
         public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
         {
-            await SyncRemoteWithLocal<T>(companyId);
+            await SyncRemoteWithLocal<T>(null, companyId);
             return await Local.Get<T>(companyId);
         }
 
+        /// <summary>
+        /// Asyncronously retrieve all objects which have changed since a certain datetime.
+        /// </summary>
+        /// <param name="ifModifiedSince">If modified since.</param>
+        /// <returns>All objects changed since <paramref name="ifModifiedSince"/></returns>
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
-            await SyncRemoteWithLocal<T>();
+            await SyncRemoteWithLocal<T>(ifModifiedSince);
             return await Local.Get<T>(ifModifiedSince);
         }
 
+        /// <summary>
+        /// Asyncronously retrieve all objects which have changed since a certain datetime.
+        /// </summary>
+        /// <param name="ifModifiedSince">If modified since.</param>
+        /// <param name="companyId">Company Id.</param>
+        /// <returns>All objects belonging to company <paramref name="companyId"/> which have changed since <paramref name="ifModifiedSince"/></returns>
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
-            await SyncRemoteWithLocal<T>(companyId);
+            await SyncRemoteWithLocal<T>(ifModifiedSince, companyId);
             return await Local.Get<T>(ifModifiedSince, companyId);
         }
 
@@ -140,6 +158,12 @@ namespace Amica.vNext.Storage
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Asyncronously insert several objects into the datastore. If one or more
+        /// objects are rejected by the service, the whole batch is reject and no
+        /// document is stored on the service.
+        /// </summary>
+        /// <returns>The inserted objects.</returns>
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
             return await Local.Insert<T>(await Remote.Insert(objs));
@@ -160,20 +184,51 @@ namespace Amica.vNext.Storage
             await Local.Delete<T>();
         }
 
-        private async Task SyncRemoteWithLocal<T>() where T : BaseModel
+        /// <summary>
+        /// Syncronizes remote and local storages.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="ifModifiedSince">If modified since.</param>
+        /// <returns></returns>
+        private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince = null) where T : BaseModel
         {
-			var lastModified = await Local.LastModified<T>();
-			var remotes = await Remote.Get<T>(lastModified);
-            await SyncRemoteWithLocal(remotes);
-        }
-        private async Task SyncRemoteWithLocal<T>(string companyId) where T : BaseModelWithCompanyId
-        {
-			var lastModified = await Local.LastModified<T>();
-			var remotes = await Remote.Get<T>(lastModified, companyId);
-            await SyncRemoteWithLocal(remotes);
+			var remotes = await Remote.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince));
+            await UpdateLocalWithRemotes(remotes);
         }
 
-        private async Task SyncRemoteWithLocal<T>(IEnumerable<T> remotes) where T : BaseModel
+        /// <summary>
+        /// Syncronizes remote and local storages.
+        /// </summary>
+        /// <typeparam name="T">Object type</typeparam>
+        /// <param name="ifModifiedSince">If modified since.</param>
+        /// <param name="companyId">Company Id.</param>
+        /// <returns></returns>
+        private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
+        {
+			var remotes = await Remote.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince), companyId);
+            await UpdateLocalWithRemotes(remotes);
+        }
+
+		/// <summary>
+        /// Will usually return the datetime of the last modified local object.
+        /// <paramref name="ifModifiedSince"/> is returned if it predates last modified object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ifModifiedSince"></param>
+        /// <returns>The optimal If-Modified-Since value (a DateTime).</returns>
+        private async Task<DateTime> OptimizedIfModifiedSince<T>(DateTime? ifModifiedSince) where T : BaseModel
+       {
+			var lastModified = await Local.LastModified<T>();
+            return ifModifiedSince != null && ifModifiedSince < lastModified ? (DateTime)ifModifiedSince : lastModified;
+            
+        }
+
+		/// <summary>
+        /// Updates local storage with upstream changes.
+        /// </summary>
+        /// <typeparam name="T">Objects type.</typeparam>
+        /// <param name="remotes">Upstream changes.</param>
+        private async Task UpdateLocalWithRemotes<T>(IEnumerable<T> remotes) where T : BaseModel
         {
             var toInsertOrReplace = new List<T>();
             var toDelete = new List<T>();

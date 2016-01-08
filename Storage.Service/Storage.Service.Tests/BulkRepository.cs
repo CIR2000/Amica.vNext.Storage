@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Amica.vNext.Models;
@@ -20,7 +21,7 @@ namespace Storage.Service.Tests
             Assert.That(async () => await Service.Local.Get<Company>(), Is.Empty);
 
 			// Test that adding an object will insert it both remotely and locally.
-	        var results = await PerformInsertAndValidate();
+	        var results = await InsertCompaniesAndValidate();
             var company1 = results[0];
             var company2 = results[1];
 
@@ -52,19 +53,30 @@ namespace Storage.Service.Tests
             obj = await Service.Local.Get(changedCompany2);
 	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
 
-			// Test that an object changed remotely is downloaded and updated locally.
+			// needed in order tomake sure that the change below will be stored at a different datetime
+			// from previous version of the same object
+            Thread.Sleep(1000);
+
+            // Test that an object changed remotely is downloaded and updated locally.
             company2 = changedCompany2;
             company2.Name = "changed remotely c2";
             changedCompany2 = await Service.Remote.Replace(company2);
             Assert.That(changedCompany2.UniqueId, Is.EqualTo(company2.UniqueId));
             Assert.That(changedCompany2.Created, Is.EqualTo(company2.Created));
             Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
-            //Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
+            Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
 
             challenge = await Service.Get<Company>();
 	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
             obj = await Service.Local.Get(changedCompany2);
 	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+
+            challenge = await Service.Get<Company>(changedCompany2.Updated.AddMilliseconds(1));
+            Assert.That(challenge.Count, Is.EqualTo(0));
+            challenge = await Service.Get<Company>(changedCompany2.Updated);
+            Assert.That(challenge.Count, Is.EqualTo(0));
+            challenge = await Service.Get<Company>(changedCompany2.Updated.AddMilliseconds(-1));
+            Assert.That(challenge.Count, Is.EqualTo(1));
         }
 
 	    [Test]
@@ -76,10 +88,10 @@ namespace Storage.Service.Tests
             Assert.That(async () => await Service.Get<Company>(), Is.Empty);
             Assert.That(async () => await Service.Local.Get<Company>(), Is.Empty);
 
-	        await PerformInsertAndValidate();
+	        await InsertCompaniesAndValidate();
 	    }
 
-	    private static async Task<IList<Company>> PerformInsertAndValidate()
+	    private static async Task<IList<Company>> InsertCompaniesAndValidate()
 	    {
 			var companies = new List<Company>
 			{
