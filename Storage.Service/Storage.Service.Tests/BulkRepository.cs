@@ -13,16 +13,82 @@ namespace Storage.Service.Tests
         [Test]
         public async Task Get()
         {
+			// Since Get also downloads new objects and deletes obsolete ones, we are
+			// going to test all possible scenarios here.
+
             Assert.That(async () => await Service.Get<Company>(), Is.Empty);
             Assert.That(async () => await Service.Local.Get<Company>(), Is.Empty);
 
 			// Test that adding an object will insert it both remotely and locally.
+	        var results = await PerformInsertAndValidate();
+            var company1 = results[0];
+            var company2 = results[1];
+
+			// Test that deleting an object will delete it from both local and remote services.
+            await Service.Delete(company1);
+            Assert.That(
+                async () => await Service.Local.Get(company1),
+                Throws.TypeOf<LocalObjectNotFoundStorageException>());
+            Assert.That(
+                async () => await Service.Remote.Get(company1),
+                Throws.TypeOf<RemoteObjectNotFoundStorageException>());
+
+            var challenge = await Service.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(1));
+	        Assert.That(challenge[0], Is.EqualTo(company2).Using(new Local.Tests.BaseModelComparer()));
+
+			// Test that a changed/replaced object is updated both remotely and locally.
+            company2.Name = "changed c2";
+            var changedCompany2 = await Service.Replace(company2);
+            Assert.That(changedCompany2.UniqueId, Is.EqualTo(company2.UniqueId));
+            Assert.That(changedCompany2.Created, Is.EqualTo(company2.Created));
+            Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
+            Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
+
+            var obj = await Service.Get(changedCompany2);
+	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            obj = await Service.Remote.Get(changedCompany2);
+	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            obj = await Service.Local.Get(changedCompany2);
+	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+
+			// Test that an object changed remotely is downloaded and updated locally.
+            company2 = changedCompany2;
+            company2.Name = "changed remotely c2";
+            changedCompany2 = await Service.Remote.Replace(company2);
+            Assert.That(changedCompany2.UniqueId, Is.EqualTo(company2.UniqueId));
+            Assert.That(changedCompany2.Created, Is.EqualTo(company2.Created));
+            Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
+            //Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
+
+            challenge = await Service.Get<Company>();
+	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            obj = await Service.Local.Get(changedCompany2);
+	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+        }
+
+	    [Test]
+	    public async Task Insert()
+	    {
+			// Since Get also downloads new objects and deletes obsolete ones, we are
+			// going to test all possible scenarios here.
+
+            Assert.That(async () => await Service.Get<Company>(), Is.Empty);
+            Assert.That(async () => await Service.Local.Get<Company>(), Is.Empty);
+
+	        await PerformInsertAndValidate();
+	    }
+
+	    private static async Task<IList<Company>> PerformInsertAndValidate()
+	    {
 			var companies = new List<Company>
 			{
 			    new Company { Name = "c1" },
                 new Company { Name = "c2" }
 			};
-            var results = await Service.Insert<Company>(companies);
+
+            var results =await Service.Insert<Company>(companies);
+
             var company1 = results[0];
             var company2 = results[1];
 
@@ -44,33 +110,7 @@ namespace Storage.Service.Tests
             Assert.That(localChallenge.Count, Is.EqualTo(2));
 	        Assert.That(localChallenge[0], Is.EqualTo(company1).Using(new Local.Tests.BaseModelComparer()));
 	        Assert.That(localChallenge[1], Is.EqualTo(company2).Using(new Local.Tests.BaseModelComparer()));
-
-			// Test that deleting an object will delete it from both local and remote services.
-            await Service.Delete(company1);
-            Assert.That(
-                async () => await Service.Local.Get(company1),
-                Throws.TypeOf<LocalObjectNotFoundStorageException>());
-            Assert.That(
-                async () => await Service.Remote.Get(company1),
-                Throws.TypeOf<RemoteObjectNotFoundStorageException>());
-            challenge = await Service.Get<Company>();
-            Assert.That(challenge.Count, Is.EqualTo(1));
-	        Assert.That(challenge[0], Is.EqualTo(company2).Using(new Local.Tests.BaseModelComparer()));
-
-			// Test that a changed/replaced object is updated both remotely and locally.
-            company2.Name = "changed c2";
-            var changedCompany2 = await Service.Replace(company2);
-            Assert.That(changedCompany2.UniqueId, Is.EqualTo(company2.UniqueId));
-            Assert.That(changedCompany2.Created, Is.EqualTo(company2.Created));
-            Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
-            Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
-
-            var obj = await Service.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-            obj = await Service.Remote.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-            obj = await Service.Local.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-        }
+            return results;
+	    }
     }
 }
