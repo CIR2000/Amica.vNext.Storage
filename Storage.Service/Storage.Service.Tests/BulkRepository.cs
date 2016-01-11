@@ -23,14 +23,31 @@ namespace Storage.Service.Tests
 					}),
 	            Throws.TypeOf<NotImplementedException>());
 	    }
-	    [Test]
-	    public void GetByUniqueIds()
-	    {
-	        Assert.That(
-	            async () => await Service.Get<Country>(new List<string> {"one", "two"}),
-	            Throws.TypeOf<NotImplementedException>());
-	    }
         #endregion
+
+	    [Test]
+	    public async Task GetByUniqueIdList()
+	    {
+            var companies = await Service.Insert<Company>(
+                new List<Company> {
+                    new Company { Name = "c1" },
+                    new Company { Name = "c2" }
+                });
+
+	        var ids = new[]
+	        {
+	            companies[0].UniqueId,
+                "notreally",
+                companies[1].UniqueId
+	        };
+
+	        var challenge = await Service.Get<Company>(ids);
+            Assert.That(challenge.Count, Is.EqualTo(2));
+	        Assert.That(challenge.ContainsKey(companies[0].UniqueId), Is.True);
+	        Assert.That(challenge.ContainsKey(companies[1].UniqueId), Is.True);
+	        Assert.That(challenge[companies[0].UniqueId], Is.EqualTo(companies[0]).Using(new Local.Tests.BaseModelComparer()));
+	        Assert.That(challenge[companies[1].UniqueId], Is.EqualTo(companies[1]).Using(new Local.Tests.BaseModelComparer()));
+	    }
 
 	    [Test]
 	    public async Task Delete()

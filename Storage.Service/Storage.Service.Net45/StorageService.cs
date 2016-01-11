@@ -153,9 +153,16 @@ namespace Amica.vNext.Storage
             return await Local.Get<T>(ifModifiedSince, companyId);
         }
 
-        public Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
+        /// <summary>
+        /// Asyncronously get several objects from the datastore.
+        /// Eventual missing keys will be ignored and no exception will be raised.
+        /// </summary>
+        /// <param name="uniqueIds">The ids to look up in the datastore.</param>
+        /// <returns>The objects from the datastore.</returns>
+        public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
         {
-            throw new NotImplementedException();
+            await SyncRemoteWithLocal<T>();
+            return await Local.Get<T>(uniqueIds);
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 using SQLite.Net.Async;
@@ -112,9 +113,24 @@ namespace Amica.vNext.Storage
             return await conn.Table<T>().Where(v => v.Updated > ifModifiedSince && v.CompanyId.Equals(companyId)).ToListAsync();
         }
 
-        public Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
+        /// <summary>
+        /// Asyncronously get several objects from the datastore.
+        /// Eventual missing keys will be ignored and no exception will be raised.
+        /// </summary>
+        /// <param name="uniqueIds">The ids to look up in the datastore.</param>
+        /// <returns>The objects from the datastore.</returns>
+        public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
         {
-            throw new NotImplementedException();
+            var conn = await Connection();
+
+            var entityName = typeof(T).Name;
+            var idList = @"""" + string.Join(@""", """, uniqueIds) + @"""";
+
+			var query = $"SELECT * FROM {entityName} WHERE {"UniqueId"} IN ({idList})";
+
+            var result = await conn.QueryAsync<T>(query);
+
+            return result.ToDictionary(obj => obj.UniqueId);
         }
 
         /// <summary>
