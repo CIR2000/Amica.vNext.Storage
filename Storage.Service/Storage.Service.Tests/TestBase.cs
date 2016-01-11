@@ -17,6 +17,7 @@ namespace Storage.Service.Tests
             Service.Password = Environment.GetEnvironmentVariable("SentinelPassword");
 
             Service.Delete<Company>().Wait();
+            Service.Delete<Country>().Wait();
         }
 
 	    [TearDown]
