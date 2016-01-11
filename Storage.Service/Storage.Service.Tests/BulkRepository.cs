@@ -11,6 +11,26 @@ namespace Storage.Service.Tests
     public class BulkRepository : TestBase
 	{
 	    [Test]
+	    public void DeleteEnumeratedObjs()
+	    {
+	        Assert.That(
+	            async () => await Service.Delete<Country>(
+					new List<Country>
+					{
+					    new Country {Name = "c1" },
+						new Country {Name = "c2" }
+					}),
+	            Throws.TypeOf<NotImplementedException>());
+	    }
+	    [Test]
+	    public void GetByUniqueIds()
+	    {
+	        Assert.That(
+	            async () => await Service.Get<Country>(new List<string> {"one", "two"}),
+	            Throws.TypeOf<NotImplementedException>());
+
+	    }
+	    [Test]
 	    public async Task GetByCompanyId()
 	    {
 	        
