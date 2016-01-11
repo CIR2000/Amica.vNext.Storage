@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Amica.vNext.Models;
-using Amica.vNext.Storage;
 
 namespace Storage.Service.Tests
 {
@@ -27,16 +26,13 @@ namespace Storage.Service.Tests
 
 			// Test that deleting an object will delete it from both local and remote services.
             await Service.Delete(company1);
-            Assert.That(
-                async () => await Service.Local.Get(company1),
-                Throws.TypeOf<LocalObjectNotFoundStorageException>());
-            Assert.That(
-                async () => await Service.Remote.Get(company1),
-                Throws.TypeOf<RemoteObjectNotFoundStorageException>());
 
             var challenge = await Service.Get<Company>();
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(company2).Using(new Local.Tests.BaseModelComparer()));
+
+			// needed in order to make sure that the change below will be stored at a different datetime
+            Thread.Sleep(1000);
 
 			// Test that a changed/replaced object is updated both remotely and locally.
             company2.Name = "changed c2";
@@ -46,30 +42,26 @@ namespace Storage.Service.Tests
             Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
             Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
 
-            var obj = await Service.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-            obj = await Service.Remote.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-            obj = await Service.Local.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            challenge = await Service.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(1));
+	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            challenge = await Service.Local.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(1));
+	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
 
-			// needed in order tomake sure that the change below will be stored at a different datetime
-			// from previous version of the same object
+			// needed in order to make sure that the change below will be stored at a different datetime
             Thread.Sleep(1000);
 
             // Test that an object changed remotely is downloaded and updated locally.
             company2 = changedCompany2;
             company2.Name = "changed remotely c2";
             changedCompany2 = await Service.Remote.Replace(company2);
-            Assert.That(changedCompany2.UniqueId, Is.EqualTo(company2.UniqueId));
-            Assert.That(changedCompany2.Created, Is.EqualTo(company2.Created));
-            Assert.That(changedCompany2.ETag, Is.Not.EqualTo(company2.ETag));
-            Assert.That(changedCompany2.Updated, Is.Not.EqualTo(company2.Updated));
 
             challenge = await Service.Get<Company>();
 	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
-            obj = await Service.Local.Get(changedCompany2);
-	        Assert.That(obj, Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
+            challenge = await Service.Local.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(1));
+	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
 
             challenge = await Service.Get<Company>(changedCompany2.Updated.AddMilliseconds(1));
             Assert.That(challenge.Count, Is.EqualTo(0));
@@ -77,6 +69,7 @@ namespace Storage.Service.Tests
             Assert.That(challenge.Count, Is.EqualTo(0));
             challenge = await Service.Get<Company>(changedCompany2.Updated.AddMilliseconds(-1));
             Assert.That(challenge.Count, Is.EqualTo(1));
+	        Assert.That(challenge[0], Is.EqualTo(changedCompany2).Using(new Local.Tests.BaseModelComparer()));
         }
 
 	    [Test]
