@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
@@ -176,9 +177,21 @@ namespace Amica.vNext.Storage
             return await Local.Insert<T>(await Remote.Insert(objs));
         }
 
-        public Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
+        /// <summary>
+        /// Asyncronously delete a number of objects. If any object could not be found or deleted,
+        /// it will be skipped and no exception will be raised.
+        /// </summary>
+        /// <typeparam name="T">Type of objects to be deleted.</typeparam>
+        /// <param name="objs">Objects to be deleted.</param>
+        /// <returns>The unique ids of deleted objects.</returns>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+        public async Task<IList<string>> Delete<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            throw new NotImplementedException();
+			// TODO currently ignoring the chance that remote and local could un/successfully
+			// delete different objects (since both are silent on fail).
+
+            await Remote.Delete(objs);
+            return  await Local.Delete(objs);
         }
 
         /// <summary>

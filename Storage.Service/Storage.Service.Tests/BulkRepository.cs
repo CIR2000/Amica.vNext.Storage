@@ -10,23 +10,38 @@ namespace Storage.Service.Tests
 	[TestFixture]
     public class BulkRepository : TestBase
 	{
-        #region "NotImplementedExceptions"
         [Test]
-	    public void DeleteEnumeratedObjs()
+	    public async Task DeleteEnumeratedObjects()
 	    {
-	        Assert.That(
-	            async () => await Service.Delete<Country>(
-					new List<Country>
-					{
-					    new Country {Name = "c1" },
-						new Country {Name = "c2" }
-					}),
-	            Throws.TypeOf<NotImplementedException>());
+            var companies = await Service.Insert<Company>(
+                new List<Company> {
+                    new Company { Name = "c1" },
+                    new Company { Name = "c2" },
+                    new Company { Name = "c3" }
+                });
+
+            var challenge = await Service.Delete<Company>(
+				new List<Company>
+				{
+				    companies[0],
+					companies[1]
+				});
+
+            Assert.That(challenge.Count, Is.EqualTo(2));
+            Assert.That(challenge[0], Is.EqualTo(companies[0].UniqueId));
+            Assert.That(challenge[1], Is.EqualTo(companies[1].UniqueId));
+
+            var left = await Service.Get<Company>();
+            Assert.That(left.Count, Is.EqualTo(1));
+            Assert.That(left[0], Is.EqualTo(companies[2]).Using(new Local.Tests.BaseModelComparer()));
+
+            left = await Service.Local.Get<Company>();
+            Assert.That(left.Count, Is.EqualTo(1));
+            Assert.That(left[0], Is.EqualTo(companies[2]).Using(new Local.Tests.BaseModelComparer()));
 	    }
-        #endregion
 
 	    [Test]
-	    public async Task GetByUniqueIdList()
+	    public async Task GetByEnumeratedIds()
 	    {
             var companies = await Service.Insert<Company>(
                 new List<Company> {
