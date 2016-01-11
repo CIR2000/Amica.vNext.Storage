@@ -10,7 +10,8 @@ namespace Storage.Service.Tests
 	[TestFixture]
     public class BulkRepository : TestBase
 	{
-	    [Test]
+        #region "NotImplementedExceptions"
+        [Test]
 	    public void DeleteEnumeratedObjs()
 	    {
 	        Assert.That(
@@ -28,9 +29,26 @@ namespace Storage.Service.Tests
 	        Assert.That(
 	            async () => await Service.Get<Country>(new List<string> {"one", "two"}),
 	            Throws.TypeOf<NotImplementedException>());
-
 	    }
+        #endregion
+
 	    [Test]
+	    public async Task Delete()
+	    {
+            await Service.Insert<Company>(
+                new List<Company> {
+                    new Company { Name = "c1" },
+                    new Company { Name = "c2" }
+                });
+
+	        await Service.Delete<Company>();
+
+            var challenge = await Service.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(0));
+            challenge = await Service.Local.Get<Company>();
+            Assert.That(challenge.Count, Is.EqualTo(0));
+	    }
+        [Test]
 	    public async Task GetByCompanyId()
 	    {
 	        
