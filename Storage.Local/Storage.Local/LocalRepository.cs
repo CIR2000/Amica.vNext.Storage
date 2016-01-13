@@ -14,7 +14,7 @@ namespace Amica.vNext.Storage
 
         private SQLiteConnectionWithLock _lockedConnection;
         private SQLiteAsyncConnection _connection;
-		private string _repositoryDirectory;
+        private string _repositoryDirectory;
 
         protected LocalRepositoryBase()
         {
@@ -196,48 +196,11 @@ namespace Amica.vNext.Storage
             await conn.InsertOrReplaceAllAsync(objs);
         }
 
-#endregion
+        #endregion
 
-        /// <summary>
-        /// Returns the appropriate platform connection.
-        /// </summary>
-        /// <returns>The platform connection.</returns>
-        //protected abstract SQLiteAsyncConnection PlatformConnection();
-
-        public string RepositoryDirectory {
-		    get
-		    {
-		        if (_repositoryDirectory != null) return _repositoryDirectory;
-
-		        RepositoryDirectory = DefaultRepositoryDirectory();
-		        return _repositoryDirectory;
-		    }
-		    set
-		    {
-		        _repositoryDirectory = value;
-		    }
-        }
-
-		public string RepositoryFileName { get; set; }
-        public string RepositoryFullPath => Path.Combine(RepositoryDirectory, RepositoryFileName);
-
-        private string DefaultRepositoryDirectory()
-        {
-			if (ApplicationName == null)
-				throw new ArgumentNullException(nameof(ApplicationName));
-
-			return Path.Combine(
-				Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-				Path.Combine(ApplicationName, "LocalRepository"));
-        }
-
-        protected abstract SQLiteConnectionWithLock PlatformLockedConnection();
-
-        private async Task<SQLiteAsyncConnection> Connection()
+        protected virtual async Task<SQLiteAsyncConnection> Connection()
         {
             if (_connection != null) return _connection;
-
-            Directory.CreateDirectory(RepositoryDirectory);
 
             _lockedConnection = PlatformLockedConnection();
             _connection = new SQLiteAsyncConnection(() => _lockedConnection);
@@ -247,6 +210,28 @@ namespace Amica.vNext.Storage
 
             return _connection;
         }
+
+        public string RepositoryDirectory
+        {
+            get
+            {
+                if (_repositoryDirectory != null) return _repositoryDirectory;
+
+                RepositoryDirectory = DefaultRepositoryDirectory();
+                return _repositoryDirectory;
+            }
+            set
+            {
+                _repositoryDirectory = value;
+            }
+        }
+
+        public string RepositoryFileName { get; set; }
+        public string RepositoryFullPath => Path.Combine(RepositoryDirectory, RepositoryFileName);
+
+        protected abstract string DefaultRepositoryDirectory();
+
+        protected abstract SQLiteConnectionWithLock PlatformLockedConnection();
 
         public string CompanyId { get; set; }
 

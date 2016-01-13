@@ -16,7 +16,7 @@ namespace Storage.Local.Tests
 
             Assert.That(
                 async () => await Repo.Get(challenge),
-					Throws.TypeOf<ObjectNotFoundRepositoryException>());
+					Throws.TypeOf<LocalObjectNotFoundStorageException>());
 
             await Repo.Insert(challenge);
 
@@ -47,11 +47,11 @@ namespace Storage.Local.Tests
 
             Assert.That(
                 async () => await Repo.Delete(challenge),
-					Throws.TypeOf<ObjectNotDeletedRepositoryException>());
+					Throws.TypeOf<LocalObjectNotDeletedStorageException>());
 
             Assert.That(
                 async () => await Repo.Get(challenge),
-				    Throws.TypeOf<ObjectNotFoundRepositoryException>());
+				    Throws.TypeOf<LocalObjectNotFoundStorageException>());
 	    }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Storage.Local.Tests
 
             Assert.That(
                 async () => await Repo.Replace(challenge),
-                Throws.TypeOf<ObjectNotReplacedRepositoryException>());
+                Throws.TypeOf<LocalObjectNotReplacedStorageException>());
 
             await Repo.Insert(challenge);
 

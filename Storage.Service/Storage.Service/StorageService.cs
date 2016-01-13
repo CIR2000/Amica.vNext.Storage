@@ -1,24 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
-
-[assembly:InternalsVisibleTo("Storage.Service.Tests")]
 
 namespace Amica.vNext.Storage
 {
     public class StorageService :  IRemoteRepository
     {
-        internal readonly LocalRepository Local = new LocalRepository();
-        internal readonly RemoteRepository Remote = new RemoteRepository();
 
-        public void Dispose()
-        {
-            Local.Dispose();
-            Remote.Dispose();
-        }
+        public void Dispose() { }
 
         #region "IRepository"
 
@@ -32,7 +23,7 @@ namespace Amica.vNext.Storage
         {
             try
             {
-				obj = await Local.Get(obj);
+				obj = await LocalRepository.Get(obj);
             }
 			catch (LocalObjectNotFoundStorageException) { }
 
@@ -42,10 +33,10 @@ namespace Amica.vNext.Storage
 			// this will require updating Eve.NET to properly handlse soft deltes
 
 			// Will eventually throw RemoteObjectNotFoundException.
-			obj = await Remote.Get(obj);
+			obj = await RemoteRepository.Get(obj);
 
             if (obj.Updated > lastUpdated)
-                await Local.Replace(obj);
+                await LocalRepository.Replace(obj);
 
             return obj;
         }
@@ -58,8 +49,8 @@ namespace Amica.vNext.Storage
 		/// <exception cref="ValidationStorageException">If a validation error was returned by the service.</exception>
         public async Task<T> Insert<T>(T obj) where T : BaseModel
         {
-            obj = await Remote.Insert(obj);
-            await Local.Insert(obj);
+            obj = await RemoteRepository.Insert(obj);
+            await LocalRepository.Insert(obj);
             return obj;
         }
 
@@ -71,10 +62,10 @@ namespace Amica.vNext.Storage
 		/// <exception cref="PreconditionFailedStorageException">If object ETag did not match the one currently on the service (remote object has been updated in the meanwhile).</exception>
         public async Task Delete<T>(T obj) where T : BaseModel
         {
-            await Remote.Delete(obj);
+            await RemoteRepository.Delete(obj);
             try
             {
-                await Local.Delete(obj);
+                await LocalRepository.Delete(obj);
             }
             catch (LocalObjectNotDeletedStorageException)
             {
@@ -92,10 +83,10 @@ namespace Amica.vNext.Storage
 		/// <exception cref="ValidationStorageException">If a validation error was returned by the service.</exception>
         public async Task<T> Replace<T>(T obj) where T : BaseModel
         {
-            obj = await Remote.Replace(obj);
+            obj = await RemoteRepository.Replace(obj);
             try
             {
-                obj = await Local.Replace(obj);
+                obj = await LocalRepository.Replace(obj);
             }
             catch (LocalObjectNotReplacedStorageException)
             {
@@ -115,7 +106,7 @@ namespace Amica.vNext.Storage
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
             await SyncRemoteWithLocal<T>();
-            return await Local.Get<T>();
+            return await LocalRepository.Get<T>();
         }
 
         /// <summary>
@@ -128,7 +119,7 @@ namespace Amica.vNext.Storage
         public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
         {
             await SyncRemoteWithLocal<T>(null, companyId);
-            return await Local.Get<T>(companyId);
+            return await LocalRepository.Get<T>(companyId);
         }
 
         /// <summary>
@@ -139,7 +130,7 @@ namespace Amica.vNext.Storage
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
             await SyncRemoteWithLocal<T>(ifModifiedSince);
-            return await Local.Get<T>(ifModifiedSince);
+            return await LocalRepository.Get<T>(ifModifiedSince);
         }
 
         /// <summary>
@@ -151,7 +142,7 @@ namespace Amica.vNext.Storage
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
             await SyncRemoteWithLocal<T>(ifModifiedSince, companyId);
-            return await Local.Get<T>(ifModifiedSince, companyId);
+            return await LocalRepository.Get<T>(ifModifiedSince, companyId);
         }
 
         /// <summary>
@@ -163,7 +154,7 @@ namespace Amica.vNext.Storage
         public async Task<IDictionary<string, T>> Get<T>(IEnumerable<string> uniqueIds) where T : BaseModel, new()
         {
             await SyncRemoteWithLocal<T>();
-            return await Local.Get<T>(uniqueIds);
+            return await LocalRepository.Get<T>(uniqueIds);
         }
 
         /// <summary>
@@ -174,7 +165,7 @@ namespace Amica.vNext.Storage
         /// <returns>The inserted objects.</returns>
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            return await Local.Insert<T>(await Remote.Insert(objs));
+            return await LocalRepository.Insert<T>(await RemoteRepository.Insert(objs));
         }
 
         /// <summary>
@@ -190,8 +181,8 @@ namespace Amica.vNext.Storage
 			// TODO currently ignoring the chance that remote and local could un/successfully
 			// delete different objects (since both are silent on fail).
 
-            await Remote.Delete(objs);
-            return  await Local.Delete(objs);
+            await RemoteRepository.Delete(objs);
+            return  await LocalRepository.Delete(objs);
         }
 
         /// <summary>
@@ -200,8 +191,8 @@ namespace Amica.vNext.Storage
         /// <typeparam name="T">Type of objects to be deleted.</typeparam>
         public async Task Delete<T>() where T : BaseModel
         {
-            await Remote.Delete<T>();
-            await Local.Delete<T>();
+            await RemoteRepository.Delete<T>();
+            await LocalRepository.Delete<T>();
         }
 
         /// <summary>
@@ -212,7 +203,7 @@ namespace Amica.vNext.Storage
         /// <returns></returns>
         private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince = null) where T : BaseModel
         {
-			var remotes = await Remote.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince));
+			var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince));
             await UpdateLocalWithRemotes(remotes);
         }
 
@@ -225,7 +216,7 @@ namespace Amica.vNext.Storage
         /// <returns></returns>
         private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
-			var remotes = await Remote.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince), companyId);
+			var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince), companyId);
             await UpdateLocalWithRemotes(remotes);
         }
 
@@ -238,7 +229,7 @@ namespace Amica.vNext.Storage
         /// <returns>The optimal If-Modified-Since value (a DateTime).</returns>
         private async Task<DateTime> OptimizedIfModifiedSince<T>(DateTime? ifModifiedSince) where T : BaseModel
        {
-			var lastModified = await Local.LastModified<T>();
+			var lastModified = await LocalRepository.LastModified<T>();
             return ifModifiedSince != null && ifModifiedSince < lastModified ? (DateTime)ifModifiedSince : lastModified;
             
         }
@@ -260,34 +251,16 @@ namespace Amica.vNext.Storage
                 else
                     toInsertOrReplace.Add(obj);
             }
-            await Local.Delete<T>(toDelete);
-            await Local.InsertOrReplace(toInsertOrReplace);
+            await LocalRepository.Delete<T>(toDelete);
+            await LocalRepository.InsertOrReplace(toInsertOrReplace);
         }
         #endregion
 
         #region "Properties"
-        public string Username
-        {
-            get { return Remote.Username; }
-            set { Remote.Username = value; }
-        }
-
-        public string Password
-        {
-            get { return Remote.Password; }
-            set { Remote.Password = value; }
-        }
-
-        public string ClientId
-        {
-            get { return Remote.ClientId; }
-            set { Remote.ClientId = value; }
-        }
-        public string ApplicationName
-        {
-            get { return Local.ApplicationName; }
-            set { Local.ApplicationName = value; }
-        }
+        public SqliteObjectCacheBase Cache { get; set; }
+        public Discovery DiscoveryService { get; set; }
+		public LocalRepositoryBase LocalRepository { get; set; }
+		public RemoteRepository RemoteRepository { get; set; }
         #endregion
     }
 }

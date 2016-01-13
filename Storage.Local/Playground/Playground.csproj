@@ -60,6 +60,10 @@
       <Project>{37c2744d-834b-42d9-ba48-75d2ce93f64c}</Project>
       <Name>Storage.Local.Net45</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Storage.Local\Storage.Local.csproj">
+      <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>
+      <Name>Storage.Local</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

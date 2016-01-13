@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Amica.vNext;
 using Amica.vNext.Storage;
 using Amica.vNext.Models;
 
@@ -23,9 +24,24 @@ namespace ConsoleApplication1
 
         static async Task Test()
         {
-            using (var adam = new RemoteRepository { Username = "nicola", Password = "nicola" } )
+            var cache = new SqliteObjectCache {ApplicationName = "Playground"};
+
+            using (var adam = new RemoteRepository
+					{
+						DiscoveryService = new Discovery()
+                        {
+							BaseAddress = new Uri("http://10.0.2.2:9000/"),
+							Cache = cache   
+						}, 
+
+						Username = "nicola",
+						Password = "nicola",
+
+						ClientId = Environment.GetEnvironmentVariable("SentinelClientId"),
+						Cache = cache
+					})
             {
-				// targeted bulk get 
+                // targeted bulk get 
                 var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");
 
                 Console.WriteLine(ret[0].CompanyId);

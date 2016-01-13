@@ -5,7 +5,7 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    public interface ILocalBulkRepository : IBulkRepository, IApplicationName
+    public interface ILocalBulkRepository : IBulkRepository
     {
 		/// <summary>
         /// Asyncronoulsy returns  the last datetime at which the collection has been modified.

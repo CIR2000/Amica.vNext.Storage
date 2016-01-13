@@ -57,21 +57,37 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Discovery\Discovery\Discovery.csproj">
+      <Project>{f2e61202-0fe9-4521-9216-1bbe1a856b20}</Project>
+      <Name>Discovery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SimpleCache\SimpleCache.Net45\SimpleCache.Net45.csproj">
+      <Project>{0b199775-aa32-4673-8c1f-9ec88754d751}</Project>
+      <Name>SimpleCache.Net45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SimpleCache\SimpleCache\SimpleCache.csproj">
+      <Project>{c4cbe63f-2eb6-404f-9cf2-44fbf42e35e2}</Project>
+      <Name>SimpleCache</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Storage.Local\Storage.Local.Net45\Storage.Local.Net45.csproj">
       <Project>{37c2744d-834b-42d9-ba48-75d2ce93f64c}</Project>
       <Name>Storage.Local.Net45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Storage.Remote\Storage.Remote.Net45\Storage.Remote.Net45.csproj">
-      <Project>{e1f667a5-e30c-46ae-b739-7e2d12e49cee}</Project>
-      <Name>Storage.Remote.Net45</Name>
+    <ProjectReference Include="..\..\Storage.Local\Storage.Local\Storage.Local.csproj">
+      <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>
+      <Name>Storage.Local</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Storage.Service.Net45\Storage.Service.Net45.csproj">
-      <Project>{351d7b0a-1987-465f-b4ed-b6fc022f8180}</Project>
-      <Name>Storage.Service.Net45</Name>
+    <ProjectReference Include="..\..\Storage.Remote\Storage.Remote\Storage.Remote.csproj">
+      <Project>{19b24ccd-42e3-4ec6-bfba-409d52fde68b}</Project>
+      <Name>Storage.Remote</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Storage.Service\Storage.Service.csproj">
+      <Project>{d16b4b3f-c55a-49f7-a311-71fded12d66e}</Project>
+      <Name>Storage.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

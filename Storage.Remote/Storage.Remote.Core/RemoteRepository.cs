@@ -16,22 +16,10 @@ namespace Amica.vNext.Storage
     public class RemoteRepository : IRemoteRepository
     {
         private readonly Dictionary<Type, string> _resources;
-        private readonly Discovery _discovery;
         private readonly EveClient _eve;
 
         public RemoteRepository()
         {
-
-            ClientId = Environment.GetEnvironmentVariable("SentinelClientId");
-
-			// Either set the DS  uri from an envvar, or go to local instance on OSX
-			// (we're running from a VirtualBox Windows client).
-			DiscoveryServiceAddress = new Uri(
-				Environment.GetEnvironmentVariable("DiscoverySeriviceAddress") ?? "http://10.0.2.2:9000"
-				);
-			 
-			// Default to local instance for testing purposes, unless an envvar has been set.
-			_discovery = new Discovery();
 			_eve = new EveClient();
 
 			_resources = new Dictionary<Type, string> {
@@ -51,8 +39,7 @@ namespace Amica.vNext.Storage
 		{
 			// TODO handle exceptions
 			// TODO rename UserData to AmicaData or something equally appropriate.
-			_discovery.BaseAddress = DiscoveryServiceAddress;
-			var addr = await _discovery.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
+			var addr = await DiscoveryService.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
 			return addr;
 		}
 
@@ -66,17 +53,18 @@ namespace Amica.vNext.Storage
 				throw new ArgumentNullException(nameof(Password));
 			if (ClientId == null)
 				throw new ArgumentNullException(nameof(ClientId));
+		    if (DiscoveryService == null)
+		        throw new ArgumentNullException(nameof(DiscoveryService));
 
-			_discovery.BaseAddress = DiscoveryServiceAddress;
-			var authAddress = await _discovery.GetServiceAddress(ApiKind.Authentication);
+			var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication);
 
-			var sc = new Sentinel
-			{
-				Username = Username,
-				Password = Password,
-				ClientId = ClientId,
-				BaseAddress = authAddress,
-				Cache = new SqliteObjectCache { ApplicationName = ApplicationName }
+            var sc = new Sentinel
+            {
+                Username = Username,
+                Password = Password,
+                ClientId = ClientId,
+                BaseAddress = authAddress,
+                Cache = Cache
 			};
 
 			return await sc.GetBearerAuthenticator();
@@ -277,7 +265,11 @@ namespace Amica.vNext.Storage
 		/// </summary>
 		public string ClientId { get; set; }
 
-		/// <summary>
+        public Discovery DiscoveryService { get; set; }
+
+        public SqliteObjectCacheBase Cache { get; set; }
+
+        /// <summary>
 		/// Username. Used to authenticate the user.
 		/// </summary>
 		public string Username { get; set; }
@@ -288,15 +280,8 @@ namespace Amica.vNext.Storage
 		public string Password { get; set; }
 
 		/// <summary>
-		/// Discovery Service Uri.
-		/// </summary>
-		public Uri DiscoveryServiceAddress { get; set; }
-
-		/// <summary>
         /// Response message returned by the remote service. 
         /// </summary>
 		public HttpResponseMessage HttpResponseMessage { get; private set; }
-
-        public string ApplicationName { get; set; }
     }
 }

@@ -42,6 +42,10 @@
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Storage.Local\Storage.Local.csproj">
+      <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>
+      <Name>Storage.Local</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SQLite.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -64,7 +68,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
-  <Import Project="..\Storage.Local.Core\Storage.Local.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
