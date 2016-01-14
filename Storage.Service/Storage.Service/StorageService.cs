@@ -165,7 +165,7 @@ namespace Amica.vNext.Storage
         /// <returns>The inserted objects.</returns>
         public async Task<IList<T>> Insert<T>(IEnumerable<T> objs) where T : BaseModel
         {
-            return await LocalRepository.Insert<T>(await RemoteRepository.Insert(objs));
+            return await LocalRepository.Insert(await RemoteRepository.Insert(objs));
         }
 
         /// <summary>
@@ -251,16 +251,21 @@ namespace Amica.vNext.Storage
                 else
                     toInsertOrReplace.Add(obj);
             }
-            await LocalRepository.Delete<T>(toDelete);
+            await LocalRepository.Delete(toDelete);
             await LocalRepository.InsertOrReplace(toInsertOrReplace);
         }
         #endregion
 
-        #region "Properties"
-        public SqliteObjectCacheBase Cache { get; set; }
+        #region "IRemoteRepository"
+        public async Task InvalidateUser(string username)
+        {
+            await RemoteRepository.InvalidateUser(username);
+        }
+        public IBulkObjectCache LocalCache { get; set; }
         public Discovery DiscoveryService { get; set; }
-		public LocalRepositoryBase LocalRepository { get; set; }
-		public RemoteRepository RemoteRepository { get; set; }
+
         #endregion
+		public ILocalBulkRepository LocalRepository { get; set; }
+		public RemoteRepository RemoteRepository { get; set; }
     }
 }

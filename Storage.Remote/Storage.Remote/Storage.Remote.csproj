@@ -8,7 +8,7 @@
     <ProjectGuid>{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Storage.Remote</RootNamespace>
+    <RootNamespace>Amica.vNext.Storage</RootNamespace>
     <AssemblyName>Storage.Remote</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>

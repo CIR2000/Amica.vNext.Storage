@@ -15,19 +15,15 @@ namespace Amica.vNext.Storage
 
     public class RemoteRepository : IRemoteRepository
     {
-        private readonly Dictionary<Type, string> _resources;
-        private readonly EveClient _eve;
+        private readonly EveClient _eve = new EveClient();
+        private readonly Sentinel _sentinel = new Sentinel();
 
-        public RemoteRepository()
+        private readonly Dictionary<Type, string> _resources = new Dictionary<Type, string>
         {
-			_eve = new EveClient();
+            { typeof(Company), "companies"},
+            { typeof(Country), "countries"}
+        };
 
-			_resources = new Dictionary<Type, string> {
-				{typeof(Company), "companies"},
-				{typeof(Country), "countries"}
-			};
-
-		}
         private async Task RefreshClientSettings<T>()
 		{
 			_eve.BaseAddress = await GetAdamAddress();
@@ -43,7 +39,7 @@ namespace Amica.vNext.Storage
 			return addr;
 		}
 
-		private async Task<BearerAuthenticator> GetAuthenticator()
+		public async Task<BearerAuthenticator> GetAuthenticator()
 		{
 			// TODO is ArgumentNullException appropriate since we're
 			// dealing with Properties here (and elsewhere)?
@@ -56,18 +52,15 @@ namespace Amica.vNext.Storage
 		    if (DiscoveryService == null)
 		        throw new ArgumentNullException(nameof(DiscoveryService));
 
-			var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication);
+		    var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication).ConfigureAwait(false);
 
-            var sc = new Sentinel
-            {
-                Username = Username,
-                Password = Password,
-                ClientId = ClientId,
-                BaseAddress = authAddress,
-                Cache = Cache
-			};
+			_sentinel.Username = Username;
+			_sentinel.Password = Password;
+			_sentinel.ClientId = ClientId;
+			_sentinel.LocalCache = LocalCache;
+			_sentinel.BaseAddress = authAddress;
 
-			return await sc.GetBearerAuthenticator();
+		    return await _sentinel.GetBearerAuthenticator().ConfigureAwait(false);
 		}
 
         private async Task SetAndValidateResponse(BaseModel obj)
@@ -266,8 +259,12 @@ namespace Amica.vNext.Storage
 		public string ClientId { get; set; }
 
         public Discovery DiscoveryService { get; set; }
+        public async Task InvalidateUser(string username)
+        {
+            await _sentinel.InvalidateUser(username);
+        }
 
-        public SqliteObjectCacheBase Cache { get; set; }
+        public IBulkObjectCache LocalCache { get; set; }
 
         /// <summary>
 		/// Username. Used to authenticate the user.

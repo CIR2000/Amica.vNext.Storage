@@ -1,8 +1,11 @@
-﻿namespace Amica.vNext.Storage
+﻿using System.Threading.Tasks;
+
+namespace Amica.vNext.Storage
 {
     public interface IRemoteRepository : IBulkRepository
     {
-		SqliteObjectCacheBase Cache { get; set; }
+		IBulkObjectCache LocalCache { get; set; }
 		Discovery DiscoveryService { get; set; }
+        Task InvalidateUser(string username);
     }
 }
