@@ -9,6 +9,7 @@
     <Import_RootNamespace>Storage.Remote</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IBulkRepositoryRemote.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRemoteRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteRepository.cs" />

@@ -6,7 +6,7 @@ using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
-    public class StorageService :  IRemoteRepository
+    public class StorageService :  IStorageService
     {
 
         public void Dispose() { }
@@ -256,16 +256,9 @@ namespace Amica.vNext.Storage
         }
         #endregion
 
-        #region "IRemoteRepository"
-        public async Task InvalidateUser(string username)
-        {
-            await RemoteRepository.InvalidateUser(username);
-        }
-        public IBulkObjectCache LocalCache { get; set; }
-        public Discovery DiscoveryService { get; set; }
-
-        #endregion
+        #region "IStorageService"
 		public ILocalBulkRepository LocalRepository { get; set; }
-		public RemoteRepository RemoteRepository { get; set; }
+		public IRemoteRepository RemoteRepository { get; set; }
+        #endregion
     }
 }

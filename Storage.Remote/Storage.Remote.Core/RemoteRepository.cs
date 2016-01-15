@@ -49,8 +49,8 @@ namespace Amica.vNext.Storage
 				throw new ArgumentNullException(nameof(Password));
 			if (ClientId == null)
 				throw new ArgumentNullException(nameof(ClientId));
-		    if (DiscoveryService == null)
-		        throw new ArgumentNullException(nameof(DiscoveryService));
+		    if (DiscoveryUri == null)
+		        throw new ArgumentNullException(nameof(DiscoveryUri));
 
 		    var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication).ConfigureAwait(false);
 
@@ -258,12 +258,18 @@ namespace Amica.vNext.Storage
 		/// </summary>
 		public string ClientId { get; set; }
 
-        public Discovery DiscoveryService { get; set; }
+        public Discovery DiscoveryService { get; } = new Discovery();
+
         public async Task InvalidateUser(string username)
         {
             await _sentinel.InvalidateUser(username);
         }
 
+        public Uri DiscoveryUri
+        {
+            get { return DiscoveryService.BaseAddress; }
+            set { DiscoveryService.BaseAddress = value; }
+        }
         public IBulkObjectCache LocalCache { get; set; }
 
         /// <summary>

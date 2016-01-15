@@ -18,8 +18,6 @@ namespace Storage.Service.Tests
 	    [Test]
 	    public void DefaultProperties()
 	    {
-	        Assert.That(Service.Cache, Is.Null);
-	        Assert.That(Service.DiscoveryService, Is.Null);
 	        Assert.That(Service.LocalRepository, Is.Null);
 	        Assert.That(Service.RemoteRepository, Is.Null);
 	    }
