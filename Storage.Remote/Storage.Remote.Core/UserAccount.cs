@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Amica.vNext.Models;
 
 namespace Amica.vNext.Storage
 {
     public class UserAccount
     {
-        public UserAccount ()
-        {
-        }
-
+        /// <summary>
+		/// Username. Used to authenticate the user.
+		/// </summary>
 		public string Username { get; set; }
+		/// <summary>
+		/// User password. Needed to authenticate the user.
+		/// </summary>
 		public string Password { get; set; }
-        public bool IsLoggedIn { get; } = false;
-
-        public bool Login()
-        {
-            return false;
-        }
+		public Company ActiveCompany { get; set; }
+        public bool LoggedIn { get; set; }
     }
 }

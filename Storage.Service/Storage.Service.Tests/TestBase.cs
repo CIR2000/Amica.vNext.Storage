@@ -17,11 +17,14 @@ namespace Storage.Service.Tests
 
 	        var remote = new RemoteRepository
 	        {
-	            DiscoveryUri= new Uri("http://10.0.2.2:9000/"),
-				LocalCache = new SqliteObjectCache {ApplicationName = appName},
+	            DiscoveryUri = new Uri("http://10.0.2.2:9000/"),
+	            LocalCache = new SqliteObjectCache {ApplicationName = appName},
 	            ClientId = Environment.GetEnvironmentVariable("SentinelClientId"),
-	            Username = Environment.GetEnvironmentVariable("SentinelUsername"),
-	            Password = Environment.GetEnvironmentVariable("SentinelPassword"),
+	            UserAccount = new UserAccount
+	            {
+	                Username = Environment.GetEnvironmentVariable("SentinelUsername"),
+	                Password = Environment.GetEnvironmentVariable("SentinelPassword"),
+	            }
 	        };
 
 	        var local = new LocalRepository

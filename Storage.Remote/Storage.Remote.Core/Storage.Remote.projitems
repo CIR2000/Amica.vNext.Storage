@@ -13,5 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)IRemoteRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserAccount.cs" />
   </ItemGroup>
 </Project>

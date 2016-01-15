@@ -25,9 +25,17 @@ namespace Amica.vNext.Storage
         };
 
         private async Task RefreshClientSettings<T>()
-		{
+        {
+            if (UserAccount == null)
+                UserAccount = await CurrentAccount();
+
+			if (UserAccount.Username == null)
+				throw new ArgumentNullException(nameof(UserAccount.Username));
+			if (UserAccount.Password == null)
+				throw new ArgumentNullException(nameof(UserAccount.Password));
+
 			_eve.BaseAddress = await GetAdamAddress();
-			_eve.Authenticator = await GetAuthenticator();
+			_eve.Authenticator = await GetAuthenticator(UserAccount.Username, UserAccount.Password);
 			_eve.ResourceName = _resources[typeof (T)];
 		}
 
@@ -39,23 +47,21 @@ namespace Amica.vNext.Storage
 			return addr;
 		}
 
-		public async Task<BearerAuthenticator> GetAuthenticator()
+		private async Task<BearerAuthenticator> GetAuthenticator(string username, string password)
 		{
-			// TODO is ArgumentNullException appropriate since we're
-			// dealing with Properties here (and elsewhere)?
-			if (Username == null)
-				throw new ArgumentNullException(nameof(Username));
-			if (Password == null)
-				throw new ArgumentNullException(nameof(Password));
-			if (ClientId == null)
-				throw new ArgumentNullException(nameof(ClientId));
+			if (username == null)
+				throw new ArgumentNullException(nameof(username));
+			if (password == null)
+				throw new ArgumentNullException(nameof(password));
+		    if (ClientId == null)
+		        throw new ArgumentNullException(nameof(ClientId));
 		    if (DiscoveryUri == null)
 		        throw new ArgumentNullException(nameof(DiscoveryUri));
 
 		    var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication).ConfigureAwait(false);
 
-			_sentinel.Username = Username;
-			_sentinel.Password = Password;
+            _sentinel.Username = username;
+		    _sentinel.Password = password;
 			_sentinel.ClientId = ClientId;
 			_sentinel.LocalCache = LocalCache;
 			_sentinel.BaseAddress = authAddress;
@@ -75,6 +81,8 @@ namespace Amica.vNext.Storage
                     throw new ValidationStorageException(await HttpResponseMessage.Content.ReadAsStringAsync());
                 case HttpStatusCode.PreconditionFailed:
                     throw new PreconditionFailedStorageException(obj);
+                case HttpStatusCode.Unauthorized:
+                    throw new AuthorizationFailedStorageException();
             }
         }
 
@@ -253,10 +261,6 @@ namespace Amica.vNext.Storage
         }
 
 
-        /// <summary>
-		/// Used to identify the client against the authentications service. 
-		/// </summary>
-		public string ClientId { get; set; }
 
         public Discovery DiscoveryService { get; } = new Discovery();
 
@@ -272,19 +276,71 @@ namespace Amica.vNext.Storage
         }
         public IBulkObjectCache LocalCache { get; set; }
 
-        /// <summary>
-		/// Username. Used to authenticate the user.
-		/// </summary>
-		public string Username { get; set; }
-
-		/// <summary>
-		/// User password. Needed to authenticate the user.
-		/// </summary>
-		public string Password { get; set; }
-
 		/// <summary>
         /// Response message returned by the remote service. 
         /// </summary>
 		public HttpResponseMessage HttpResponseMessage { get; private set; }
+
+        public string ClientId { get; set; }
+        public UserAccount UserAccount { get; set; }
+
+        public async Task<bool> Login(UserAccount account, bool persist)
+        {
+            if (account.Username == null)
+                throw new ArgumentNullException(nameof(account.Username));
+            if (account.Password == null)
+                throw new ArgumentNullException(nameof(UserAccount.Password));
+
+            var authenticator = await GetAuthenticator(account.Username, account.Password);
+            if (authenticator == null) return false;
+
+            account.LoggedIn = true;
+            await SaveOrInvalidateAccount(persist);
+			UserAccount = account;
+            return true;
+        }
+
+        public async Task<bool> Logout()
+        {
+            await InvalidateAccount();
+
+			UserAccount.LoggedIn = false;
+
+			UserAccount.Username = null;
+			UserAccount.Password = null;
+			UserAccount.ActiveCompany = null;
+            return true;
+        }
+
+		private const string CacheKey = "UserAccoubt";
+
+        private async Task<UserAccount> CurrentAccount()
+        {
+            try
+            {
+                return await LocalCache.Get<UserAccount>(CacheKey).ConfigureAwait(false);
+            }
+            catch (KeyNotFoundException)
+            {
+                return new UserAccount { LoggedIn = false };
+            }
+        }
+
+        private async Task SaveOrInvalidateAccount(bool persist)
+        {
+            if (UserAccount.LoggedIn && persist)
+                await LocalCache.Insert(CacheKey, UserAccount).ConfigureAwait(false);
+            else
+                await InvalidateAccount();
+        }
+
+        private async Task InvalidateAccount()
+        {
+			try
+			{
+				await LocalCache.Invalidate<UserAccount>(CacheKey);
+			}
+			catch (KeyNotFoundException) { }
+        }
     }
 }

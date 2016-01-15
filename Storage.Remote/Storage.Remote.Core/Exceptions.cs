@@ -18,6 +18,11 @@ namespace Amica.vNext.Storage
 		public PreconditionFailedStorageException(BaseModel obj) : 
 			base($"Object with id \"{obj.UniqueId}\" and etag \"{obj.ETag}\" could not be processed because of an ETag mismatch.") { }
     }
+    public class AuthorizationFailedStorageException : RemoteStorageException
+    {
+		public AuthorizationFailedStorageException() : 
+			base("Remote server rejected the request: 403 UNAUTHORIzED.") { }
+    }
 
     // TODO ValidationRepositoryException should probably support a list of objects and their validation errors. 
     public class ValidationStorageException : RemoteStorageException
