@@ -50,6 +50,7 @@
     <Compile Include="BulkRepository.cs" />
     <Compile Include="Initialize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Account.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="TestBase.cs" />
   </ItemGroup>

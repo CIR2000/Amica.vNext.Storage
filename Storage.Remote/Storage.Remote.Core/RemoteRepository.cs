@@ -17,6 +17,7 @@ namespace Amica.vNext.Storage
     {
         private readonly EveClient _eve = new EveClient();
         private readonly Sentinel _sentinel = new Sentinel();
+        private UserAccount _account;
 
         private readonly Dictionary<Type, string> _resources = new Dictionary<Type, string>
         {
@@ -24,11 +25,9 @@ namespace Amica.vNext.Storage
             { typeof(Country), "countries"}
         };
 
+
         private async Task RefreshClientSettings<T>()
         {
-            if (UserAccount == null)
-                UserAccount = await CurrentAccount();
-
 			if (UserAccount.Username == null)
 				throw new ArgumentNullException(nameof(UserAccount.Username));
 			if (UserAccount.Password == null)
@@ -282,8 +281,24 @@ namespace Amica.vNext.Storage
 		public HttpResponseMessage HttpResponseMessage { get; private set; }
 
         public string ClientId { get; set; }
-        public UserAccount UserAccount { get; set; }
 
+        public UserAccount UserAccount
+        {
+            get {
+                if (_account == null)
+                    UserAccount = CurrentAccount().Result;
+                return _account;
+            }
+            set { _account = value; }
+        }
+
+        public async Task<bool> Login(bool persist)
+        {
+            if (UserAccount == null)
+                throw new ArgumentNullException(nameof(UserAccount));
+
+            return await Login(UserAccount, persist);
+        }
         public async Task<bool> Login(UserAccount account, bool persist)
         {
             if (account.Username == null)
@@ -300,7 +315,7 @@ namespace Amica.vNext.Storage
             return true;
         }
 
-        public async Task<bool> Logout()
+        public async Task Logout()
         {
             await InvalidateAccount();
 
@@ -309,10 +324,9 @@ namespace Amica.vNext.Storage
 			UserAccount.Username = null;
 			UserAccount.Password = null;
 			UserAccount.ActiveCompany = null;
-            return true;
         }
 
-		private const string CacheKey = "UserAccoubt";
+		private const string CacheKey = "UserAccount";
 
         private async Task<UserAccount> CurrentAccount()
         {
@@ -320,13 +334,13 @@ namespace Amica.vNext.Storage
             {
                 return await LocalCache.Get<UserAccount>(CacheKey).ConfigureAwait(false);
             }
-            catch (KeyNotFoundException)
+            catch (Exception ex) when (ex is KeyNotFoundException || ex is NullReferenceException)
             {
                 return new UserAccount { LoggedIn = false };
             }
         }
 
-        private async Task SaveOrInvalidateAccount(bool persist)
+        public async Task SaveOrInvalidateAccount(bool persist)
         {
             if (UserAccount.LoggedIn && persist)
                 await LocalCache.Insert(CacheKey, UserAccount).ConfigureAwait(false);

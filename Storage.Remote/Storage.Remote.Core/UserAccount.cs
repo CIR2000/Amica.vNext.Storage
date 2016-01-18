@@ -13,6 +13,6 @@ namespace Amica.vNext.Storage
 		/// </summary>
 		public string Password { get; set; }
 		public Company ActiveCompany { get; set; }
-        public bool LoggedIn { get; set; }
+        public bool LoggedIn { get; set; } = false;
     }
 }

@@ -8,11 +8,18 @@ namespace Amica.vNext.Storage
     {
         protected override string DefaultRepositoryDirectory()
         {
-            throw new System.NotImplementedException();
+            return Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.Personal), 
+				Path.Combine(ApplicationName, "LocalRepository"));
         }
 
         protected override SQLiteConnectionWithLock PlatformLockedConnection()
         {
+            if (ApplicationName == null)
+                throw new ArgumentNullException(nameof(ApplicationName));
+
+            Directory.CreateDirectory(RepositoryDirectory);
+
             return new SQLiteConnectionWithLock(
                 new SQLite.Net.Platform.XamarinIOS.SQLitePlatformIOS(),
                 new SQLiteConnectionString(RepositoryFullPath, true));

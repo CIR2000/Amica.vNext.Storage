@@ -45,6 +45,7 @@ namespace Storage.Service.Tests
 	    [TearDown]
 	    public void Cleanup()
 	    {
+	        Service.RemoteRepository.Logout().Wait();
 	        Service.Dispose();
 	    }
 

@@ -10,8 +10,9 @@ namespace Amica.vNext.Storage
         /// Logged in user or null.
         /// </summary>
 		UserAccount UserAccount { get; set; }
+        Task<bool> Login(bool persist);
         Task<bool> Login(UserAccount account, bool persist);
-        Task<bool> Logout();
+        Task Logout();
 		/// <summary>
 		/// Used to identify the client against the authentications service. 
 		/// </summary>
@@ -20,5 +21,6 @@ namespace Amica.vNext.Storage
 		IBulkObjectCache LocalCache { get; set; }
         Discovery DiscoveryService { get; }
         Task InvalidateUser(string username);
+        Task SaveOrInvalidateAccount(bool persist);
     }
 }
