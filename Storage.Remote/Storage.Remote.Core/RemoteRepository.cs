@@ -42,6 +42,9 @@ namespace Amica.vNext.Storage
 		{
 			// TODO handle exceptions
 			// TODO rename UserData to AmicaData or something equally appropriate.
+
+		    SetDiscoveryServiceCache();
+
 			var addr = await DiscoveryService.GetServiceAddress(ApiKind.UserData, ignoreCache: ignoreCache);
 			return addr;
 		}
@@ -57,6 +60,8 @@ namespace Amica.vNext.Storage
 		    if (DiscoveryUri == null)
 		        throw new ArgumentNullException(nameof(DiscoveryUri));
 
+		    SetDiscoveryServiceCache();
+
 		    var authAddress = await DiscoveryService.GetServiceAddress(ApiKind.Authentication).ConfigureAwait(false);
 
             _sentinel.Username = username;
@@ -67,6 +72,12 @@ namespace Amica.vNext.Storage
 
 		    return await _sentinel.GetBearerAuthenticator().ConfigureAwait(false);
 		}
+
+        private void SetDiscoveryServiceCache()
+        {
+			if (DiscoveryService.LocalCache == null)
+				DiscoveryService.LocalCache = LocalCache;
+        }
 
         private async Task SetAndValidateResponse(BaseModel obj)
         {
