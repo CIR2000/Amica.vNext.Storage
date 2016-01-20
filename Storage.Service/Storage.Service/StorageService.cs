@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Threading.Tasks;
 using Amica.vNext.Models;
 
@@ -27,16 +28,23 @@ namespace Amica.vNext.Storage
             }
 			catch (LocalObjectNotFoundStorageException) { }
 
-            var lastUpdated = obj.Updated;
+            try
+            {
+				var lastUpdated = obj.Updated;
 
-			// TODO if remote has been deleted, delete from local and raise an exception
-			// this will require updating Eve.NET to properly handlse soft deltes
+				// TODO if remote has been deleted, delete from local and raise an exception
+				// this will require updating Eve.NET to properly handlse soft deltes
 
-			// Will eventually throw RemoteObjectNotFoundException.
-			obj = await RemoteRepository.Get(obj);
+				// Will eventually throw RemoteObjectNotFoundException.
+                obj = await RemoteRepository.Get(obj);
 
-            if (obj.Updated > lastUpdated)
-                await LocalRepository.Replace(obj);
+                if (obj.Updated > lastUpdated)
+                    await LocalRepository.Replace(obj);
+            }
+            catch (WebException ex) when (ex.Status == WebExceptionStatus.ConnectFailure)
+            {
+                if (!SilentlyFailOnRemoteReadExceptions) throw;
+            }
 
             return obj;
         }
@@ -203,8 +211,15 @@ namespace Amica.vNext.Storage
         /// <returns></returns>
         private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince = null) where T : BaseModel
         {
-			var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince));
-            await UpdateLocalWithRemotes(remotes);
+            try
+            {
+                var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince));
+                await UpdateLocalWithRemotes(remotes);
+            }
+            catch (WebException ex) when (ex.Status == WebExceptionStatus.ConnectFailure)
+            {
+                if (!SilentlyFailOnRemoteReadExceptions) throw;
+            }
         }
 
         /// <summary>
@@ -216,8 +231,15 @@ namespace Amica.vNext.Storage
         /// <returns></returns>
         private async Task SyncRemoteWithLocal<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
-			var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince), companyId);
-            await UpdateLocalWithRemotes(remotes);
+            try
+            {
+				var remotes = await RemoteRepository.Get<T>(await OptimizedIfModifiedSince<T>(ifModifiedSince), companyId);
+				await UpdateLocalWithRemotes(remotes);
+            }
+            catch (WebException ex) when (ex.Status == WebExceptionStatus.ConnectFailure)
+            {
+                if (!SilentlyFailOnRemoteReadExceptions) throw;
+            }
         }
 
 		/// <summary>
@@ -259,6 +281,8 @@ namespace Amica.vNext.Storage
         #region "IStorageService"
 		public ILocalBulkRepository LocalRepository { get; set; }
 		public IRemoteRepository RemoteRepository { get; set; }
+        public bool SilentlyFailOnRemoteReadExceptions { get; set; } = true;
+
         #endregion
     }
 }

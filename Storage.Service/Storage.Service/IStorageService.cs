@@ -6,5 +6,6 @@ namespace Amica.vNext.Storage
     {
 		ILocalBulkRepository LocalRepository { get; set; }
 		IRemoteRepository RemoteRepository { get; set; }
+		bool SilentlyFailOnRemoteReadExceptions { get; set; }
     }
 }
