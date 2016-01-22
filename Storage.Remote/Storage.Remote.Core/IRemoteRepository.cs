@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Storage.Remote;
 
 namespace Amica.vNext.Storage
 {
-    public interface IRemoteRepository: IBulkRepositoryRemote
+    public interface IRemoteRepository: IBulkRepositoryRemote, IRestoreDefaults
     {
 		/// <summary>
         /// Logged in user or null.

@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IBulkRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IRestoreDefaults.cs" />
   </ItemGroup>
 </Project>

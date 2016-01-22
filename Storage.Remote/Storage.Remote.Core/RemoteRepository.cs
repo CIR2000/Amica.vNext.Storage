@@ -9,10 +9,10 @@ using Amica.vNext.Models;
 using Eve;
 using Eve.Authenticators;
 
+// TODO allow ignoring cache when retrieving network addresses.
+
 namespace Amica.vNext.Storage
 {
-	// TODO make sure remote access is only attempted if connection is available?
-
     public class RemoteRepository : IRemoteRepository
     {
         private readonly EveClient _eve = new EveClient();
@@ -24,6 +24,11 @@ namespace Amica.vNext.Storage
             { typeof(Company), "companies"},
             { typeof(Country), "countries"}
         };
+
+        public RemoteRepository()
+        {
+            RestoreDefaults();
+        }
 
 
         private async Task RefreshClientSettings<T>()
@@ -366,6 +371,12 @@ namespace Amica.vNext.Storage
 				await LocalCache.Invalidate<UserAccount>(CacheKey);
 			}
 			catch (KeyNotFoundException) { }
+        }
+
+        public void RestoreDefaults()
+        {
+			// TODO set appropriate default value for the property
+            DiscoveryUri = new Uri("http://10.0.2.2:9000/");
         }
     }
 }

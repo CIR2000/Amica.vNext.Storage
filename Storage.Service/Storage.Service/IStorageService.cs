@@ -1,6 +1,4 @@
-﻿using Storage.Remote;
-
-namespace Amica.vNext.Storage
+﻿namespace Amica.vNext.Storage
 {
     public interface IStorageService : IBulkRepositoryRemote
     {
