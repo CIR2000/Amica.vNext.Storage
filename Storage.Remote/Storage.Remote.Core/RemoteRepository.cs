@@ -21,8 +21,10 @@ namespace Amica.vNext.Storage
 
         private readonly Dictionary<Type, string> _resources = new Dictionary<Type, string>
         {
-            { typeof(Company), "companies"},
-            { typeof(Country), "countries"}
+            {typeof(Company), "companies"},
+            {typeof(Country), "countries"},
+            {typeof(Document), "documents"}
+
         };
 
         public RemoteRepository()

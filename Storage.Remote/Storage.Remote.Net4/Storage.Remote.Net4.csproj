@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E67BDB25-4234-4FCA-BE8B-21AD435BB0D3}</ProjectGuid>
+    <ProjectGuid>{429F9A43-72EC-4A1A-9D85-B66DCC8D4830}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Amica.vNext.Storage</RootNamespace>

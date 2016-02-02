@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
+      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
+      <Name>Eve</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Discovery\Discovery\Discovery.csproj">
       <Project>{f2e61202-0fe9-4521-9216-1bbe1a856b20}</Project>
       <Name>Discovery</Name>
@@ -59,6 +64,10 @@
     <ProjectReference Include="..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sentinel\Sentinel\Sentinel.csproj">
+      <Project>{0e7a05af-d125-4197-b82c-542229bda3ac}</Project>
+      <Name>Sentinel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\SimpleCache\SimpleCache.Net45\SimpleCache.Net45.csproj">
       <Project>{0b199775-aa32-4673-8c1f-9ec88754d751}</Project>
