@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
 using Amica.vNext.Models;
+using Amica.vNext.Models.Documents;
 using Eve;
 using Eve.Authenticators;
 
@@ -19,17 +20,21 @@ namespace Amica.vNext.Storage
         private readonly Sentinel _sentinel = new Sentinel();
         private UserAccount _account;
 
-        private readonly Dictionary<Type, string> _resources = new Dictionary<Type, string>
-        {
-            {typeof(Company), "companies"},
-            {typeof(Country), "countries"},
-            {typeof(Document), "documents"}
-
-        };
-
+        private readonly Dictionary<Type, string> _resources; 
         public RemoteRepository()
         {
             RestoreDefaults();
+
+            const string documents = "documents";
+
+			_resources = new Dictionary<Type, string>
+            {
+                { typeof(Company), "companies"},
+                { typeof(Country), "countries"},
+                { typeof(Document), documents},
+                { typeof(Invoice), documents}
+            };
+
         }
 
 

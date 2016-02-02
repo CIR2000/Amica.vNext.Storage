@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Amica.vNext;
 using Amica.vNext.Storage;
 using Amica.vNext.Models;
+using Amica.vNext.Models.Documents;
 
 namespace ConsoleApplication1
 {
@@ -31,22 +32,23 @@ namespace ConsoleApplication1
                 LocalCache = new SqliteObjectCache {ApplicationName = "Playground"},
 				UserAccount = new UserAccount() { Username="nicola", Password="nicola" }
             };
-                // targeted bulk get 
-                //var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");
-            var doc = new Document()
+            // targeted bulk get 
+            //var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");
+            var doc = new Invoice()
             {
-				Date = DateTime.Now,
-				CompanyId = "56b0705f38345b7d881b896f",
-				Type = DocumentType.Invoice,
-                Contact = new ContactMinimal() {Name = "Nicola", Address = "Addr", Vat = "Vat"},
-                Items = new List<DocumentItem>()
-                {
-                    new DocumentItem() {Sku = "Sku1", Description = "D1"},
-                },
-                Total = 10,
+				UniqueId="56b0be8a38345b7d881b8974"
+                //CompanyId = "56b0705f38345b7d881b896f",
+                //Contact = { Name = "Nicola", Address = "Addr", Vat = "Vat" },
+                //Items = new List<DocumentItem>()
+                //        {
+                //            new DocumentItem() {Sku = "Sku1", Description = "D1"},
+                //        },
+                //Total = 10,
             };
-			var ret = await adam.Insert(doc);
-			Console.WriteLine(ret.CompanyId);
+            //var ret = await adam.Insert(doc);
+			//Console.WriteLine(ret.CompanyId);
+            var test = await adam.Get(doc);
+			Console.WriteLine(test.Type);
 
             //await hdp.UpateAsync(dp);
             //await hdp.UpateAsync(cdp);
