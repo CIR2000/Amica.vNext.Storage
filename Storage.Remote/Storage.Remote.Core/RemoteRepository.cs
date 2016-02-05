@@ -31,8 +31,9 @@ namespace Amica.vNext.Storage
             {
                 { typeof(Company), "companies"},
                 { typeof(Country), "countries"},
+                { typeof(Contact), "contacts"},
                 { typeof(Document), documents},
-                { typeof(Invoice), documents}
+                { typeof(Invoice), documents},
             };
 
         }
