@@ -30,10 +30,12 @@ namespace Amica.vNext.Storage
 			_resources = new Dictionary<Type, string>
             {
                 { typeof(Company), "companies"},
-                { typeof(Country), "countries"},
                 { typeof(Contact), "contacts"},
                 { typeof(Document), documents},
                 { typeof(Invoice), documents},
+                { typeof(Vat), "vat"},
+                { typeof(PaymentOption), "payment-options"},
+                { typeof(Fee), "fees"},
             };
 
         }
@@ -190,7 +192,7 @@ namespace Amica.vNext.Storage
         {
             await RefreshClientSettings<T>();
 
-            var rawQuery = companyId != null ? $"{{\"c\": \"{companyId}\"}}" : null;
+            var rawQuery = companyId != null ? $"{{\"company_id\": \"{companyId}\"}}" : null;
 
             var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
             if (await ShouldRepeatRequest())
