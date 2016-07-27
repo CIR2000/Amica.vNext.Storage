@@ -9,6 +9,7 @@ using Amica.vNext.Models;
 using Amica.vNext.Models.Documents;
 using Eve;
 using Eve.Authenticators;
+using SimpleObjectCache;
 
 // TODO allow ignoring cache when retrieving network addresses.
 

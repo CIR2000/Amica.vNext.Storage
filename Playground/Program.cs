@@ -5,6 +5,7 @@ using Amica.vNext;
 using Amica.vNext.Storage;
 using Amica.vNext.Models;
 using Amica.vNext.Models.Documents;
+using SimpleObjectCache;
 
 namespace ConsoleApplication1
 {
@@ -48,7 +49,7 @@ namespace ConsoleApplication1
             //var ret = await adam.Insert(doc);
 			//Console.WriteLine(ret.CompanyId);
             var test = await adam.Get(doc);
-			Console.WriteLine(test.Type);
+			Console.WriteLine(test.GetType());
 
             //await hdp.UpateAsync(dp);
             //await hdp.UpateAsync(cdp);
