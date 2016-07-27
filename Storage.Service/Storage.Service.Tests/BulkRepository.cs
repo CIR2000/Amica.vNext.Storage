@@ -84,8 +84,8 @@ namespace Storage.Service.Tests
 	    public async Task GetByCompanyId()
 	    {
 	        
-            Assert.That(async () => await Service.Get<Country>(), Is.Empty);
-            Assert.That(async () => await Service.LocalRepository.Get<Country>(), Is.Empty);
+            Assert.That(async () => await Service.Get<Vat>(), Is.Empty);
+            Assert.That(async () => await Service.LocalRepository.Get<Vat>(), Is.Empty);
 
             var companies = await Service.Insert<Company>(
                 new List<Company> {
@@ -95,42 +95,42 @@ namespace Storage.Service.Tests
             var company1 = companies[0];
             var company2 = companies[1];
 
-            var countries =await Service.Insert<Country>(
-                new List<Country> {
-                    new Country { Name = "c1", CompanyId = company1.UniqueId },
-                    new Country { Name = "c2", CompanyId = company2.UniqueId }
+            var countries =await Service.Insert<Vat>(
+                new List<Vat> {
+                    new Vat { Name = "c1", CompanyId = company1.UniqueId },
+                    new Vat { Name = "c2", CompanyId = company2.UniqueId }
                 });
             var country1 = countries[0];
             var country2 = countries[1];
 
 			// Get new objects.
-            var challenge = await Service.Get<Country>(company1.UniqueId);
+            var challenge = await Service.Get<Vat>(company1.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(country1).Using(new Local.Tests.BaseModelComparer()));
 
-            var localChallenge = await Service.LocalRepository.Get<Country>(company2.UniqueId);
+            var localChallenge = await Service.LocalRepository.Get<Vat>(company2.UniqueId);
             Assert.That(localChallenge.Count, Is.EqualTo(1));
 	        Assert.That(localChallenge[0], Is.EqualTo(country2).Using(new Local.Tests.BaseModelComparer()));
 
 			// Delete, then Get.
             await Service.Delete(country1);
-            challenge = await Service.Get<Country>(company1.UniqueId);
+            challenge = await Service.Get<Vat>(company1.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(0));
-            challenge = await Service.LocalRepository.Get<Country>(company1.UniqueId);
+            challenge = await Service.LocalRepository.Get<Vat>(company1.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(0));
 
-            challenge = await Service.Get<Country>(company2.UniqueId);
+            challenge = await Service.Get<Vat>(company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(country2).Using(new Local.Tests.BaseModelComparer()));
 
 			// Replace, then Get.
 	        country2.Name = "changed c2";
             var changed = await Service.Replace(country2);
-            challenge = await Service.Get<Country>(company2.UniqueId);
+            challenge = await Service.Get<Vat>(company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(changed).Using(new Local.Tests.BaseModelComparer()));
 
-            localChallenge = await Service.LocalRepository.Get<Country>(company2.UniqueId);
+            localChallenge = await Service.LocalRepository.Get<Vat>(company2.UniqueId);
             Assert.That(localChallenge.Count, Is.EqualTo(1));
 	        Assert.That(localChallenge[0], Is.EqualTo(changed).Using(new Local.Tests.BaseModelComparer()));
 
@@ -141,18 +141,18 @@ namespace Storage.Service.Tests
             country2.Name = "changed remotely c2";
             changed = await Service.RemoteRepository.Replace(country2);
 
-            challenge = await Service.Get<Country>(company2.UniqueId);
+            challenge = await Service.Get<Vat>(company2.UniqueId);
 	        Assert.That(challenge[0], Is.EqualTo(changed).Using(new Local.Tests.BaseModelComparer()));
-            challenge = await Service.LocalRepository.Get<Country>(company2.UniqueId);
+            challenge = await Service.LocalRepository.Get<Vat>(company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(changed).Using(new Local.Tests.BaseModelComparer()));
 
 			// If-Modfied-Since.
-            challenge = await Service.Get<Country>(changed.Updated.AddMilliseconds(1), company2.UniqueId);
+            challenge = await Service.Get<Vat>(changed.Updated.AddMilliseconds(1), company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(0));
-            challenge = await Service.Get<Country>(changed.Updated, company2.UniqueId);
+            challenge = await Service.Get<Vat>(changed.Updated, company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(0));
-            challenge = await Service.Get<Country>(changed.Updated.AddMilliseconds(-1), company2.UniqueId);
+            challenge = await Service.Get<Vat>(changed.Updated.AddMilliseconds(-1), company2.UniqueId);
             Assert.That(challenge.Count, Is.EqualTo(1));
 	        Assert.That(challenge[0], Is.EqualTo(changed).Using(new Local.Tests.BaseModelComparer()));
 	    }

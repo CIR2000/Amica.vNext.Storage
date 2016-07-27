@@ -13,7 +13,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -42,10 +42,6 @@
     <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
       <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
       <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SimpleCache\SimpleCache\SimpleCache.csproj">
-      <Project>{c4cbe63f-2eb6-404f-9cf2-44fbf42e35e2}</Project>
-      <Name>SimpleCache</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Storage.Local\Storage.Local\Storage.Local.csproj">
       <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>

@@ -3,6 +3,7 @@ using Amica.vNext;
 using Amica.vNext.Models;
 using NUnit.Framework;
 using Amica.vNext.Storage;
+using SimpleObjectCache;
 
 namespace Storage.Service.Tests
 {
@@ -39,7 +40,7 @@ namespace Storage.Service.Tests
 	        };
 
             Service.Delete<Company>().Wait();
-            Service.Delete<Country>().Wait();
+            Service.Delete<Vat>().Wait();
         }
 
 	    [TearDown]
