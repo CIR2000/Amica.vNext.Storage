@@ -13,24 +13,24 @@ namespace Storage.Local.Tests
         public async Task Get()
         {
             Assert.That(
-                async () => await Repo.Get<Country>(), 
-					Is.Empty);
+                async () => await Repo.Get<Vat>(),
+                    Is.Empty);
 
             Assert.That(
-                async () => await Repo.Get<Company>(), 
-					Is.Empty);
+                async () => await Repo.Get<Company>(),
+                    Is.Empty);
 
             var dateChallenge = DateTime.UtcNow;
             var challenge = await Challenge(dateChallenge);
 
             Assert.That(
-                async () => await Repo.Get<Country>(), 
-					Is.Not.Empty
-					.And.EquivalentTo(challenge).Using(new BaseModelComparer()));
+                async () => await Repo.Get<Vat>(),
+                    Is.Not.Empty
+                    .And.EquivalentTo(challenge).Using(new BaseModelComparer()));
 
             Assert.That(
-                async () => await Repo.Get<Company>(), 
-					Is.Empty);
+                async () => await Repo.Get<Company>(),
+                    Is.Empty);
 
         }
 
@@ -41,24 +41,24 @@ namespace Storage.Local.Tests
             var challenge = await Challenge(dateChallenge);
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddMilliseconds(-1))).Count,
-					Is.EqualTo(challenge.Count));
+                async () => (await Repo.Get<Vat>(dateChallenge.AddMilliseconds(-1))).Count,
+                    Is.EqualTo(challenge.Count));
 
             Assert.That(
-				async () => (await Repo.Get<Country>(dateChallenge)).Count,
-					Is.EqualTo(2));
+                async () => (await Repo.Get<Vat>(dateChallenge)).Count,
+                    Is.EqualTo(2));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddDays(1))).Count,
-					Is.EqualTo(1));
+                async () => (await Repo.Get<Vat>(dateChallenge.AddDays(1))).Count,
+                    Is.EqualTo(1));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddDays(2))),
-					Is.Empty);
+                async () => (await Repo.Get<Vat>(dateChallenge.AddDays(2))),
+                    Is.Empty);
 
             Assert.That(
-                async () => await Repo.Get<Company>(dateChallenge.AddMilliseconds(-1)), 
-					Is.Empty);
+                async () => await Repo.Get<Company>(dateChallenge.AddMilliseconds(-1)),
+                    Is.Empty);
 
         }
 
@@ -69,16 +69,16 @@ namespace Storage.Local.Tests
             await Challenge(dateChallenge);
 
             Assert.That(
-                async () => await Repo.Get<Country>("notreally"), 
-					Is.Empty);
+                async () => await Repo.Get<Vat>("notreally"),
+                    Is.Empty);
 
             Assert.That(
-                async () => (await Repo.Get<Country>("c1")).Count, 
-					Is.EqualTo(2));
+                async () => (await Repo.Get<Vat>("c1")).Count,
+                    Is.EqualTo(2));
 
             Assert.That(
-                async () => (await Repo.Get<Country>("c2")).Count, 
-					Is.EqualTo(1));
+                async () => (await Repo.Get<Vat>("c2")).Count,
+                    Is.EqualTo(1));
         }
 
         [Test]
@@ -88,101 +88,101 @@ namespace Storage.Local.Tests
             await Challenge(dateChallenge);
 
             Assert.That(
-                async () => await Repo.Get<Country>(dateChallenge, "notreally"), 
-					Is.Empty);
+                async () => await Repo.Get<Vat>(dateChallenge, "notreally"),
+                    Is.Empty);
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddMilliseconds(-1), "c1")).Count, 
-					Is.EqualTo(2));
+                async () => (await Repo.Get<Vat>(dateChallenge.AddMilliseconds(-1), "c1")).Count,
+                    Is.EqualTo(2));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge, "c1")).Count, 
-					Is.EqualTo(1));
+                async () => (await Repo.Get<Vat>(dateChallenge, "c1")).Count,
+                    Is.EqualTo(1));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddDays(1), "c1")).Count, 
-					Is.EqualTo(0));
+                async () => (await Repo.Get<Vat>(dateChallenge.AddDays(1), "c1")).Count,
+                    Is.EqualTo(0));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge, "c2")).Count, 
-					Is.EqualTo(1));
+                async () => (await Repo.Get<Vat>(dateChallenge, "c2")).Count,
+                    Is.EqualTo(1));
 
             Assert.That(
-                async () => (await Repo.Get<Country>(dateChallenge.AddDays(2), "c2")).Count, 
-					Is.EqualTo(0));
+                async () => (await Repo.Get<Vat>(dateChallenge.AddDays(2), "c2")).Count,
+                    Is.EqualTo(0));
         }
 
 	    [Test]
 	    public void Insert()
 	    {
-	        var countries = Countries(DateTime.Now).Result;
+            var countries = Vats(DateTime.Now).Result;
 
-	        Assert.That(
-	            async () => await Repo.Insert<Country>(countries),
-	            Throws.TypeOf<NotImplementedException>());
-	    }
+            Assert.That(
+                async () => await Repo.Insert<Vat>(countries),
+                Throws.TypeOf<NotImplementedException>());
+        }
 	    [Test]
 	    public void Delete()
 	    {
-	        var countries = Countries(DateTime.Now).Result;
+            var countries = Vats(DateTime.Now).Result;
 
-	        Assert.That(
-	            async () => await Repo.Delete<Country>(countries),
-	            Throws.TypeOf<NotImplementedException>());
-	    }
+            Assert.That(
+                async () => await Repo.Delete<Vat>(countries),
+                Throws.TypeOf<NotImplementedException>());
+        }
 	    [Test]
 	    public void GetByUniqueIds()
 	    {
 	        var ids = new[] {"first", "second"};
 
-	        Assert.That(
-	            async () => await Repo.Get<Country>(ids),
-	            Throws.TypeOf<NotImplementedException>());
-	    }
+            Assert.That(
+                async () => await Repo.Get<Vat>(ids),
+                Throws.TypeOf<NotImplementedException>());
+        }
 
 #pragma warning disable 1998
-	    private async Task<List<Country>> Countries(DateTime dateChallenge)
+        private async Task<List<Vat>> Vats(DateTime dateChallenge)
 #pragma warning restore 1998
-	    {
-	        return new List<Country>
-	        {
-	            new Country
-	            {
-	                UniqueId = "o1",
-	                ETag = "etag1",
-	                Created = dateChallenge,
-	                Updated = dateChallenge,
-					CompanyId = "c1"
-	            },
-	            new Country
-	            {
-	                UniqueId = "o2",
-	                ETag = "etag2",
-	                Created = dateChallenge,
-	                Updated = dateChallenge.AddDays(1),
-					CompanyId = "c1"
-	            },
-	            new Country
-	            {
-	                UniqueId = "o3",
-	                ETag = "etag3",
-	                Created = dateChallenge,
-	                Updated = dateChallenge.AddDays(2),
-					CompanyId = "c2"
-	            },
-	        };
-	    }
+        {
+            return new List<Vat>
+            {
+                new Vat
+                {
+                    UniqueId = "o1",
+                    ETag = "etag1",
+                    Created = dateChallenge,
+                    Updated = dateChallenge,
+                    CompanyId = "c1"
+                },
+                new Vat
+                {
+                    UniqueId = "o2",
+                    ETag = "etag2",
+                    Created = dateChallenge,
+                    Updated = dateChallenge.AddDays(1),
+                    CompanyId = "c1"
+                },
+                new Vat
+                {
+                    UniqueId = "o3",
+                    ETag = "etag3",
+                    Created = dateChallenge,
+                    Updated = dateChallenge.AddDays(2),
+                    CompanyId = "c2"
+                },
+            };
+        }
 
-	    private async Task<List<Country>> Challenge(DateTime dateChallenge)
-	    {
-	        var challenge = Countries(dateChallenge).Result;
+        private async Task<List<Vat>> Challenge(DateTime dateChallenge)
+        {
+            var challenge = Vats(dateChallenge).Result;
 
-			// TODO replace with bulk insert when it is implemented.
-	        foreach (var country in challenge)
-	            await Repo.Insert(country);
+            // TODO replace with bulk insert when it is implemented.
+            foreach (var vat in challenge)
+                await Repo.Insert(vat);
 
-	        return challenge;
-	    }
+            return challenge;
+        }
 
     }
 }

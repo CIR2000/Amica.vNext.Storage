@@ -205,8 +205,10 @@ namespace Amica.vNext.Storage
             _lockedConnection = PlatformLockedConnection();
             _connection = new SQLiteAsyncConnection(() => _lockedConnection);
 
+            // TODO auto-build tables based on Models introspection?
+            // Or just complete the manual build process below
             await _connection.CreateTableAsync<Company>();
-            await _connection.CreateTableAsync<Country>();
+            await _connection.CreateTableAsync<Vat>();
 
             return _connection;
         }
