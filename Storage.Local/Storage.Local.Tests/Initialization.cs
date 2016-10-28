@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Amica.vNext.Models;
+using Amica.Models;
 using NUnit.Framework;
 using Amica.vNext.Storage;
 

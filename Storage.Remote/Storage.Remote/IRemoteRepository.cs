@@ -19,7 +19,7 @@ namespace Amica.vNext.Storage
 		string ClientId { get; set; }
 		Uri DiscoveryUri { get; set; }
 		IBulkObjectCache LocalCache { get; set; }
-        Discovery DiscoveryService { get; }
+        Discovery.Discovery DiscoveryService { get; }
         Task InvalidateUser(string username);
         Task SaveOrInvalidateAccount(bool persist);
     }

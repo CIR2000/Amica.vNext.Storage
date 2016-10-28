@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Amica.vNext.Models;
+using Amica.Models;
 using Amica.vNext.Storage;
 
 // TODO We are linking BaseModelComparer from Storage.Local.Tests. Maybe we should

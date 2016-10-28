@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Amica.vNext.Models;
+using Amica.Models;
 
 namespace Amica.vNext.Storage
 {

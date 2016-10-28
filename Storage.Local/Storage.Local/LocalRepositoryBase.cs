@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Amica.vNext.Models;
+using Amica.Models;
 using SQLite.Net.Async;
 using SQLite.Net;
 

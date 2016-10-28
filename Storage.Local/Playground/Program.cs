@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Amica.vNext.Models;
+using Amica.Models;
 using Amica.vNext.Storage;
 
 namespace Playground

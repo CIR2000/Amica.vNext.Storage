@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Amica.vNext.Models;
+using Amica.Models;
 
 namespace Storage.Service.Tests
 {

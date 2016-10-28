@@ -1,5 +1,4 @@
 ﻿using System;
-using Amica.vNext.Models;
 using Amica.vNext.Storage;
 using NUnit.Framework;
 

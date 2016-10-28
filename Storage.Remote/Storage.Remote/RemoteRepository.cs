@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
-using Amica.vNext.Models;
-using Amica.vNext.Models.Documents;
+using Amica.Models;
+using Amica.Models.Documents;
 using Eve;
 using Eve.Authenticators;
 using SimpleObjectCache;
+using Amica.Discovery;
 
 // TODO allow ignoring cache when retrieving network addresses.
 
@@ -18,7 +19,7 @@ namespace Amica.vNext.Storage
     public class RemoteRepository : IRemoteRepository
     {
         private readonly EveClient _eve = new EveClient();
-        private readonly Sentinel _sentinel = new Sentinel();
+        private readonly Sentinel.Sentinel _sentinel = new Sentinel.Sentinel();
         private UserAccount _account;
 
         private readonly Dictionary<Type, string> _resources; 
@@ -288,7 +289,7 @@ namespace Amica.vNext.Storage
 
 
 
-        public Discovery DiscoveryService { get; } = new Discovery();
+        public Discovery.Discovery DiscoveryService { get; } = new Discovery.Discovery();
 
         public async Task InvalidateUser(string username)
         {

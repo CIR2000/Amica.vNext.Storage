@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading.Tasks;
-using Amica.vNext.Models;
+using Amica.Models;
 
 namespace Amica.vNext.Storage
 {

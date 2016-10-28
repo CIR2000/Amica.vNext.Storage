@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amica.vNext;
 using Amica.vNext.Storage;
-using Amica.vNext.Models;
-using Amica.vNext.Models.Documents;
+using Amica.Models;
+using Amica.Models.Documents;
 using SimpleObjectCache;
 
 namespace ConsoleApplication1
