@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amica.Models, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Models.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eve.NET.0.2.0\lib\portable45-net45+win8+wp8+wpa81\Eve.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -79,17 +87,10 @@
     <Compile Include="TestBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Discovery\Discovery\Discovery.csproj">
-      <Project>{f2e61202-0fe9-4521-9216-1bbe1a856b20}</Project>
-      <Name>Discovery</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
-      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Storage.Local\Storage.Local.Net45\Storage.Local.Net45.csproj">
       <Project>{37c2744d-834b-42d9-ba48-75d2ce93f64c}</Project>
       <Name>Storage.Local.Net45</Name>

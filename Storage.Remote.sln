@@ -5,17 +5,9 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Playground\Playground.csproj", "{AD2742B2-BC7B-41FE-95E8-04998467A13B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "..\Models\Models\Models.csproj", "{5A48FA69-73DE-47FD-A391-289F6F76C434}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eve", "..\..\Eve.NET\Eve\Eve.csproj", "{DD88D007-AD10-470D-9C89-AA8EE39857D0}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Storage.Core", "Storage.Core\Storage.Core.shproj", "{005B8B07-FFFD-4857-9E4A-BC3DFF9796AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery", "..\Discovery\Discovery\Discovery.csproj", "{F2E61202-0FE9-4521-9216-1BBE1A856B20}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Remote", "Storage.Remote\Storage.Remote\Storage.Remote.csproj", "{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel", "..\Sentinel\Sentinel\Sentinel.csproj", "{C587A81C-22F9-4804-A529-424BC522AA88}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -31,26 +23,10 @@ Global
 		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD2742B2-BC7B-41FE-95E8-04998467A13B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A48FA69-73DE-47FD-A391-289F6F76C434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A48FA69-73DE-47FD-A391-289F6F76C434}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A48FA69-73DE-47FD-A391-289F6F76C434}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A48FA69-73DE-47FD-A391-289F6F76C434}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD88D007-AD10-470D-9C89-AA8EE39857D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD88D007-AD10-470D-9C89-AA8EE39857D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD88D007-AD10-470D-9C89-AA8EE39857D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD88D007-AD10-470D-9C89-AA8EE39857D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2E61202-0FE9-4521-9216-1BBE1A856B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2E61202-0FE9-4521-9216-1BBE1A856B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2E61202-0FE9-4521-9216-1BBE1A856B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2E61202-0FE9-4521-9216-1BBE1A856B20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B24CCD-42E3-4EC6-BFBA-409D52FDE68B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C587A81C-22F9-4804-A529-424BC522AA88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C587A81C-22F9-4804-A529-424BC522AA88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C587A81C-22F9-4804-A529-424BC522AA88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C587A81C-22F9-4804-A529-424BC522AA88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

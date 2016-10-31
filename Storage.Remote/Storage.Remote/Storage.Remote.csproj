@@ -34,25 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\..\..\..\Eve.NET\Eve\Eve.csproj">
-      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
-      <Name>Eve</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Discovery\Discovery\Discovery.csproj">
-      <Project>{f2e61202-0fe9-4521-9216-1bbe1a856b20}</Project>
-      <Name>Discovery</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
-      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Sentinel\Sentinel\Sentinel.csproj">
-      <Project>{c587a81c-22f9-4804-a529-424bc522aa88}</Project>
-      <Name>Sentinel</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Exceptions.cs" />
     <Compile Include="IBulkRepositoryRemote.cs" />
     <Compile Include="IRemoteRepository.cs" />
@@ -61,8 +42,24 @@
     <Compile Include="UserAccount.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Amica.Discovery, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Discovery.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Discovery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Models, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Models.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Sentinel, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Sentinel.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Sentinel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Eve.NET.0.2.0\lib\portable45-net45+win8+wp8+wpa81\Eve.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleObjectCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -82,7 +79,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="..\..\Storage.Core\Storage.Core.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

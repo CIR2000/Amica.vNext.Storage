@@ -38,10 +38,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Models\Models\Models.csproj">
-      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage.Local\Storage.Local.csproj">
       <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>
       <Name>Storage.Local</Name>

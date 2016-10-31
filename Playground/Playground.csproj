@@ -35,6 +35,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amica.Models, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Amica.Models.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Eve.NET.0.2.0\lib\portable45-net45+win8+wp8+wpa81\Eve.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -75,25 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Eve.NET\Eve\Eve.csproj">
-      <Project>{dd88d007-ad10-470d-9c89-aa8ee39857d0}</Project>
-      <Name>Eve</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Discovery\Discovery\Discovery.csproj">
-      <Project>{f2e61202-0fe9-4521-9216-1bbe1a856b20}</Project>
-      <Name>Discovery</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Models\Models\Models.csproj">
-      <Project>{38931933-1e9d-4df3-bdde-75e81e3234f4}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sentinel\Sentinel\Sentinel.csproj">
-      <Project>{0e7a05af-d125-4197-b82c-542229bda3ac}</Project>
-      <Name>Sentinel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage.Remote\Storage.Remote\Storage.Remote.csproj">
       <Project>{19b24ccd-42e3-4ec6-bfba-409d52fde68b}</Project>
       <Name>Storage.Remote</Name>
