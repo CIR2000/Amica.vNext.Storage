@@ -15,6 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local.Tests", "Stor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage.Local", "Storage.Local\Storage.Local\Storage.Local.csproj", "{BAE0F2F7-10F6-4DCD-A5F2-F424E79E3173}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9775E0A1-8197-404E-822A-CEB2A91A11AF}"
+	ProjectSection(SolutionItems) = preProject
+		Storage.Local\AUTHORS = Storage.Local\AUTHORS
+		Storage.Local\CHANGES = Storage.Local\CHANGES
+		Storage.Local\LICENSE = Storage.Local\LICENSE
+		Storage.Local\README.md = Storage.Local\README.md
+		Storage.Local\Storage.Local.iOS.nuspec = Storage.Local\Storage.Local.iOS.nuspec
+		Storage.Local\Storage.Local.Net45.nuspec = Storage.Local\Storage.Local.Net45.nuspec
+		Storage.Local\Storage.Local.Portable.nuspec = Storage.Local\Storage.Local.Portable.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Storage.Core\Storage.Core.projitems*{005b8b07-fffd-4857-9e4a-bc3dff9796ae}*SharedItemsImports = 13
