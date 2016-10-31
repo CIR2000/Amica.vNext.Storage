@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amica.Storage;
-using Amica.Models;
 using Amica.Models.Documents;
 using SimpleObjectCache;
 

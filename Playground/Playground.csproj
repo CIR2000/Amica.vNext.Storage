@@ -35,16 +35,28 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amica.Discovery, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Amica.Discovery.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Discovery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Amica.Models, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Amica.Models.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Sentinel, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Amica.Sentinel.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Sentinel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Storage.Remote, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Amica.Storage.Remote.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Storage.Remote.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Eve.NET.0.2.0\lib\portable45-net45+win8+wp8+wpa81\Eve.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleObjectCache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -86,12 +98,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Storage.Remote\Storage.Remote\Storage.Remote.csproj">
-      <Project>{19b24ccd-42e3-4ec6-bfba-409d52fde68b}</Project>
-      <Name>Storage.Remote</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
