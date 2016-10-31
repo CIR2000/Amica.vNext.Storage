@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using NUnit.Framework;
-using Amica.vNext.Storage;
+using Amica.Storage;
 
 namespace Storage.Local.Tests
 {

@@ -5,7 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Amica.Models;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public class StorageService :  IStorageService
     {

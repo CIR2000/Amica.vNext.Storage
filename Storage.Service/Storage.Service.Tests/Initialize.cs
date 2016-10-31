@@ -1,5 +1,5 @@
 ﻿using System;
-using Amica.vNext.Storage;
+using Amica.Storage;
 using NUnit.Framework;
 
 namespace Storage.Service.Tests

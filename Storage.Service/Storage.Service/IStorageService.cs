@@ -1,4 +1,4 @@
-﻿namespace Amica.vNext.Storage
+﻿namespace Amica.Storage
 {
     public interface IStorageService : IBulkRepositoryRemote
     {

@@ -14,7 +14,7 @@ using Amica.Discovery;
 
 // TODO allow ignoring cache when retrieving network addresses.
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public class RemoteRepository : IRemoteRepository
     {

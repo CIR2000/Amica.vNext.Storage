@@ -8,9 +8,9 @@
     <ProjectGuid>{30993548-08D6-4BEB-B823-B0A84CDA4104}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>Amica.vNext.Storage</RootNamespace>
+    <RootNamespace>Amica.Storage</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Storage.Local.iOS</AssemblyName>
+    <AssemblyName>Amica.Storage.Local.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

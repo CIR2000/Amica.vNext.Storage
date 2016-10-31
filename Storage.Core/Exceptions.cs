@@ -1,7 +1,7 @@
 ﻿using System;
 using Amica.Models;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public class StorageException : Exception
     {

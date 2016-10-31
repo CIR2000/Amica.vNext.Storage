@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
 	// TODO currently not used. Remove from codebase?
 

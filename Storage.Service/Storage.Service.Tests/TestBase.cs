@@ -1,7 +1,7 @@
 ﻿using System;
 using Amica.Models;
 using NUnit.Framework;
-using Amica.vNext.Storage;
+using Amica.Storage;
 using SimpleObjectCache;
 
 namespace Storage.Service.Tests

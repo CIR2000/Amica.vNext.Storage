@@ -7,7 +7,7 @@ using Amica.Models;
 using SQLite.Net.Async;
 using SQLite.Net;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public abstract class LocalRepositoryBase : ILocalBulkRepository
     {

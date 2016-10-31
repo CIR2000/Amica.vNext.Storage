@@ -7,8 +7,8 @@
     <ProjectGuid>{80F1F92A-A523-4EC2-8E6B-2B47E8417274}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Storage.Local.Tests</RootNamespace>
-    <AssemblyName>Storage.Local.Tests</AssemblyName>
+    <RootNamespace>Amica.Storage.Tests</RootNamespace>
+    <AssemblyName>Amica.Storage.Local.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

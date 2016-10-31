@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Amica.Models;
-using Amica.vNext.Storage;
+using Amica.Storage;
 
 // TODO We are linking BaseModelComparer from Storage.Local.Tests. Maybe we should
 // move that class to Storage.Core, or some new Storage.Tests.Core?

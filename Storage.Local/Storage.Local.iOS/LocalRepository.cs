@@ -2,7 +2,7 @@
 using System.IO;
 using SQLite.Net;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public class LocalRepository : LocalRepositoryBase
     {

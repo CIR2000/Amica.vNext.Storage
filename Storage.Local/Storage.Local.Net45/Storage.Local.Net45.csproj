@@ -7,8 +7,8 @@
     <ProjectGuid>{37C2744D-834B-42D9-BA48-75D2CE93F64C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Amica.vNext.Storage</RootNamespace>
-    <AssemblyName>Storage.Local.Net45</AssemblyName>
+    <RootNamespace>Amica.Storage</RootNamespace>
+    <AssemblyName>Amica.Storage.Local.Net45</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

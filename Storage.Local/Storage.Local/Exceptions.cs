@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Amica.Models;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public class LocalObjectNotFoundStorageException : ObjectNotFoundStorageException
     {

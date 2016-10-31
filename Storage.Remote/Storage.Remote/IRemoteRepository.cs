@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SimpleObjectCache;
 
-namespace Amica.vNext.Storage
+namespace Amica.Storage
 {
     public interface IRemoteRepository: IBulkRepositoryRemote, IRestoreDefaults
     {

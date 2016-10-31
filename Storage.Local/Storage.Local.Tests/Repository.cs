@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Amica.Models;
 using NUnit.Framework;
-using Amica.vNext.Storage;
+using Amica.Storage;
 
 namespace Storage.Local.Tests
 {
