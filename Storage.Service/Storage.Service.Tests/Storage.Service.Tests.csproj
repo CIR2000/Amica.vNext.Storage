@@ -91,18 +91,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Storage.Local\Storage.Local.Net45\Storage.Local.Net45.csproj">
-      <Project>{37c2744d-834b-42d9-ba48-75d2ce93f64c}</Project>
-      <Name>Storage.Local.Net45</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Storage.Local\Storage.Local\Storage.Local.csproj">
-      <Project>{bae0f2f7-10f6-4dcd-a5f2-f424e79e3173}</Project>
-      <Name>Storage.Local</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Storage.Remote\Storage.Remote\Storage.Remote.csproj">
-      <Project>{19b24ccd-42e3-4ec6-bfba-409d52fde68b}</Project>
-      <Name>Storage.Remote</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage.Service\Storage.Service.csproj">
       <Project>{d16b4b3f-c55a-49f7-a311-71fded12d66e}</Project>
       <Name>Storage.Service</Name>
