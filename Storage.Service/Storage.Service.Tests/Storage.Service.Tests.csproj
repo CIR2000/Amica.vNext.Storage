@@ -30,16 +30,40 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Amica.Discovery, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Discovery.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Discovery.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Amica.Models, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Amica.Models.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Models.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Sentinel, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Sentinel.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Sentinel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Storage.Local.Net45, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Storage.Local.Net45.0.0.1\lib\net45\Amica.Storage.Local.Net45.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Storage.Local.Portable, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Storage.Local.Portable.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Storage.Local.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Storage.Remote, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Storage.Remote.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Storage.Remote.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Amica.Storage.Service, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Amica.Storage.Service.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Storage.Service.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Eve.NET.0.2.0\lib\portable45-net45+win8+wp8+wpa81\Eve.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -89,12 +113,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Storage.Service\Storage.Service.csproj">
-      <Project>{d16b4b3f-c55a-49f7-a311-71fded12d66e}</Project>
-      <Name>Storage.Service</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

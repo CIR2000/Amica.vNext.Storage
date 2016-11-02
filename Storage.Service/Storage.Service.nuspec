@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Amica.Storage.Service</id>
+    <version>0.0.1</version>
+    <title>Amica.Storage.Service</title>
+    <authors>Nicola Iarocci</authors>
+    <owners>CIR 2000</owners>
+    <licenseUrl>https://github.com/CIR2000/Amica.Storage/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/CIR2000/Amica.Storage</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Storage service for the Amica project</description>
+    <copyright>Copyright 2016 CIR 2000</copyright>
+		<dependencies>
+			<group targetFramework="portable45-net45+win8+wp8+wpa81">
+        <dependency id="Amica.Discovery" version="0.0.1" />
+        <dependency id="Amica.Models" version="0.0.1" />
+        <dependency id="Amica.Sentinel" version="0.0.1" />
+        <dependency id="Amica.Storage.Local.Portable" version="0.0.1" />
+        <dependency id="Amica.Storage.Remote" version="0.0.1" />
+        <dependency id="Eve.NET" version="0.2.0" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="SimpleObjectCache" version="1.0.0" />
+        <dependency id="SQLite.Net.Core-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net.Async-PCL" version="3.1.1" />
+        <dependency id="SQLite.Net-PCL" version="3.1.1" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="bin\Release\Amica.Storage.Service.???" target="lib\portable45-net45+win8+wp8+wpa81" />
+	</files>
+</package>
