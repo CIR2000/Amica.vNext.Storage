@@ -196,9 +196,9 @@ namespace Amica.Storage
 
             var rawQuery = companyId != null ? $"{{\"company_id\": \"{companyId}\"}}" : null;
 
-            var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
+            var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, false, rawQuery);
             if (await ShouldRepeatRequest())
-                retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
+                retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, false, rawQuery);
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
