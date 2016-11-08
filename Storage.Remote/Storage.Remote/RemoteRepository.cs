@@ -383,6 +383,12 @@ namespace Amica.Storage
 				await LocalCache.Invalidate<UserAccount>(CacheKey);
 			}
 			catch (KeyNotFoundException) { }
+
+			try
+			{
+                await _sentinel.InvalidateUser(UserAccount.Username);
+			}
+			catch (KeyNotFoundException) { }
         }
 
         public void RestoreDefaults()
