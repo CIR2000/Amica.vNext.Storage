@@ -52,7 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Amica.Sentinel, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Amica.Sentinel.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Sentinel.dll</HintPath>
+      <HintPath>..\..\..\Mobile\Amica.Mobile\packages\Amica.Sentinel.0.0.1\lib\portable45-net45+win8+wp8+wpa81\Amica.Sentinel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Eve, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">

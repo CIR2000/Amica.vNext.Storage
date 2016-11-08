@@ -301,7 +301,17 @@ namespace Amica.Storage
             get { return DiscoveryService.BaseAddress; }
             set { DiscoveryService.BaseAddress = value; }
         }
-        public IBulkObjectCache LocalCache { get; set; }
+        private IBulkObjectCache _localCache;
+        public IBulkObjectCache LocalCache
+        {
+            get { return _localCache; }
+            set
+            {
+                _localCache = value;
+                _sentinel.LocalCache = _localCache;
+                DiscoveryService.LocalCache = _localCache;
+            }
+        }
 
 		/// <summary>
         /// Response message returned by the remote service. 
