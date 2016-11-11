@@ -172,33 +172,41 @@ namespace Amica.Storage
 
         public async Task<IList<T>> Get<T>() where T : BaseModel
         {
-            return await GetInternal<T>(null, null);
+            return await GetInternal<T>(ifModifiedSince: null, companyId: null, softDeleted: false);
         }
 
         public async Task<IList<T>> Get<T>(string companyId) where T : BaseModelWithCompanyId
         {
-            return await GetInternal<T>(null, companyId);
+            return await GetInternal<T>(ifModifiedSince: null, companyId: companyId, softDeleted: false);
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince) where T : BaseModel
         {
-            return await GetInternal<T>(ifModifiedSince, null);
+            return await GetInternal<T>(ifModifiedSince, companyId: null, softDeleted: false);
         }
 
         public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId) where T : BaseModelWithCompanyId
         {
-            return await GetInternal<T>(ifModifiedSince, companyId);
+            return await GetInternal<T>(ifModifiedSince, companyId, softDeleted: false);
         }
 
-        private async Task<IList<T>> GetInternal<T>(DateTime? ifModifiedSince, string companyId)
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, bool softDeleted) where T : BaseModel
+        {
+            return await GetInternal<T>(ifModifiedSince, null, softDeleted);
+        }
+        public async Task<IList<T>> Get<T>(DateTime? ifModifiedSince, string companyId, bool softDeleted) where T : BaseModelWithCompanyId
+        {
+            return await GetInternal<T>(ifModifiedSince, companyId, softDeleted);
+        }
+        private async Task<IList<T>> GetInternal<T>(DateTime? ifModifiedSince, string companyId, bool softDeleted)
         {
             await RefreshClientSettings<T>();
 
             var rawQuery = companyId != null ? $"{{\"company_id\": \"{companyId}\"}}" : null;
 
-            var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
+            var retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, softDeleted, rawQuery);
             if (await ShouldRepeatRequest())
-                retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, true, rawQuery);
+                retObj = await _eve.GetAsync<T>(_eve.ResourceName, ifModifiedSince, softDeleted, rawQuery);
 
             HttpResponseMessage = _eve.HttpResponse;
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
