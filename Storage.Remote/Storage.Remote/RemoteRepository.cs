@@ -11,6 +11,7 @@ using Eve;
 using Eve.Authenticators;
 using SimpleObjectCache;
 using Amica.Discovery;
+using System.Globalization;
 
 // TODO allow ignoring cache when retrieving network addresses.
 
@@ -212,6 +213,18 @@ namespace Amica.Storage
             if (HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                 throw new RemoteStorageException($"Resource {_eve.ResourceName} not found on the remote service.");
 
+            try
+            {
+                LastModifiedResponseHeader = DateTime.Parse(
+                    HttpResponseMessage.Content.Headers.GetValues("Last-Modified").First(), 
+                    CultureInfo.InvariantCulture) .ToUniversalTime();
+            }
+            catch (InvalidOperationException)
+            {
+                // LastModified header is not included with the response.
+                // We leave LastModified value untouched.
+            }
+
             return retObj;
             
         }
@@ -337,6 +350,8 @@ namespace Amica.Storage
             }
             set { _account = value; }
         }
+
+        public DateTime? LastModifiedResponseHeader { get; set; }
 
         public async Task<bool> Login(bool persist)
         {
