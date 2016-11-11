@@ -414,5 +414,30 @@ namespace Amica.Storage
 			// TODO set appropriate default value for the property
             DiscoveryUri = new Uri("http://10.0.2.2:9000/");
         }
+
+        public IList<T> Merge<T>(IList<T> originalContent, IList<T> newContent) where T : BaseModel
+        {
+            if (originalContent == null)
+                // new content is assumed to be pruned of deleted objects (first request).
+                return newContent;
+            if (newContent == null)
+                // original content is always clean of deleted objects.
+                return originalContent;
+
+            var merged = originalContent.ToDictionary(p => p.UniqueId);
+            foreach (var content in newContent)
+            {
+                if (!content.Deleted)
+                {
+                    merged[content.UniqueId] = content;
+                    continue;
+                }
+                if (merged.ContainsKey(content.UniqueId))
+                {
+                    merged.Remove(content.UniqueId);
+                }
+            }
+            return merged.Values.ToList();
+        }
     }
 }
