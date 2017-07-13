@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8</PackageTargetFallback>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>Amica.Storage.Remote</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Nicola Iarocci</Authors>
+    <Company>CIR 2000</Company>
+    <Product>Amica.Storage.Remote</Product>
+    <Description>Remote storage system for the Amica.vNext platform</Description>
+    <Copyright>Copyright 2016-2017 Nicola Iarocci and CIR 2000</Copyright>
+    <PackageLicenseUrl>https://github.com/CIR2000/Amica.Storage/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/CIR2000/Amica.Storage</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/CIR2000/Amica.Storage</RepositoryUrl>
+  </PropertyGroup>
+
+  <Import Project="..\Storage.Core\Storage.Core.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <PackageReference Include="Amica.Discovery" Version="0.0.1" />
+    <PackageReference Include="Amica.Models" Version="0.0.1" />
+    <PackageReference Include="Amica.Sentinel" Version="0.0.1" />
+    <PackageReference Include="Eve.NET" Version="0.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+</Project>
