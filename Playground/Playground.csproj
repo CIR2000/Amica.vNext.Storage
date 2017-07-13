@@ -99,9 +99,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Storage.Remote.NetStandard\Storage.Remote.NetStandard.csproj">
-      <Project>{cf04afda-43a2-4fc1-b1fc-567603525c3a}</Project>
-      <Name>Storage.Remote.NetStandard</Name>
+    <ProjectReference Include="..\Storage.Remote\Storage.Remote.csproj">
+      <Project>{cb9d0dbe-e610-4e7e-87eb-46e6fef85b99}</Project>
+      <Name>Storage.Remote</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
