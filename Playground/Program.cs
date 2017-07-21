@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Amica.Storage;
 using Amica.Models.Documents;
 using SimpleObjectCache;
+using Amica.Models;
+using System.IO;
 
 namespace ConsoleApplication1
 {
@@ -23,12 +25,18 @@ namespace ConsoleApplication1
 
         static async Task Test()
         {
+
+            var expectedDatabasePath = Path.Combine(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "test"));
+            Directory.CreateDirectory(expectedDatabasePath);
+            var db = Path.Combine(expectedDatabasePath, "SimpleObjectCache-remote.db");
+
             var adam = new RemoteRepository()
             {
                 ClientId = Environment.GetEnvironmentVariable("SentinelClientId"),
-                DiscoveryUri = new Uri("http://10.0.2.2:9000/"),
-                LocalCache = new SqliteObjectCache {ApplicationName = "Playground"},
-				UserAccount = new UserAccount() { Username="nicola", Password="nicola" }
+                DiscoveryUri = new Uri("https://projectadam-discovery.herokuapp.com/"),
+                LocalCache = new SqliteObjectCache { DatabasePath = db },
+                UserAccount = new UserAccount() { Username="nicola", Password="nicola" }
             };
             // targeted bulk get 
             //var ret = await adam.Get<Country>("5603b9ea38345bc2cd1c7ec3");
