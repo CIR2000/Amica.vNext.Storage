@@ -18,11 +18,7 @@
   <Import Project="..\Storage.Core\Storage.Core.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="Amica.Discovery" Version="0.0.2" />
-    <PackageReference Include="Amica.Models" Version="0.0.1" />
-    <PackageReference Include="Amica.Sentinel" Version="0.0.2" />
-    <PackageReference Include="Eve.NET" Version="0.3.0" />
-    <PackageReference Include="SimpleObjectCache" Version="2.0.0" />
+    <ProjectReference Include="..\..\Models\Models\Models.csproj" />
   </ItemGroup>
 
 </Project>

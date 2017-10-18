@@ -1,28 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Amica.Models;
-using SimpleObjectCache;
+using System.Net.Http;
 
 namespace Amica.Storage
 {
-    public interface IRemoteRepository: IBulkRepositoryRemote, IRestoreDefaults
+    public interface IRemoteRepository: IRepository
     {
-		/// <summary>
-        /// Logged in user or null.
-        /// </summary>
 		UserAccount UserAccount { get; set; }
-        Task<bool> Login(bool persist);
-        Task<bool> Login(UserAccount account, bool persist);
-        Task Logout();
-		/// <summary>
-		/// Used to identify the client against the authentications service. 
-		/// </summary>
-		string ClientId { get; set; }
-		Uri DiscoveryUri { get; set; }
-		IBulkObjectCache LocalCache { get; set; }
-        Discovery.Discovery DiscoveryService { get; }
-        Task InvalidateUser(string username);
-        Task SaveOrInvalidateAccount(bool persist);
+        Uri BaseAddress { get; set; }
+        string Endpoint { get; set; }
+        string ApiKey { get; set; }
+        HttpResponseMessage HttpResponseMessage { get; }
     }
 }
