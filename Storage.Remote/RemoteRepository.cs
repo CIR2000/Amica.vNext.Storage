@@ -72,7 +72,6 @@ namespace Amica.Storage
             else {
                 _eve.Authenticator = null;
             }
-
         }
 
         protected async Task SetAndValidateResponse(BaseModel obj)
@@ -84,6 +83,7 @@ namespace Amica.Storage
                 case HttpStatusCode.Created:
                 case HttpStatusCode.NoContent:
                 case HttpStatusCode.OK:
+                case HttpStatusCode.NotModified:
                     return;
                 case HttpStatusCode.NotFound:
                     throw new RemoteObjectNotFoundStorageException(obj);
