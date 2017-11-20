@@ -59,19 +59,20 @@ namespace Amica.Storage
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
             if (Endpoint == null) { throw new ArgumentNullException(nameof(Endpoint)); }
             if (ApiKey == null) { throw new ArgumentNullException(nameof(ApiKey)); }
-            if (UserAccount?.Username == null) { throw new ArgumentNullException(nameof(UserAccount.Username)); }
-            if (UserAccount?.Password == null) { throw new ArgumentNullException(nameof(UserAccount.Password)); }
 
             _eve.BaseAddress = BaseAddress; 
             _eve.CustomHeaders["X-API-Key"] = ApiKey;
             _eve.ResourceName = SetClientEndpoint<T>();
 
+            if (AuthorizationToken != null) {
+                _eve.Authenticator = new BearerAuthenticator(AuthorizationToken);
+                return;
+            }
             if (UserAccount != null) {
                 _eve.Authenticator = new BasicAuthenticator(UserAccount.Username, UserAccount.Password);
+                return;
             }
-            else {
-                _eve.Authenticator = null;
-            }
+            _eve.Authenticator = null;
         }
 
         protected async Task SetAndValidateResponse(BaseModel obj)
@@ -104,5 +105,6 @@ namespace Amica.Storage
         public Uri BaseAddress { get; set; }
         public string Endpoint { get; set; }
         public string ApiKey { get; set; }
+        public string AuthorizationToken { get; set; }
     }
 }

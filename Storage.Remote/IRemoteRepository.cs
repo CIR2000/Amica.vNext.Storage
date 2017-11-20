@@ -5,6 +5,7 @@ namespace Amica.Storage
 {
     public interface IRemoteRepository: IRepository
     {
+        string AuthorizationToken { get; set; }
 		UserAccount UserAccount { get; set; }
         Uri BaseAddress { get; set; }
         string Endpoint { get; set; }
