@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Amica.Storage;
 using Amica.Models.Documents;
-using SimpleObjectCache;
-using Amica.Models;
 using System.IO;
 
 namespace ConsoleApplication1
@@ -26,10 +24,10 @@ namespace ConsoleApplication1
         static async Task Test()
         {
 
-            var expectedDatabasePath = Path.Combine(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "test"));
-            Directory.CreateDirectory(expectedDatabasePath);
-            var db = Path.Combine(expectedDatabasePath, "SimpleObjectCache-remote.db");
+            //var expectedDatabasePath = Path.Combine(
+            //    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "test"));
+            //Directory.CreateDirectory(expectedDatabasePath);
+            //var db = Path.Combine(expectedDatabasePath, "SimpleObjectCache-remote.db");
 
             var adam = new RemoteRepository()
             {
