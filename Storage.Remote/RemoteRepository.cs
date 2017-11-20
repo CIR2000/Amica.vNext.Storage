@@ -16,7 +16,8 @@ namespace Amica.Storage
         private delegate Task<T> SingleObjectRequestDelegate<T>(T obj);
         private Dictionary<Type, string> _endpoints = new Dictionary<Type, string>
         {
-            {typeof(Document), "documents" },
+            {typeof(Company), "companies" },
+            {typeof(Vat), "vat" },
         };
 
         public async Task<T> Get<T>(T obj) where T : BaseModel
@@ -58,7 +59,8 @@ namespace Amica.Storage
         }
         protected virtual string SetClientEndpoint<T>()
         {
-            try {
+            try
+            {
                 return _endpoints[typeof(T)];
             }
             catch (KeyNotFoundException)
@@ -71,6 +73,7 @@ namespace Amica.Storage
         {
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
             if (ApiKey == null) { throw new ArgumentNullException(nameof(ApiKey)); }
+            if (!_endpoints.ContainsKey(typeof(T)) && Endpoint == null) { throw new ArgumentNullException(nameof(Endpoint)); }
 
             _eve.BaseAddress = BaseAddress; 
             _eve.CustomHeaders["X-API-Key"] = ApiKey;

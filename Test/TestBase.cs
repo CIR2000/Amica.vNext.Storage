@@ -5,6 +5,8 @@ using Eve;
 using System;
 using Eve.Authenticators;
 using Amica.Storage;
+using Amica.Models;
+using System.Net.Http;
 
 namespace Test
 {
@@ -30,8 +32,10 @@ namespace Test
         [TestInitialize]
         public virtual async Task Init()
         {
-            Membership = new Membership();
+            await (new HttpClient()).PostAsync(new Uri("http://10.0.2.2:5000/test/session/start"), null);
             await Eve.DeleteAsync();
+
+            Membership = new Membership();
 
             Remote = new RemoteBulkRepository
             {
@@ -39,7 +43,7 @@ namespace Test
                 ApiKey = Environment.GetEnvironmentVariable("ADAM_API_KEY") ?? "admin_key",
             };
         }
-        protected async Task CreateAndLoginValidUser()
+        protected async Task CreateAccountAndLoginUser()
         {
             var account = new Account { Email = "email@email.com", Vat = "vat", };
             account.User.Add(new User { Username = "user1", Password = "password1", Email = "user1@email.com" });
@@ -47,6 +51,10 @@ namespace Test
             account =  await Membership.Insert(account);
 
             Remote.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
+        }
+        protected async Task<Company> CreateCompany()
+        {
+            return await Remote.Insert(new Company { Name = "company" });
         }
 
     }
