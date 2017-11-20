@@ -43,7 +43,7 @@ namespace Test
                 ApiKey = Environment.GetEnvironmentVariable("ADAM_API_KEY") ?? "admin_key",
             };
         }
-        protected async Task CreateAccountAndLoginUser()
+        protected async Task<string> CreateAccountAndRegisterUserThenStoreCompany()
         {
             var account = new Account { Email = "email@email.com", Vat = "vat", };
             account.User.Add(new User { Username = "user1", Password = "password1", Email = "user1@email.com" });
@@ -51,6 +51,8 @@ namespace Test
             account =  await Membership.Insert(account);
 
             Remote.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
+
+            return (await CreateCompany()).UniqueId;
         }
         protected async Task<Company> CreateCompany()
         {

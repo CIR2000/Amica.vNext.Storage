@@ -10,25 +10,48 @@ namespace Test
     [TestClass]
     public class Vat : TestBase
     {
-        [TestMethod]
-        public async Task VatInsertSuccess()
+        private async Task<Amica.Models.Vat> InsertValidVat(string companyId)
         {
-            await CreateAccountAndLoginUser();
-            var companyId = (await CreateCompany()).UniqueId;
+            return await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name", Code = "code" });
+        }
+        [TestMethod]
+        public async Task VatInsert()
+        {
+            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
 
-            var vat = await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name1", Code = "code1" });
+            var vat = await InsertValidVat(companyId);
             Assert.IsNotNull(vat.UniqueId);
+
             vat = await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name2", Code = "code2", NaturaPA = new Amica.Models.ItalianPA.NaturaPA { Code = "Code", Description = "Description" } });
             Assert.IsNotNull(vat.UniqueId);
         }
         [TestMethod]
-        public async Task VatDeleteSuccess()
+        public async Task VatGet()
         {
-            await CreateAccountAndLoginUser();
-            var companyId = (await CreateCompany()).UniqueId;
+            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
+            var vat = await InsertValidVat(companyId);
 
-            var vat = await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name", Code = "code" });
-            Assert.IsNotNull(vat.UniqueId);
+            var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
+            Assert.AreEqual(vat.UniqueId, challenge.UniqueId);
+        }
+        [TestMethod]
+        public async Task VatReplace()
+        {
+            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
+            var vat = await InsertValidVat(companyId);
+
+            vat.Name = "New Name";
+            await Remote.Replace(vat);
+
+            var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
+            Assert.AreEqual(vat.UniqueId, challenge.UniqueId);
+            Assert.AreEqual(vat.Name, challenge.Name);
+        }
+        [TestMethod]
+        public async Task VatDelete()
+        {
+            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
+            var vat = await InsertValidVat(companyId);
 
             try { await Remote.Delete(vat); }
             catch (Exception) { throw new AssertFailedException("Exception not expected here."); }
@@ -36,10 +59,9 @@ namespace Test
             await Assert.ThrowsExceptionAsync<RemoteObjectNotFoundStorageException>(async () => await Remote.Get(vat));
         }
         [TestMethod]
-        public async Task VatValidationFailure()
+        public async Task VatValidation()
         {
-            await CreateAccountAndLoginUser();
-            var companyId = (await CreateCompany()).UniqueId;
+            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
 
             // required fields
             await Assert.ThrowsExceptionAsync<ValidationStorageException>(async () => await Remote.Insert(new Amica.Models.Vat()));
