@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Amica.Models;
 using Eve;
 using Eve.Authenticators;
+using Amica.Models.Documents;
+using System.Collections.Generic;
 
 namespace Amica.Storage
 {
@@ -12,6 +14,10 @@ namespace Amica.Storage
     {
         protected readonly EveClient _eve = new EveClient();
         private delegate Task<T> SingleObjectRequestDelegate<T>(T obj);
+        private Dictionary<Type, string> _endpoints = new Dictionary<Type, string>
+        {
+            {typeof(Document), "documents" },
+        };
 
         public async Task<T> Get<T>(T obj) where T : BaseModel
         {
@@ -52,12 +58,18 @@ namespace Amica.Storage
         }
         protected virtual string SetClientEndpoint<T>()
         {
-            return Endpoint;
+            try {
+                return _endpoints[typeof(T)];
+            }
+            catch (KeyNotFoundException)
+            {
+                return Endpoint;
+            }
+            
         }
         protected void RefreshClientSettings<T>()
         {
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
-            if (Endpoint == null) { throw new ArgumentNullException(nameof(Endpoint)); }
             if (ApiKey == null) { throw new ArgumentNullException(nameof(ApiKey)); }
 
             _eve.BaseAddress = BaseAddress; 

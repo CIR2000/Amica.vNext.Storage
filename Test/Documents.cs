@@ -13,7 +13,6 @@ namespace Test
         {
             await CreateAndLoginValidUser();
 
-            Remote.Endpoint = "documents";
             var docs = await Remote.Get<Document>();
             Assert.AreEqual(0, docs.Count);
         }
