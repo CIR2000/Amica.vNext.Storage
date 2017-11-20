@@ -151,10 +151,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sentinel\Sentinel\Sentinel.csproj">
-      <Project>{a5d4207b-9add-4141-8df8-fb249291425f}</Project>
-      <Name>Sentinel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Storage.Remote\Storage.Remote.csproj">
       <Project>{cb9d0dbe-e610-4e7e-87eb-46e6fef85b99}</Project>
       <Name>Storage.Remote</Name>

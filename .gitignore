@@ -158,3 +158,5 @@ $RECYCLE.BIN/
 
 # sqlite3.dll
 ext/
+
+.vs/

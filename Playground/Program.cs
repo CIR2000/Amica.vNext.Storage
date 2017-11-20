@@ -33,9 +33,9 @@ namespace ConsoleApplication1
 
             var adam = new RemoteRepository()
             {
-                ClientId = Environment.GetEnvironmentVariable("SentinelClientId"),
-                DiscoveryUri = new Uri("https://projectadam-discovery.herokuapp.com/"),
-                LocalCache = new SqliteObjectCache { DatabasePath = db },
+                //ClientId = Environment.GetEnvironmentVariable("SentinelClientId"),
+                //DiscoveryUri = new Uri("https://projectadam-discovery.herokuapp.com/"),
+                //LocalCache = new SqliteObjectCache { DatabasePath = db },
                 UserAccount = new UserAccount() { Username="nicola", Password="nicola" }
             };
             // targeted bulk get 
