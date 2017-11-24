@@ -1,57 +1,33 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using Amica.Storage;
-using System;
-using DeepEqual.Syntax;
 
 namespace Test
 {
     [TestClass]
     public class Vat : TestBase
     {
-        private async Task<Amica.Models.Vat> InsertValidVat(string companyId)
-        {
-            return await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name", Code = "code" });
-        }
+        private Amica.Models.Vat target = new Amica.Models.Vat { Name = "Name", Code = "code" };
+
         [TestMethod]
         public async Task VatInsert()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-
-            var vat = await InsertValidVat(companyId);
-            Assert.IsNotNull(vat.UniqueId);
+            await TestInsert(target);
         }
         [TestMethod]
         public async Task VatGet()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var vat = await InsertValidVat(companyId);
-
-            var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
-            vat.ShouldDeepEqual(challenge);
+            await TestGet(target);
         }
         [TestMethod]
         public async Task VatReplace()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var vat = await InsertValidVat(companyId);
-
-            vat.Name = "New Name";
-            vat = await Remote.Replace(vat);
-
-            var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
-            vat.ShouldDeepEqual(challenge);
+            await TestReplace(target, "Name");
         }
         [TestMethod]
         public async Task VatDelete()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var vat = await InsertValidVat(companyId);
-
-            try { await Remote.Delete(vat); }
-            catch (Exception) { throw new AssertFailedException("Exception not expected here."); }
-
-            await Assert.ThrowsExceptionAsync<RemoteObjectNotFoundStorageException>(async () => await Remote.Get(vat));
+            await TestDelete(target);
         }
         [TestMethod]
         public async Task VatValidation()

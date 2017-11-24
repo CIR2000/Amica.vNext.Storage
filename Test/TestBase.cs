@@ -7,6 +7,7 @@ using Eve.Authenticators;
 using Amica.Storage;
 using Amica.Models;
 using System.Net.Http;
+using DeepEqual.Syntax;
 
 namespace Test
 {
@@ -58,6 +59,43 @@ namespace Test
         {
             return await Remote.Insert(new Company { Name = "company" });
         }
+        private async Task<T> InsertValidObject<T>(T obj) where T:BaseModelWithCompanyId
+        {
+            obj.CompanyId = await CreateAccountAndRegisterUserThenStoreCompany();
+            return await Remote.Insert(obj);
+        }
+        public async Task TestGet<T>(T obj) where T: BaseModelWithCompanyId, new()
+        {
+            obj = await InsertValidObject(obj);
 
+            var challenge = await Remote.Get(new T() { UniqueId = obj.UniqueId });
+            obj.ShouldDeepEqual(challenge);
+        }
+        public async Task TestInsert<T>(T obj) where T: BaseModelWithCompanyId
+        {
+            obj = await InsertValidObject(obj);
+            Assert.IsNotNull(obj.UniqueId);
+        }
+        public async Task TestReplace<T>(T obj, string property) where T: BaseModelWithCompanyId, new()
+        {
+            obj = await InsertValidObject(obj);
+
+            var p = obj.GetType().GetProperty(property);
+            p.SetValue(obj, "new value");
+            obj = await Remote.Replace(obj);
+
+            var challenge = await Remote.Get(new T { UniqueId = obj.UniqueId });
+            obj.ShouldDeepEqual(challenge);
+        }
+        public async Task TestDelete<T>(T obj) where T: BaseModelWithCompanyId
+        {
+            obj = await InsertValidObject(obj);
+
+            try { await Remote.Delete(obj); }
+            catch (Exception) { throw new AssertFailedException("Exception not expected here."); }
+
+            await Assert.ThrowsExceptionAsync<RemoteObjectNotFoundStorageException>(async () => await Remote.Get(obj));
+
+        }
     }
 }

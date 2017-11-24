@@ -1,62 +1,37 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 using Amica.Storage;
-using System;
-using DeepEqual.Syntax;
 
 namespace Test
 {
     [TestClass]
     public class Fee : TestBase
     {
-        private async Task<Amica.Models.Fee> InsertValidObject(string companyId)
-        {
-            return await Remote.Insert(new Amica.Models.Fee {
-                CompanyId = companyId,
+        private Amica.Models.Fee target = new Amica.Models.Fee {
                 Name = "Fee",
                 Amount = 10.1m,
                 Vat = new Amica.Models.Vat { Name = "Vat", Code = "Code" }
-            });
-        }
+            };
+
         [TestMethod]
         public async Task FeeInsert()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-
-            var fee = await InsertValidObject(companyId);
-            Assert.IsNotNull(fee.UniqueId);
+            await TestInsert(target);
         }
         [TestMethod]
         public async Task FeeGet()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var fee = await InsertValidObject(companyId);
-
-            var challenge = await Remote.Get(new Amica.Models.Fee { UniqueId = fee.UniqueId });
-            fee.ShouldDeepEqual(challenge);
+            await TestGet(target);
         }
         [TestMethod]
         public async Task FeeReplace()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var fee = await InsertValidObject(companyId);
-
-            fee.Name = "New Name";
-            fee = await Remote.Replace(fee);
-
-            var challenge = await Remote.Get(new Amica.Models.Fee { UniqueId = fee.UniqueId });
-            fee.ShouldDeepEqual(challenge);
+            await TestReplace(target, "Name");
         }
         [TestMethod]
         public async Task FeeDelete()
         {
-            var companyId = await CreateAccountAndRegisterUserThenStoreCompany();
-            var fee = await InsertValidObject(companyId);
-
-            try { await Remote.Delete(fee); }
-            catch (Exception) { throw new AssertFailedException("Exception not expected here."); }
-
-            await Assert.ThrowsExceptionAsync<RemoteObjectNotFoundStorageException>(async () => await Remote.Get(fee));
+            await TestDelete(target);
         }
         [TestMethod]
         public async Task FeeValidation()
