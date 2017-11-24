@@ -20,9 +20,6 @@ namespace Test
 
             var vat = await InsertValidVat(companyId);
             Assert.IsNotNull(vat.UniqueId);
-
-            vat = await Remote.Insert(new Amica.Models.Vat { CompanyId = companyId, Name = "Name2", Code = "code2", NaturaPA = new Amica.Models.ItalianPA.NaturaPA { Code = "Code", Description = "Description" } });
-            Assert.IsNotNull(vat.UniqueId);
         }
         [TestMethod]
         public async Task VatGet()

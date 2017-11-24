@@ -16,8 +16,9 @@ namespace Amica.Storage
         private delegate Task<T> SingleObjectRequestDelegate<T>(T obj);
         private Dictionary<Type, string> _endpoints = new Dictionary<Type, string>
         {
-            {typeof(Company), "companies" },
+            {typeof(Company), "company" },
             {typeof(Vat), "vat" },
+            {typeof(Fee), "fee" },
         };
 
         public async Task<T> Get<T>(T obj) where T : BaseModel
