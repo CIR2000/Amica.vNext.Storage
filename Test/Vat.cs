@@ -1,9 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
-using Amica.Models;
-using Amica.Models.Documents;
 using Amica.Storage;
 using System;
+using DeepEqual.Syntax;
 
 namespace Test
 {
@@ -32,7 +31,7 @@ namespace Test
             var vat = await InsertValidVat(companyId);
 
             var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
-            Assert.AreEqual(vat.UniqueId, challenge.UniqueId);
+            vat.ShouldDeepEqual(challenge);
         }
         [TestMethod]
         public async Task VatReplace()
@@ -41,11 +40,10 @@ namespace Test
             var vat = await InsertValidVat(companyId);
 
             vat.Name = "New Name";
-            await Remote.Replace(vat);
+            vat = await Remote.Replace(vat);
 
             var challenge = await Remote.Get(new Amica.Models.Vat { UniqueId = vat.UniqueId });
-            Assert.AreEqual(vat.UniqueId, challenge.UniqueId);
-            Assert.AreEqual(vat.Name, challenge.Name);
+            vat.ShouldDeepEqual(challenge);
         }
         [TestMethod]
         public async Task VatDelete()
