@@ -19,6 +19,7 @@ namespace Amica.Storage
             {typeof(Company), "company" },
             {typeof(Vat), "vat" },
             {typeof(Fee), "fee" },
+            {typeof(Size), "size" },
         };
 
         public async Task<T> Get<T>(T obj) where T : BaseModel
