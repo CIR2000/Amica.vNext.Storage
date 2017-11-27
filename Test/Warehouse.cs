@@ -7,9 +7,7 @@ namespace Test
     [TestClass]
     public class Warehouse : TestBase
     {
-        private Amica.Models.Warehouse target = new Amica.Models.Warehouse {
-                Name = "Warehouse"
-            };
+        private Amica.Models.Warehouse target = new Amica.Models.Warehouse { Name = "Warehouse" };
 
         [TestMethod]
         public async Task WarehouseInsert()
