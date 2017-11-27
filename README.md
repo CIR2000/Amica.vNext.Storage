@@ -12,4 +12,5 @@ Once your nuget source is configured all you have to do is:
 ```
 nuget install Amica.Storage.Remote
 ```
-
+Alternatively, you can use Visual Studio. Go to Tools/Options/NuGet Package Manager/Package Sources, then 
+add a new source.
