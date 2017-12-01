@@ -33,7 +33,7 @@ namespace Test
         [TestInitialize]
         public virtual async Task Init()
         {
-            await (new HttpClient()).PostAsync(new Uri("http://10.0.2.2:5000/test/session/start"), null);
+            await (new HttpClient()).PostAsync(new Uri($"{Environment.GetEnvironmentVariable("ADAM_URI") ?? "http://10.0.2.2:5000"}/test/session/start"), null);
             await Eve.DeleteAsync();
 
             Membership = new Membership();
