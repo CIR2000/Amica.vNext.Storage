@@ -66,6 +66,7 @@ catch (RemoteObjectNotFoundStorageException)
 {
 	Console.Writeline("Object already deleted or not found.")
 }
+```
 
 Since `CompanyId` is required on almost all models and most queries will need to be company-restricted, you can 
 leverage the `RemoteCompanyRepository` class which exposes a number of specialized `Get` methods:
