@@ -81,3 +81,4 @@ leverage the `RemoteCompanyRepository` class which exposes a number of specializ
 	// Returns a List<Transport> from a specific company.
 	var transports = remoteCompany.Get("<companyId>");
 ```
+There are overloads available which also allow for setting the `ifModifiedSince` and `showDeleted` options.
