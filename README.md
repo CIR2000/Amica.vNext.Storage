@@ -26,6 +26,7 @@ using Amica.Storage;
 var transport = new Fee 
 {
 	Name = "Spese di trasporto",
+	CompanyId = "<companyid>",
 	Amount = 10.20m,
 	Vat = new Vat { 
 		Name = "IVA 10%", 
@@ -65,3 +66,17 @@ catch (RemoteObjectNotFoundStorageException)
 {
 	Console.Writeline("Object already deleted or not found.")
 }
+
+Since `CompanyId` is required on almost all models and most queries will need to be company-restricted, you can 
+leverage the `RemoteCompanyRepository` class which exposes a number of specialized `Get` methods:
+
+```c#
+	var remote = new RemoteCompanyRepository()
+	{
+		BaseAddress = new Uri(Environment.GetEnvironmentVariable("SERVICE_URI")),
+		ApiKey = Environment.GetEnvironmentVariable("SERVICE_API_KEY"),
+	}
+
+	// Returns a List<Transport> from a specific company.
+	var transports = remoteCompany.Get("<companyId>");
+```

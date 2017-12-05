@@ -16,6 +16,7 @@ namespace Test
     {
         protected Membership Membership { get; set; }
         protected RemoteBulkRepository Remote { get; set; }
+        protected RemoteCompanyRepository RemoteCompany { get; set; }
         protected EveClient Eve { get; }
         public TestBase()
         {
@@ -43,6 +44,12 @@ namespace Test
                 BaseAddress = new Uri(Environment.GetEnvironmentVariable("ADAM_URI") ?? "http://10.0.2.2:5000"),
                 ApiKey = Environment.GetEnvironmentVariable("ADAM_API_KEY") ?? "admin_key",
             };
+
+            RemoteCompany = new RemoteCompanyRepository
+            {
+                BaseAddress = new Uri(Environment.GetEnvironmentVariable("ADAM_URI") ?? "http://10.0.2.2:5000"),
+                ApiKey = Environment.GetEnvironmentVariable("ADAM_API_KEY") ?? "admin_key",
+            };
         }
         protected async Task<string> CreateAccountAndRegisterUserThenStoreCompany()
         {
@@ -52,6 +59,7 @@ namespace Test
             account =  await Membership.Insert(account);
 
             Remote.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
+            RemoteCompany.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
 
             return (await CreateCompany()).UniqueId;
         }
@@ -95,7 +103,6 @@ namespace Test
             catch (Exception) { throw new AssertFailedException("Exception not expected here."); }
 
             await Assert.ThrowsExceptionAsync<RemoteObjectNotFoundStorageException>(async () => await Remote.Get(obj));
-
         }
     }
 }

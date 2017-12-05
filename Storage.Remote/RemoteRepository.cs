@@ -14,15 +14,17 @@ namespace Amica.Storage
     {
         protected readonly EveClient _eve = new EveClient();
         private delegate Task<T> SingleObjectRequestDelegate<T>(T obj);
-        private Dictionary<Type, string> _endpoints = new Dictionary<Type, string>
+        protected readonly Dictionary<Type, string> _endpoints = new Dictionary<Type, string>
         {
-            {typeof(Company), "company" },
-            {typeof(Vat), "vat" },
-            {typeof(Fee), "fee" },
-            {typeof(Size), "size" },
-            {typeof(Warehouse), "warehouse" },
-            {typeof(Payment), "payment" },
-            {typeof(Contact), "contact" },
+            { typeof(Company), "company" },
+            { typeof(Vat), "vat" },
+            { typeof(Fee), "fee" },
+            { typeof(Size), "size" },
+            { typeof(Warehouse), "warehouse" },
+            { typeof(Payment), "payment" },
+            { typeof(Contact), "contact" },
+            { typeof(Document), "document"},
+            { typeof(Invoice), "document"},
         };
 
         public async Task<T> Get<T>(T obj) where T : BaseModel
