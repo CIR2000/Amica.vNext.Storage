@@ -7,6 +7,7 @@ using Eve;
 using Eve.Authenticators;
 using Amica.Models.Documents;
 using System.Collections.Generic;
+using Amica.Models.Company;
 
 namespace Amica.Storage
 {

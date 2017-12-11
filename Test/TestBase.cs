@@ -8,6 +8,7 @@ using Amica.Storage;
 using Amica.Models;
 using System.Net.Http;
 using DeepEqual.Syntax;
+using Amica.Models.Company;
 
 namespace Test
 {
@@ -53,6 +54,12 @@ namespace Test
         }
         protected async Task<string> CreateAccountAndRegisterUserThenStoreCompany()
         {
+
+            var account = await CreateAccount();
+            return (await CreateCompany()).UniqueId;
+        }
+        protected async Task<Account> CreateAccount()
+        {
             var account = new Account { Email = "email@email.com", Vat = "vat", };
             account.User.Add(new User { Username = "user1", Password = "password1", Email = "user1@email.com" });
             account.User.Add(new User { Username = "user2", Password = "password2", Email = "user2@email.com" });
@@ -61,11 +68,18 @@ namespace Test
             Remote.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
             RemoteCompany.AuthorizationToken = await Membership.Login(account.User[0].Username, account.User[0].Password, account.Email);
 
-            return (await CreateCompany()).UniqueId;
+            return account;
         }
-        protected async Task<Company> CreateCompany()
+        protected async Task<Amica.Models.Company.Company> CreateCompany()
         {
-            return await Remote.Insert(new Company { Name = "company" });
+            var company = new Amica.Models.Company.Company
+            {
+                Name = "company",
+            };
+            company.Predefinizioni.Vat.Name = "vat";
+            company.Predefinizioni.Vat.Code = "code";
+
+            return await Remote.Insert(company);
         }
         private async Task<T> InsertValidObject<T>(T obj) where T:BaseModelWithCompanyId
         {
